@@ -1,0 +1,1852 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido Premium | Revendedor 3Fit</title>
+  <meta name="description" content="Monte seu pedido de marmitas 3Fit em uma experiência rápida, premium e profissional." />
+  <link rel="icon" type="image/png" href="./images/logo.png" />
+  <link rel="shortcut icon" href="./images/logo.png" />
+  <link rel="apple-touch-icon" href="./images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f3f6f3;
+      --surface: #ffffff;
+      --surface-soft: #f7fbf7;
+      --text: #223022;
+      --text-soft: #4b5a4b;
+      --primary: #3cc13f;
+      --primary-strong: #2d9f30;
+      --accent: #ff9000;
+      --line: #dce8dc;
+      --ok: #0a8f46;
+      --danger: #c23939;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow: 0 10px 30px rgba(29, 62, 31, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 2%, rgba(60, 193, 63, 0.14), transparent 33%),
+        radial-gradient(circle at 90% 0%, rgba(255, 144, 0, 0.16), transparent 31%),
+        var(--bg);
+      line-height: 1.4;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 28px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(4px);
+    }
+
+    .topbar__wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .topbar__actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img {
+      width: 54px;
+      height: 54px;
+      border-radius: 10px;
+      background: #fff;
+      object-fit: contain;
+      border: 1px solid var(--line);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 1.05rem;
+      line-height: 1.1;
+    }
+
+    .brand span {
+      font-size: 0.84rem;
+      color: var(--text-soft);
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 0.8rem;
+      background: #fff;
+      color: var(--text-soft);
+    }
+
+    .cart-btn {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(22, 44, 24, 0.08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #2e442f;
+      font-size: 1.2rem;
+    }
+
+    .cart__count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      background: #7c8b7d;
+      color: #fff;
+      border: 2px solid #fff;
+    }
+
+    .cart-btn.has-items .cart__count {
+      background: #2ca132;
+    }
+
+    .hero {
+      padding: 34px 0 22px;
+    }
+
+    .hero__content {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .hero__left {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 3vw, 34px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: heroFadeIn .55s ease both;
+    }
+
+    .hero__left::after {
+      content: "";
+      width: 210px;
+      height: 210px;
+      background: radial-gradient(circle, rgba(60, 193, 63, 0.2), transparent 70%);
+      position: absolute;
+      bottom: -85px;
+      right: -70px;
+      pointer-events: none;
+    }
+
+    .hero__left::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(60, 193, 63, 0.2), rgba(255, 180, 88, 0.22), rgba(60, 193, 63, 0.2));
+      opacity: 0;
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    .hero__left:hover::before {
+      opacity: 1;
+    }
+
+    .hero__left > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes heroFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero h1 {
+      margin: 12px 0 12px;
+      font-size: clamp(1.5rem, 3vw, 2.3rem);
+      line-height: 1.18;
+      max-width: 24ch;
+    }
+
+    .hero__highlight {
+      color: #ff8a00;
+      font-weight: 900;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .hero__highlight-wrap {
+      white-space: nowrap;
+    }
+
+    .hero p {
+      color: var(--text-soft);
+      margin: 0;
+      max-width: 62ch;
+    }
+
+    .hero__promo {
+      margin-top: 18px;
+      display: grid;
+      gap: 8px;
+      max-width: 420px;
+    }
+
+    .hero__promo-card {
+      border: 1px solid #d8ead8;
+      border-radius: 11px;
+      background: #fff;
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      font-size: 0.84rem;
+      align-items: center;
+    }
+
+    .hero__promo-card strong {
+      color: #245e29;
+      font-weight: 800;
+    }
+
+    .hero__promo-card span {
+      color: #486448;
+      font-weight: 700;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled {
+      opacity: 0.72;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn--primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(49, 151, 51, 0.27);
+    }
+
+    .btn--ghost {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .hero__cover {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      min-height: 320px;
+      background: #000;
+    }
+
+    .hero__cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.86;
+    }
+
+    .hero__cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.3));
+      pointer-events: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 18px;
+      align-items: start;
+      padding-bottom: 50px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .products {
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .field {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #cfe0cf;
+      background: #fff;
+      font: inherit;
+      color: var(--text);
+    }
+
+    .albums {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+      min-width: 0;
+    }
+
+    .album {
+      border: 1px solid #d8e8d8;
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+      cursor: pointer;
+      text-align: left;
+      padding: 0;
+      font: inherit;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .album:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(29, 62, 31, 0.12);
+    }
+
+    .album.active {
+      border-color: #8ed290;
+      box-shadow: 0 0 0 2px #d8f0d8;
+    }
+
+    .album img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid #d8e8d8;
+    }
+
+    .album__meta {
+      padding: 10px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .album__meta strong {
+      font-size: 0.84rem;
+      letter-spacing: .03em;
+      color: #1c6220;
+    }
+
+    .album__meta span {
+      font-size: 0.78rem;
+      color: #5a6b5a;
+    }
+
+    .album-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .album-head h3 {
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .album-clear {
+      border: 1px solid #cfe0cf;
+      border-radius: 10px;
+      background: #fff;
+      color: #355035;
+      padding: 8px 10px;
+      font: inherit;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      max-height: 690px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .product {
+      border: 1px solid #d8e8d8;
+      border-radius: 12px;
+      padding: 10px;
+      background: var(--surface-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .product small {
+      color: #207724;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .product h3 {
+      margin: 0;
+      font-size: .92rem;
+      line-height: 1.28;
+      min-height: 44px;
+    }
+
+    .product__price {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #1f6f24;
+      margin-top: -2px;
+    }
+
+    .qty {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #cfe0cf;
+      border-radius: 10px;
+      background: #fff;
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .qty button {
+      border: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 700;
+      background: #eef7ef;
+      color: #1b7220;
+    }
+
+    .qty input {
+      border: 0;
+      width: 32px;
+      text-align: center;
+      font-weight: 700;
+      font: inherit;
+      color: var(--text);
+      background: transparent;
+      appearance: textfield;
+    }
+
+    .qty input::-webkit-outer-spin-button,
+    .qty input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .sidebar {
+      padding: 14px;
+      position: sticky;
+      top: 10px;
+      min-width: 0;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 10px;
+      font-size: 1.03rem;
+    }
+
+    .summary {
+      border: 1px dashed #bfd6bf;
+      background: #fbfefb;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
+      max-height: none;
+      overflow: visible;
+    }
+
+    .summary__line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 10px;
+      font-size: .85rem;
+      margin-bottom: 8px;
+      line-height: 1.32;
+    }
+
+    .summary__item-name {
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: normal;
+      word-break: normal;
+      hyphens: none;
+      color: #2f4130;
+    }
+
+    .summary__item-meta {
+      font-weight: 700;
+      color: #1e7c23;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .summary__group {
+      border: 1px solid #dce9dc;
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .summary__group-title {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #1f6f24;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .summary__subtotal {
+      border-top: 1px dashed #dce9dc;
+      margin-top: 6px;
+      padding-top: 6px;
+      font-size: 0.78rem;
+      color: #456145;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .total {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #d7e7d7;
+      font-weight: 700;
+    }
+
+    .form {
+      display: grid;
+      gap: 9px;
+    }
+
+    .form textarea {
+      min-height: 74px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+
+    .actions .btn {
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      line-height: 1.15;
+      min-height: 52px;
+    }
+
+    .actions .btn--primary {
+      box-shadow: 0 6px 12px rgba(49, 151, 51, 0.2);
+    }
+
+    .notice {
+      margin: 0;
+      border: 1px solid #d9e8d9;
+      background: #f8fcf8;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .offer__title {
+      margin: 0 0 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #255f2a;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .offer__hero {
+      margin: 0 0 8px;
+      border: 1px solid #d8ebd8;
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px;
+    }
+
+    .offer__hero-strong {
+      margin: 0 0 2px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #1f7424;
+      line-height: 1.15;
+    }
+
+    .offer__hero-sub {
+      margin: 0;
+      font-size: 0.77rem;
+      color: #587058;
+      line-height: 1.2;
+    }
+
+    .offer__grid {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .offer__card {
+      border: 1px solid #dbeadb;
+      border-radius: 10px;
+      background: #fff;
+      padding: 7px 8px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      font-size: 0.76rem;
+    }
+
+    .offer__card strong {
+      color: #29472b;
+      font-weight: 700;
+    }
+
+    .offer__card span {
+      color: #5c6d5c;
+    }
+
+    .offer__card.active {
+      border-color: #92d094;
+      background: #eef9ef;
+    }
+
+    .offer__card.active strong {
+      color: #1f7424;
+    }
+
+    .offer__status {
+      margin: 0;
+      font-size: 0.74rem;
+      color: #3f5a3f;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .offer__meters + .offer__status {
+      margin-top: 8px;
+    }
+
+    .offer__status + .offer__status {
+      margin-top: 4px;
+    }
+
+    .offer__meters {
+      display: grid;
+      gap: 7px;
+      margin-top: 6px;
+    }
+
+    .offer__meter {
+      display: grid;
+      gap: 4px;
+    }
+
+    .offer__meter-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: #4f664f;
+      font-weight: 700;
+    }
+
+    .offer__track {
+      height: 8px;
+      border-radius: 999px;
+      background: #e2eee2;
+      overflow: hidden;
+    }
+
+    .offer__fill {
+      height: 100%;
+      background: linear-gradient(90deg, #57b95c, #2ca132);
+      border-radius: inherit;
+      transition: width .2s ease;
+    }
+
+    .feedback {
+      border-radius: 10px;
+      padding: 11px;
+      font-size: 0.85rem;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.ok { background: #e7f8eb; color: var(--ok); border: 1px solid #b7e5c2; }
+    .feedback.error { background: #ffecec; color: var(--danger); border: 1px solid #f1c4c4; }
+
+    .payload {
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #d5e5d5;
+      background: #f8fbf8;
+      padding: 8px;
+      max-height: 150px;
+      overflow: auto;
+      font-size: .72rem;
+      color: #334;
+      display: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .payload.show { display: block; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 24, 14, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 70;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal__card {
+      width: min(720px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: #fff;
+      border: 1px solid #d7e7d7;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(17, 42, 19, 0.24);
+      padding: 14px;
+    }
+
+    .modal__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .modal__head h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .modal__close {
+      border: 1px solid #d0e0d0;
+      background: #fff;
+      color: #375137;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 700;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .modal__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+      .mobile-dock {
+        display: none;
+      }
+
+    @media (max-width: 1030px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero__content { grid-template-columns: 1fr; }
+      .hero__cover { min-height: 230px; }
+
+      .mobile-dock {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+        position: fixed;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        z-index: 60;
+        border: 1px solid #cfe2cf;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(4px);
+        border-radius: 14px;
+        box-shadow: 0 14px 28px rgba(20, 48, 22, 0.2);
+        padding: 9px;
+        transition: opacity .2s ease, transform .2s ease;
+      }
+
+      .mobile-dock.is-hidden {
+        opacity: 0;
+        transform: translateY(14px);
+        pointer-events: none;
+      }
+
+      .mobile-dock__meta {
+        font-size: 0.8rem;
+        color: #2c4a2f;
+        font-weight: 700;
+        line-height: 1.25;
+        transition: opacity .2s ease, max-height .2s ease, margin .2s ease;
+        max-height: 40px;
+      }
+
+      .mobile-dock__meta.is-hidden {
+        opacity: 0;
+        max-height: 0;
+        margin: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .mobile-dock__meters {
+        grid-column: 1 / -1;
+        display: grid;
+        gap: 4px;
+      }
+
+      .mobile-dock__meter-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.68rem;
+        color: #496249;
+        font-weight: 700;
+      }
+
+      .mobile-dock__meter {
+        height: 6px;
+        border-radius: 999px;
+        background: #dfeadf;
+        overflow: hidden;
+      }
+
+      .mobile-dock__fill {
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #57b95c, #2ca132);
+        transition: width .2s ease;
+      }
+
+      .mobile-dock .btn {
+        min-height: 44px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+
+      body {
+        padding-bottom: 86px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding-top: 20px; }
+      .topbar { padding: 10px 0; }
+      .albums {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        max-width: 100%;
+        padding-bottom: 2px;
+        margin-bottom: 10px;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .album {
+        flex: 0 0 44%;
+        min-width: 44%;
+        max-width: 44%;
+        scroll-snap-align: start;
+      }
+
+      .album img {
+        aspect-ratio: 16 / 8;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+        max-height: none;
+        gap: 8px;
+      }
+
+      .product {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+          "tag qty"
+          "name qty"
+          "price qty";
+        align-items: center;
+        gap: 4px 8px;
+        padding: 8px;
+      }
+
+      .product small {
+        grid-area: tag;
+        font-size: 0.68rem;
+      }
+
+      .product h3 {
+        grid-area: name;
+        min-height: 0;
+        font-size: 0.86rem;
+        line-height: 1.22;
+        margin-right: 2px;
+      }
+
+      .product__price {
+        grid-area: price;
+        margin: 0;
+        font-size: 0.82rem;
+      }
+
+      .qty {
+        grid-area: qty;
+        margin-top: 0;
+        align-self: center;
+      }
+
+      .hero h1 { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__wrap">
+      <a class="brand" href="#" aria-label="Revendedor 3Fit">
+        <img src="images/logo.png" alt="Logo 3Fit" />
+        <div>
+          <strong>Revenda Oficial 3Fit</strong>
+          <span>Melhores marmitas congeladas do Brasil</span>
+        </div>
+      </a>
+      <div class="topbar__actions">
+        <span class="pill">Disponibilidade confirmada após envio</span>
+        <button type="button" class="cart-btn" id="headerCartBtn" aria-label="Conferir pedido">
+          <span aria-hidden="true">🛒</span>
+          <span class="cart__count" id="headerCartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero__content">
+      <div class="hero__left">
+        <h1>Aqui o seu pedido <span class="hero__highlight">3Fit</span> é <span class="hero__highlight">personalizado</span>.<br>Aproveite!</h1>
+        <p>
+          Selecione os pratos, ajuste quantidades e envie seu pedido 🧡
+        </p>
+        <div class="hero__promo" id="heroPromo">
+          <div class="hero__promo-card">
+            <strong>Desconto progressivo</strong>
+            <span>Até 30% OFF</span>
+          </div>
+          <div class="hero__promo-card">
+            <strong>Frete grátis</strong>
+            <span>Acima de R$ 350,00</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero__cover">
+        <img src="images/influencers.png" alt="Influenciadores e linhas 3Fit" />
+      </div>
+    </div>
+  </section>
+
+  <main class="container layout" id="pedidoSection">
+    <section class="panel products" aria-label="Lista de produtos">
+      <div id="albumGrid" class="albums" aria-label="Linhas por categoria"></div>
+      <div class="album-head">
+        <h3 id="albumTitle">Selecione uma linha para ver os pratos</h3>
+      </div>
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+
+    <aside class="panel sidebar">
+      <h2>Resumo do pedido</h2>
+      <div class="summary" id="summary"></div>
+      <div class="actions">
+        <button type="button" id="clearOrderBtn" class="btn btn--ghost">Limpar pedido</button>
+        <button type="button" id="reviewOrderBtn" class="btn btn--primary">Conferir pedido</button>
+      </div>
+
+      <p class="notice" id="businessNotice"></p>
+      <div id="feedback" class="feedback"></div>
+      <pre id="payloadPreview" class="payload" aria-hidden="true"></pre>
+    </aside>
+  </main>
+
+  <div class="modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+    <div class="modal__card">
+      <div class="modal__head">
+        <h3 id="reviewTitle">Conferir pedido</h3>
+        <button type="button" class="modal__close" id="closeReviewModal">Fechar</button>
+      </div>
+      <div class="summary" id="reviewSummary"></div>
+      <div class="form">
+        <textarea class="field" id="obsPedido" placeholder="Observações do pedido (opcional)"></textarea>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="cancelReviewBtn">Continuar escolhendo</button>
+        <button type="button" class="btn btn--primary" id="sendOrderBtn">Enviar pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-dock" id="mobileDock" aria-live="polite">
+    <div class="mobile-dock__meta" id="mobileDockMeta">Selecione pratos para conferir o pedido</div>
+    <button type="button" class="btn btn--primary" id="mobileReviewBtn" disabled>Conferir pedido</button>
+    <div class="mobile-dock__meters">
+      <div class="mobile-dock__meter-row">
+        <span id="dockDiscountLabel">Rumo ao desconto</span>
+        <span id="dockDiscountPct">0%</span>
+      </div>
+      <div class="mobile-dock__meter"><div class="mobile-dock__fill" id="dockDiscountFill"></div></div>
+      <div class="mobile-dock__meter-row">
+        <span id="dockShippingLabel">Rumo ao frete grátis</span>
+        <span id="dockShippingPct">0%</span>
+      </div>
+      <div class="mobile-dock__meter"><div class="mobile-dock__fill" id="dockShippingFill"></div></div>
+    </div>
+  </div>
+
+  <script src="catalog.js"></script>
+  <script>
+    const MAX_OBS_LENGTH = 400;
+    const DEFAULT_FEATURES = {
+      webhookUrl: "SEU_WEBHOOK_AQUI",
+      pricingRules: {
+        descontoProgressivo: [
+          { minUnidades: 14, maxUnidades: 20, percentual: 10 },
+          { minUnidades: 21, maxUnidades: null, percentual: 30 }
+        ],
+        freteGratis: {
+          valorMinimoCentavos: 35000
+        }
+      }
+    };
+
+    const catalog = window.CATALOG || { version: "sem-versao", moeda: "BRL", linhas: [] };
+    const lines = (catalog.linhas || []).map((line) => ({
+      id: line.id,
+      nome: line.nome || line.id,
+      gramatura: line.gramatura || "",
+      capa: line.capa,
+      itens: (line.itens || []).filter((item) => item.ativo !== false)
+    }));
+
+    const lineById = Object.fromEntries(lines.map((line) => [line.id, line]));
+    const products = lines.flatMap((line) =>
+      line.itens.map((item, idx) => ({
+        id: item.id || `${line.id.toLowerCase()}-${idx + 1}`,
+        lineId: line.id,
+        lineName: line.nome,
+        name: item.nome,
+        precoCentavos: Number.isInteger(item.precoCentavos) ? item.precoCentavos : null
+      }))
+    );
+
+    const formatCurrency = (centavos) => {
+      if (!Number.isInteger(centavos)) return "Preço a preencher";
+      return new Intl.NumberFormat("pt-BR", { style: "currency", currency: catalog.moeda || "BRL" })
+        .format(centavos / 100);
+    };
+
+    const normalizePricingRules = (raw) => {
+      const descontoProgressivo = Array.isArray(raw?.descontoProgressivo)
+        ? raw.descontoProgressivo
+          .map((item) => ({
+            minUnidades: Number(item?.minUnidades),
+            maxUnidades: item?.maxUnidades === null ? null : Number(item?.maxUnidades),
+            percentual: Number(item?.percentual)
+          }))
+          .filter((item) =>
+            Number.isInteger(item.minUnidades)
+            && item.minUnidades > 0
+            && (item.maxUnidades === null || (Number.isInteger(item.maxUnidades) && item.maxUnidades >= item.minUnidades))
+            && Number.isFinite(item.percentual)
+            && item.percentual >= 0
+          )
+          .sort((a, b) => b.minUnidades - a.minUnidades)
+        : DEFAULT_FEATURES.pricingRules.descontoProgressivo;
+
+      const valorMinimoCentavos = Number(raw?.freteGratis?.valorMinimoCentavos);
+      const freteGratis = {
+        valorMinimoCentavos: Number.isInteger(valorMinimoCentavos) && valorMinimoCentavos >= 0
+          ? valorMinimoCentavos
+          : DEFAULT_FEATURES.pricingRules.freteGratis.valorMinimoCentavos
+      };
+
+      return { descontoProgressivo, freteGratis };
+    };
+
+    let webhookUrl = DEFAULT_FEATURES.webhookUrl;
+    let pricingRules = normalizePricingRules(DEFAULT_FEATURES.pricingRules);
+    let latestDockSnapshot = null;
+
+    const getDiscountInfo = (totalUnidades, totalBrutoCentavos) => {
+      const rule = pricingRules.descontoProgressivo.find((item) =>
+        totalUnidades >= item.minUnidades
+        && (item.maxUnidades === null || totalUnidades <= item.maxUnidades)
+      ) || null;
+      const percentual = rule?.percentual || 0;
+      const descontoCentavos = percentual > 0
+        ? Math.round(totalBrutoCentavos * (percentual / 100))
+        : 0;
+      return {
+        percentual,
+        descontoCentavos,
+        totalLiquidoCentavos: totalBrutoCentavos - descontoCentavos
+      };
+    };
+
+    const getShippingInfo = (totalLiquidoCentavos) => {
+      const valorMinimoCentavos = pricingRules.freteGratis.valorMinimoCentavos;
+      const elegivel = Number.isInteger(totalLiquidoCentavos) && totalLiquidoCentavos >= valorMinimoCentavos;
+      const faltamCentavos = elegivel
+        ? 0
+        : Math.max(0, valorMinimoCentavos - (Number.isInteger(totalLiquidoCentavos) ? totalLiquidoCentavos : 0));
+
+      return { valorMinimoCentavos, elegivel, faltamCentavos };
+    };
+
+    const selected = new Map();
+    const categories = lines.filter((line) => line.itens.length > 0).map((line) => line.id);
+
+    const productGrid = document.getElementById("productGrid");
+    const albumGrid = document.getElementById("albumGrid");
+    const albumTitle = document.getElementById("albumTitle");
+    const summary = document.getElementById("summary");
+    const obsPedido = document.getElementById("obsPedido");
+    const reviewOrderBtn = document.getElementById("reviewOrderBtn");
+    const sendOrderBtn = document.getElementById("sendOrderBtn");
+    const clearOrderBtn = document.getElementById("clearOrderBtn");
+    const feedback = document.getElementById("feedback");
+    const payloadPreview = document.getElementById("payloadPreview");
+    const businessNotice = document.getElementById("businessNotice");
+    const heroPromo = document.getElementById("heroPromo");
+    const reviewModal = document.getElementById("reviewModal");
+    const reviewSummary = document.getElementById("reviewSummary");
+    const closeReviewModal = document.getElementById("closeReviewModal");
+    const cancelReviewBtn = document.getElementById("cancelReviewBtn");
+    const headerCartBtn = document.getElementById("headerCartBtn");
+    const headerCartCount = document.getElementById("headerCartCount");
+    const mobileDockMeta = document.getElementById("mobileDockMeta");
+    const mobileReviewBtn = document.getElementById("mobileReviewBtn");
+    const dockDiscountFill = document.getElementById("dockDiscountFill");
+    const dockShippingFill = document.getElementById("dockShippingFill");
+    const dockDiscountLabel = document.getElementById("dockDiscountLabel");
+    const dockDiscountPct = document.getElementById("dockDiscountPct");
+    const dockShippingLabel = document.getElementById("dockShippingLabel");
+    const dockShippingPct = document.getElementById("dockShippingPct");
+
+    const isBusinessNoticeVisible = () => {
+      if (!businessNotice) return false;
+      const rect = businessNotice.getBoundingClientRect();
+      return rect.top < (window.innerHeight - 140) && rect.bottom > 110;
+    };
+
+    let activeCategory = null;
+
+    const updateBusinessNotice = (state = {}) => {
+      const totalUnidades = Number.isFinite(state.totalUnidades) ? state.totalUnidades : 0;
+      const descontoPercentualAtivo = Number.isFinite(state.descontoPercentualAtivo) ? state.descontoPercentualAtivo : 0;
+      const totalLiquidoCentavos = Number.isInteger(state.totalLiquidoCentavos) ? state.totalLiquidoCentavos : 0;
+
+      const rulesAsc = [...pricingRules.descontoProgressivo].sort((a, b) => a.minUnidades - b.minUnidades);
+      const freteMinimoCentavos = pricingRules.freteGratis.valorMinimoCentavos;
+      const freteElegivel = totalLiquidoCentavos >= freteMinimoCentavos;
+      const freteFaltamCentavos = Math.max(0, freteMinimoCentavos - totalLiquidoCentavos);
+      const nextDiscountRule = rulesAsc.find((rule) => totalUnidades < rule.minUnidades) || null;
+      const nextHigherRule = rulesAsc.find((rule) => rule.percentual > descontoPercentualAtivo && totalUnidades < rule.minUnidades) || null;
+
+      let destaqueTitulo = "Ganhe até 30% OFF";
+      let destaqueSub = "Aumente a quantidade para destravar vantagens.";
+      let descontoStatus = "Comece seu pedido para ativar descontos.";
+      if (descontoPercentualAtivo > 0 && nextHigherRule) {
+        destaqueTitulo = `${descontoPercentualAtivo}% OFF ativo`;
+        destaqueSub = "Você já destravou desconto progressivo.";
+        descontoStatus = `Desconto de ${descontoPercentualAtivo}% ativo. Faltam ${Math.max(0, nextHigherRule.minUnidades - totalUnidades)} marmitas para ${nextHigherRule.percentual}% OFF.`;
+      } else if (descontoPercentualAtivo > 0) {
+        destaqueTitulo = `${descontoPercentualAtivo}% OFF máximo`;
+        destaqueSub = "Parabéns, você atingiu a melhor faixa.";
+        descontoStatus = `Desconto máximo ativo: ${descontoPercentualAtivo}% OFF.`;
+      } else if (nextDiscountRule) {
+        descontoStatus = `Faltam ${Math.max(0, nextDiscountRule.minUnidades - totalUnidades)} marmitas para liberar ${nextDiscountRule.percentual}% OFF.`;
+      }
+
+      const freteStatus = freteElegivel ? "Frete grátis aplicado." : `Faltam ${formatCurrency(freteFaltamCentavos)} para frete grátis.`;
+      const nextDiscountProgress = nextDiscountRule
+        ? Math.max(0, Math.min(100, Math.round((totalUnidades / nextDiscountRule.minUnidades) * 100)))
+        : 100;
+      const freteProgress = Math.max(0, Math.min(100, Math.round((totalLiquidoCentavos / freteMinimoCentavos) * 100)));
+
+      const discountCards = rulesAsc.map((rule) => {
+        const label = rule.maxUnidades === null
+          ? `${rule.minUnidades}+ marmitas`
+          : `${rule.minUnidades} a ${rule.maxUnidades} marmitas`;
+        const isActive = descontoPercentualAtivo >= rule.percentual && descontoPercentualAtivo > 0;
+        return `
+          <div class="offer__card ${isActive ? "active" : ""}">
+            <strong>${label}</strong>
+            <span>${rule.percentual}% OFF</span>
+          </div>
+        `;
+      }).join("");
+
+      businessNotice.innerHTML = `
+        <div class="offer__hero">
+          <p class="offer__hero-strong">${destaqueTitulo}</p>
+          <p class="offer__hero-sub">${destaqueSub}</p>
+        </div>
+        <div class="offer__grid">
+          ${discountCards}
+          <div class="offer__card ${freteElegivel ? "active" : ""}">
+            <strong>Frete grátis</strong>
+            <span>${freteElegivel ? "Frete grátis aplicado" : `Acima de ${formatCurrency(freteMinimoCentavos)}`}</span>
+          </div>
+        </div>
+        <div class="offer__meters">
+          <div class="offer__meter">
+            <div class="offer__meter-top">
+              <span>${nextDiscountRule ? `Rumo a ${nextDiscountRule.percentual}% OFF` : `${rulesAsc[rulesAsc.length - 1]?.percentual || 0}% OFF alcançado`}</span>
+              <span>${nextDiscountRule ? `${nextDiscountProgress}%` : "100%"}</span>
+            </div>
+            <div class="offer__track"><div class="offer__fill" style="width:${nextDiscountProgress}%"></div></div>
+          </div>
+          <div class="offer__meter">
+            <div class="offer__meter-top">
+              <span>${freteElegivel ? "Frete grátis alcançado" : "Meta frete grátis"}</span>
+              <span>${freteProgress}%</span>
+            </div>
+            <div class="offer__track"><div class="offer__fill" style="width:${freteProgress}%"></div></div>
+          </div>
+        </div>
+        <p class="offer__status">${descontoStatus}</p>
+        <p class="offer__status">${freteStatus}</p>
+      `;
+    };
+
+    const updateHeroPromo = () => {
+      const maxPercentual = pricingRules.descontoProgressivo.reduce((max, rule) =>
+        Math.max(max, Number(rule.percentual) || 0), 0);
+
+      heroPromo.innerHTML = `
+        <div class="hero__promo-card">
+          <strong>Desconto progressivo</strong>
+          <span>Até ${maxPercentual}% OFF</span>
+        </div>
+        <div class="hero__promo-card">
+          <strong>Frete grátis</strong>
+          <span>Acima de ${formatCurrency(pricingRules.freteGratis.valorMinimoCentavos)}</span>
+        </div>
+      `;
+    };
+
+    const loadFeatures = async () => {
+      try {
+        const response = await fetch("features.json", { cache: "no-store" });
+        if (!response.ok) return;
+        const data = await response.json();
+        const nextWebhookUrl = String(data?.webhookUrl || "").trim();
+        webhookUrl = nextWebhookUrl || DEFAULT_FEATURES.webhookUrl;
+        pricingRules = normalizePricingRules(data);
+      } catch (error) {
+        webhookUrl = DEFAULT_FEATURES.webhookUrl;
+        pricingRules = normalizePricingRules(DEFAULT_FEATURES.pricingRules);
+      }
+    };
+
+    const renderAlbums = () => {
+      albumGrid.innerHTML = categories.map((cat) => {
+        const line = lineById[cat];
+        const cover = line?.capa || "images/logo.png";
+        const count = line?.itens?.length || 0;
+        const label = line?.nome || cat;
+        const gramatura = line?.gramatura || "Gramatura a definir";
+        return `
+          <button type="button" class="album ${cat === activeCategory ? "active" : ""}" data-album="${cat}">
+            <img src="${cover}" alt="Capa ${label}" loading="lazy" onerror="this.onerror=null;this.src='images/logo.png';" />
+            <div class="album__meta">
+              <strong>${label}</strong>
+              <span>${count} pratos</span>
+              <span>${gramatura}</span>
+            </div>
+          </button>
+        `;
+      }).join("");
+    };
+
+    const getFilteredProducts = () => {
+      if (!activeCategory) return [];
+      return products.filter((product) => product.lineId === activeCategory);
+    };
+
+    const renderProducts = () => {
+      const currentLineName = lineById[activeCategory]?.nome || activeCategory;
+      const currentLineGramatura = lineById[activeCategory]?.gramatura || "";
+      albumTitle.textContent = activeCategory
+        ? `Pratos da linha ${currentLineName}${currentLineGramatura ? ` (${currentLineGramatura})` : ""}`
+        : "Selecione uma linha para ver os pratos";
+
+      const filtered = getFilteredProducts();
+      if (!filtered.length) {
+        productGrid.innerHTML = activeCategory
+          ? "<p>Nenhum prato disponível nessa linha.</p>"
+          : "";
+        return;
+      }
+
+      productGrid.innerHTML = filtered.map((product) => {
+        const qty = selected.get(product.id) || 0;
+        return `
+          <article class="product">
+            <small>${product.lineName}</small>
+            <h3>${product.name}</h3>
+            <div class="product__price">${formatCurrency(product.precoCentavos)}</div>
+            <div class="qty">
+              <button type="button" data-action="minus" data-id="${product.id}" aria-label="Diminuir quantidade">-</button>
+              <input type="number" min="0" value="${qty}" data-action="input" data-id="${product.id}" aria-label="Quantidade" />
+              <button type="button" data-action="plus" data-id="${product.id}" aria-label="Aumentar quantidade">+</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    };
+
+    const getSelectedItems = () =>
+      products
+        .filter((p) => (selected.get(p.id) || 0) > 0)
+        .map((p) => ({ ...p, qty: selected.get(p.id) }));
+
+    const getOrderSnapshot = (selectedItems) => {
+      const totalUnidades = selectedItems.reduce((acc, item) => acc + item.qty, 0);
+      const hasMissingAnyPrice = selectedItems.some((item) => !Number.isInteger(item.precoCentavos));
+      const totalBrutoCentavos = selectedItems.reduce((acc, item) => {
+        if (!Number.isInteger(item.precoCentavos)) return acc;
+        return acc + (item.precoCentavos * item.qty);
+      }, 0);
+      const discountInfo = hasMissingAnyPrice
+        ? { percentual: 0, descontoCentavos: 0, totalLiquidoCentavos: null }
+        : getDiscountInfo(totalUnidades, totalBrutoCentavos);
+      const shippingInfo = hasMissingAnyPrice
+        ? { elegivel: false, valorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos, faltamCentavos: null }
+        : getShippingInfo(discountInfo.totalLiquidoCentavos);
+
+      return { totalUnidades, hasMissingAnyPrice, totalBrutoCentavos, discountInfo, shippingInfo };
+    };
+
+    const buildDetailedSummaryHtml = (selectedItems, snapshot) => {
+      const groupedByCategory = selectedItems.reduce((acc, item) => {
+        if (!acc[item.lineId]) acc[item.lineId] = [];
+        acc[item.lineId].push(item);
+        return acc;
+      }, {});
+
+      const groupsHtml = Object.entries(groupedByCategory).map(([lineId, items]) => {
+        const subtotal = items.reduce((acc, item) => acc + item.qty, 0);
+        const subtotalCentavos = items.reduce((acc, item) => {
+          if (!Number.isInteger(item.precoCentavos)) return acc;
+          return acc + (item.precoCentavos * item.qty);
+        }, 0);
+        const hasMissingPrice = items.some((item) => !Number.isInteger(item.precoCentavos));
+        const lineLabel = lineById[lineId]?.nome || lineId;
+        const lineGramatura = lineById[lineId]?.gramatura || "";
+        const itemLines = items
+          .map((item) => {
+            const itemSubtotal = Number.isInteger(item.precoCentavos) ? formatCurrency(item.precoCentavos * item.qty) : "Preço pendente";
+            return `<div class="summary__line"><span class="summary__item-name">${item.name}</span><span class="summary__item-meta">x${item.qty} | ${itemSubtotal}</span></div>`;
+          })
+          .join("");
+
+        return `
+          <section class="summary__group">
+            <div class="summary__group-title"><span class="summary__item-name">${lineLabel}${lineGramatura ? ` (${lineGramatura})` : ""}</span><span class="summary__item-meta">${items.length} pratos</span></div>
+            ${itemLines}
+            <div class="summary__subtotal"><span class="summary__item-name">Subtotal da linha</span><span class="summary__item-meta">${subtotal} un. | ${hasMissingPrice ? "Preço pendente" : formatCurrency(subtotalCentavos)}</span></div>
+          </section>
+        `;
+      }).join("");
+
+      const pricingLines = snapshot.hasMissingAnyPrice
+        ? `
+          <div class="summary__line total">
+            <span class="summary__item-name">Total de unidades</span>
+            <span class="summary__item-meta">${snapshot.totalUnidades} | Preço pendente</span>
+          </div>
+        `
+        : `
+          <div class="summary__line total">
+            <span class="summary__item-name">Total de unidades</span>
+            <span class="summary__item-meta">${snapshot.totalUnidades}</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Total bruto</span>
+            <span class="summary__item-meta">${formatCurrency(snapshot.totalBrutoCentavos)}</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Desconto progressivo ${snapshot.discountInfo.percentual > 0 ? `(${snapshot.discountInfo.percentual}%)` : "(0%)"}</span>
+            <span class="summary__item-meta">-${formatCurrency(snapshot.discountInfo.descontoCentavos)}</span>
+          </div>
+          <div class="summary__line total">
+            <span class="summary__item-name">Total com desconto</span>
+            <span class="summary__item-meta">${formatCurrency(snapshot.discountInfo.totalLiquidoCentavos)}</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Frete grátis</span>
+            <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : `acima de ${formatCurrency(snapshot.shippingInfo.valorMinimoCentavos)}`}</span>
+          </div>
+          ${snapshot.shippingInfo.elegivel ? "" : `<div class="summary__line"><span class="summary__item-name">Faltam para frete grátis</span><span class="summary__item-meta">${formatCurrency(snapshot.shippingInfo.faltamCentavos)}</span></div>`}
+        `;
+
+      return groupsHtml + pricingLines;
+    };
+
+    const renderSummary = () => {
+      const selectedItems = getSelectedItems();
+      if (!selectedItems.length) {
+        summary.innerHTML = "<p style='margin:0;color:#5f6d5f;'>Nenhum item selecionado.</p>";
+        updateBusinessNotice({ totalUnidades: 0, descontoPercentualAtivo: 0, totalLiquidoCentavos: 0 });
+        latestDockSnapshot = null;
+        updateMobileDock(null);
+        updateHeaderCart(0);
+        return;
+      }
+
+      const snapshot = getOrderSnapshot(selectedItems);
+      summary.innerHTML = snapshot.hasMissingAnyPrice
+        ? `
+          <div class="summary__line total">
+            <span class="summary__item-name">Itens selecionados</span>
+            <span class="summary__item-meta">${snapshot.totalUnidades} un.</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Total atual</span>
+            <span class="summary__item-meta">Preço pendente</span>
+          </div>
+          <p style="margin:6px 0 0;font-size:.76rem;color:#536653;">Toque em <strong>Conferir pedido</strong> para ver todos os detalhes.</p>
+        `
+        : `
+          <div class="summary__line total">
+            <span class="summary__item-name">Itens selecionados</span>
+            <span class="summary__item-meta">${snapshot.totalUnidades} un.</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Total com desconto</span>
+            <span class="summary__item-meta">${formatCurrency(snapshot.discountInfo.totalLiquidoCentavos)}</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Frete grátis</span>
+            <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : `faltam ${formatCurrency(snapshot.shippingInfo.faltamCentavos)}`}</span>
+          </div>
+          <p style="margin:6px 0 0;font-size:.76rem;color:#536653;">Toque em <strong>Conferir pedido</strong> para revisar o pedido e enviar.</p>
+        `;
+
+      updateBusinessNotice({
+        totalUnidades: snapshot.totalUnidades,
+        descontoPercentualAtivo: snapshot.discountInfo.percentual,
+        totalLiquidoCentavos: Number.isInteger(snapshot.discountInfo.totalLiquidoCentavos) ? snapshot.discountInfo.totalLiquidoCentavos : 0
+      });
+      latestDockSnapshot = snapshot;
+      updateMobileDock(snapshot);
+      updateHeaderCart(snapshot.totalUnidades);
+    };
+
+    const renderReviewSummary = () => {
+      const selectedItems = getSelectedItems();
+      if (!selectedItems.length) {
+        reviewSummary.innerHTML = "<p style='margin:0;color:#5f6d5f;'>Nenhum item selecionado.</p>";
+        return;
+      }
+      reviewSummary.innerHTML = buildDetailedSummaryHtml(selectedItems, getOrderSnapshot(selectedItems));
+    };
+
+    const updateMobileDock = (snapshot = null) => {
+      const rulesAsc = [...pricingRules.descontoProgressivo].sort((a, b) => a.minUnidades - b.minUnidades);
+      const firstRule = rulesAsc[0] || null;
+      const secondRule = rulesAsc[1] || firstRule;
+      const noticeVisible = isBusinessNoticeVisible();
+      mobileDock.classList.toggle("is-hidden", noticeVisible);
+      mobileDockMeta.classList.toggle("is-hidden", noticeVisible);
+
+      if (!snapshot || snapshot.totalUnidades <= 0) {
+        mobileDockMeta.textContent = noticeVisible
+          ? "Quanto mais marmitas, maior o desconto"
+          : "Selecione pratos para conferir o pedido";
+        mobileReviewBtn.disabled = true;
+        dockDiscountFill.style.width = "0%";
+        dockShippingFill.style.width = "0%";
+        dockDiscountLabel.textContent = firstRule ? `Rumo a ${firstRule.percentual}% OFF` : "Rumo ao desconto";
+        dockShippingLabel.textContent = "Rumo ao frete grátis";
+        dockDiscountPct.textContent = "0%";
+        dockShippingPct.textContent = "0%";
+        return;
+      }
+
+      mobileReviewBtn.disabled = false;
+      const nextDiscountRule = rulesAsc.find((rule) => snapshot.totalUnidades < rule.minUnidades) || null;
+      const nextDiscountProgress = nextDiscountRule
+        ? Math.max(0, Math.min(100, Math.round((snapshot.totalUnidades / nextDiscountRule.minUnidades) * 100)))
+        : 100;
+      const freteProgress = snapshot.hasMissingAnyPrice
+        ? 0
+        : Math.max(0, Math.min(100, Math.round((snapshot.discountInfo.totalLiquidoCentavos / pricingRules.freteGratis.valorMinimoCentavos) * 100)));
+
+      dockDiscountFill.style.width = `${nextDiscountProgress}%`;
+      dockShippingFill.style.width = `${freteProgress}%`;
+      dockDiscountPct.textContent = `${nextDiscountProgress}%`;
+      dockShippingPct.textContent = `${freteProgress}%`;
+      if (nextDiscountRule) {
+        dockDiscountLabel.textContent = `Rumo a ${nextDiscountRule.percentual}% OFF`;
+      } else {
+        dockDiscountLabel.textContent = secondRule ? `${secondRule.percentual}% OFF alcançado` : "Desconto máximo atingido";
+      }
+      dockShippingLabel.textContent = snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : "Rumo ao frete grátis";
+
+      if (snapshot.hasMissingAnyPrice) {
+        mobileDockMeta.textContent = noticeVisible
+          ? "Quanto mais marmitas, maior o desconto"
+          : "Quanto mais marmitas, maior o desconto";
+        return;
+      }
+
+      if (snapshot.shippingInfo.elegivel && !nextDiscountRule) {
+        mobileDockMeta.textContent = noticeVisible
+          ? "Vantagens liberadas e detalhes visíveis neste bloco"
+          : "Vantagens liberadas. Role para baixo e confira os detalhes";
+        return;
+      }
+
+      mobileDockMeta.textContent = noticeVisible
+        ? "Quanto mais marmitas, maior o desconto"
+        : "Quanto mais marmitas, maior o desconto";
+    };
+
+    const updateHeaderCart = (totalUnidades) => {
+      const count = Number.isInteger(totalUnidades) ? totalUnidades : 0;
+      headerCartCount.textContent = String(count);
+      headerCartBtn.classList.toggle("has-items", count > 0);
+    };
+
+    const setQty = (id, qty) => {
+      const value = Math.max(0, Number(qty) || 0);
+      if (value === 0) {
+        selected.delete(id);
+      } else {
+        selected.set(id, value);
+      }
+      renderProducts();
+      renderSummary();
+      if (reviewModal.classList.contains("show")) renderReviewSummary();
+    };
+
+    const showFeedback = (message, type = "ok") => {
+      feedback.className = `feedback show ${type}`;
+      feedback.textContent = message;
+    };
+
+    const sanitizeObservation = (value) =>
+      String(value || "")
+        .replace(/[\u0000-\u001F\u007F]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, MAX_OBS_LENGTH);
+
+    const validatePayload = (payload) => {
+      if (!payload?.pedido) return { ok: false, reason: "payload_sem_pedido" };
+      if (!Array.isArray(payload.pedido.itens) || payload.pedido.itens.length === 0) return { ok: false, reason: "sem_itens" };
+
+      const hasInvalidItem = payload.pedido.itens.some((item) =>
+        !item?.id
+        || !Number.isInteger(item?.quantidade)
+        || item.quantidade <= 0
+      );
+      if (hasInvalidItem) return { ok: false, reason: "item_invalido" };
+
+      const totalFromItems = payload.pedido.itens.reduce((acc, item) => acc + item.quantidade, 0);
+      if (!Number.isInteger(payload.pedido.totalUnidades) || payload.pedido.totalUnidades !== totalFromItems) {
+        return { ok: false, reason: "total_unidades_inconsistente" };
+      }
+
+      return { ok: true };
+    };
+
+    const buildPayload = () => {
+      const orderItems = getSelectedItems()
+        .map((product) => ({
+          id: product.id,
+          linhaId: product.lineId,
+          linha: product.lineName,
+          linhaGramatura: lineById[product.lineId]?.gramatura || "",
+          produto: product.name,
+          quantidade: selected.get(product.id),
+          precoUnitarioCentavos: product.precoCentavos,
+          subtotalCentavos: Number.isInteger(product.precoCentavos) ? product.precoCentavos * selected.get(product.id) : null
+        }));
+
+      const snapshot = getOrderSnapshot(getSelectedItems());
+      const precoPendente = snapshot.hasMissingAnyPrice;
+      const discountInfo = precoPendente ? null : snapshot.discountInfo;
+      const shippingInfo = precoPendente ? null : snapshot.shippingInfo;
+
+      return {
+        metadata: {
+          origem: "landing-page-revenda-3fit",
+          geradoEm: new Date().toISOString(),
+          revendedor: "Revendedor autorizado 3Fit",
+          canalAtendimento: "whatsapp-agente-ia",
+          catalogVersion: catalog.version,
+          moeda: catalog.moeda || "BRL"
+        },
+        observacoesPedido: sanitizeObservation(obsPedido.value),
+        pedido: {
+          parametrosComerciais: {
+            regrasDescontoProgressivo: pricingRules.descontoProgressivo.map((rule) => ({
+              minUnidades: rule.minUnidades,
+              maxUnidades: rule.maxUnidades,
+              percentual: rule.percentual
+            })),
+            freteGratisValorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos
+          },
+          totalUnidades: snapshot.totalUnidades,
+          totalBrutoCentavos: precoPendente ? null : snapshot.totalBrutoCentavos,
+          descontoPercentual: discountInfo?.percentual ?? 0,
+          descontoCentavos: discountInfo?.descontoCentavos ?? 0,
+          totalCentavos: discountInfo?.totalLiquidoCentavos ?? (precoPendente ? null : snapshot.totalBrutoCentavos),
+          freteGratisElegivel: shippingInfo?.elegivel ?? false,
+          freteGratisFaltamCentavos: shippingInfo?.faltamCentavos ?? null,
+          precoPendente: precoPendente,
+          itens: orderItems
+        }
+      };
+    };
+
+    albumGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-album]");
+      if (!button) return;
+      activeCategory = button.dataset.album;
+      renderAlbums();
+      renderProducts();
+      productGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    productGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+      const id = button.dataset.id;
+      const current = selected.get(id) || 0;
+      if (button.dataset.action === "plus") setQty(id, current + 1);
+      if (button.dataset.action === "minus") setQty(id, current - 1);
+    });
+
+    productGrid.addEventListener("input", (event) => {
+      const input = event.target.closest("input[data-action='input']");
+      if (!input) return;
+      setQty(input.dataset.id, input.value);
+    });
+
+    clearOrderBtn.addEventListener("click", () => {
+      selected.clear();
+      obsPedido.value = "";
+      payloadPreview.classList.remove("show");
+      payloadPreview.textContent = "";
+      renderProducts();
+      renderSummary();
+      reviewModal.classList.remove("show");
+      showFeedback("Pedido limpo com sucesso.", "ok");
+    });
+
+    const openReviewModal = () => {
+      const selectedItems = getSelectedItems();
+      if (!selectedItems.length) {
+        showFeedback("Selecione pelo menos um prato antes de conferir.", "error");
+        return;
+      }
+      renderReviewSummary();
+      reviewModal.classList.add("show");
+    };
+
+    reviewOrderBtn.addEventListener("click", openReviewModal);
+    mobileReviewBtn.addEventListener("click", openReviewModal);
+    headerCartBtn.addEventListener("click", openReviewModal);
+
+    closeReviewModal.addEventListener("click", () => {
+      reviewModal.classList.remove("show");
+    });
+
+    cancelReviewBtn.addEventListener("click", () => {
+      reviewModal.classList.remove("show");
+    });
+
+    reviewModal.addEventListener("click", (event) => {
+      if (event.target === reviewModal) reviewModal.classList.remove("show");
+    });
+
+    let dockSyncTicking = false;
+    const syncDockMetaWithViewport = () => {
+      if (dockSyncTicking) return;
+      dockSyncTicking = true;
+      window.requestAnimationFrame(() => {
+        updateMobileDock(latestDockSnapshot);
+        dockSyncTicking = false;
+      });
+    };
+    window.addEventListener("scroll", syncDockMetaWithViewport, { passive: true });
+    window.addEventListener("resize", syncDockMetaWithViewport);
+
+    sendOrderBtn.addEventListener("click", async () => {
+      payloadPreview.classList.remove("show");
+
+      const payload = buildPayload();
+      const validation = validatePayload(payload);
+      if (!validation.ok) {
+        console.warn("Falha de validacao de payload", validation.reason, payload);
+        showFeedback("Não foi possível concluir agora. Revise o pedido e tente novamente.", "error");
+        return;
+      }
+
+      if (!webhookUrl || webhookUrl.includes("SEU_WEBHOOK_AQUI")) {
+        console.warn("Webhook não configurado.");
+        showFeedback("Não foi possível concluir agora. Tente novamente em instantes.", "error");
+        return;
+      }
+
+      const originalSendLabel = sendOrderBtn.textContent;
+      sendOrderBtn.disabled = true;
+      sendOrderBtn.textContent = "Enviando...";
+
+      try {
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`status_${response.status}`);
+        }
+
+        showFeedback("Pedido enviado com sucesso. Em breve entraremos em contato.", "ok");
+        obsPedido.value = "";
+        selected.clear();
+        reviewModal.classList.remove("show");
+        renderProducts();
+        renderSummary();
+      } catch (err) {
+        console.error("Falha no envio do pedido", err);
+        showFeedback("Não foi possível concluir agora. Tente novamente em instantes.", "error");
+      } finally {
+        sendOrderBtn.disabled = false;
+        sendOrderBtn.textContent = originalSendLabel;
+      }
+    });
+
+    const init = async () => {
+      await loadFeatures();
+      updateHeroPromo();
+      updateBusinessNotice();
+      renderAlbums();
+      renderProducts();
+      renderSummary();
+    };
+
+    init();
+  </script>
+</body>
+</html>

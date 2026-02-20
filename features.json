@@ -1,0 +1,18 @@
+{
+  "webhookUrl": "https://webhook.server.sollucion.com/webhook/78692cd5-512c-456e-860e-6d1e6212233f",
+  "descontoProgressivo": [
+    {
+      "minUnidades": 14,
+      "maxUnidades": 20,
+      "percentual": 10
+    },
+    {
+      "minUnidades": 21,
+      "maxUnidades": null,
+      "percentual": 30
+    }
+  ],
+  "freteGratis": {
+    "valorMinimoCentavos": 35000
+  }
+}
