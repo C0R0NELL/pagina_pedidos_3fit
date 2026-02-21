@@ -2,6 +2,9 @@
   Catalogo de produtos 3Fit
   - Edite precoCentavos em CENTAVOS (inteiro) no nivel da linha
   - Edite pisoPrecoCentavos (preco minimo unitario no desconto maximo) no nivel da linha
+  - Para desativar temporariamente um prato, use ativo: false no item
+  - Mantenha ids estaveis (linha e item) para evitar quebrar payloads/historico
+  - Regras de desconto/frete ficam no features.json (nao neste arquivo)
   - Exemplos:
     - R$ 36,00 => precoCentavos: 3600
     - R$ 19,57 => precoCentavos: 1957

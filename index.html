@@ -961,34 +961,45 @@
       transition: width .2s ease;
     }
 
-    .feedback {
-      border-radius: 10px;
-      padding: 11px;
-      font-size: 0.85rem;
-      display: none;
-      margin-top: 8px;
+    .alert-modal__card {
+      width: min(420px, 100%);
+      padding: 16px;
     }
 
-    .feedback.show { display: block; }
-    .feedback.ok { background: var(--ok-bg); color: var(--ok); border: 1px solid var(--ok-line); }
-    .feedback.error { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-line); }
-
-    .payload {
-      margin-top: 10px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: var(--surface-muted);
-      padding: 8px;
-      max-height: 150px;
-      overflow: auto;
-      font-size: .72rem;
-      color: #334;
-      display: none;
-      white-space: pre-wrap;
-      word-break: break-word;
+    .alert-modal__card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
     }
 
-    .payload.show { display: block; }
+    .alert-modal__message {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .alert-modal__card.error {
+      background: var(--danger-bg);
+      border-color: var(--danger-line);
+      color: var(--danger);
+    }
+
+    .alert-modal__card.ok {
+      background: var(--ok-bg);
+      border-color: var(--ok-line);
+      color: var(--ok);
+    }
+
+    .alert-modal__actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .alert-modal__ok {
+      min-width: 96px;
+      min-height: 40px;
+      padding: 8px 14px;
+    }
 
     .modal {
       position: fixed;
@@ -1325,7 +1336,7 @@
           </div>
           <div class="hero__promo-card">
             <strong>Frete grátis</strong>
-            <span>Acima de R$ 350</span>
+            <span>Calculando oferta...</span>
           </div>
         </div>
       </div>
@@ -1353,9 +1364,7 @@
       </div>
 
       <p class="notice" id="businessNotice"></p>
-      <p class="summary__disclaimer">O desconto máximo pode variar de 23% a 34%, a depender das linhas.</p>
-      <div id="feedback" class="feedback"></div>
-      <pre id="payloadPreview" class="payload" aria-hidden="true"></pre>
+      <p class="summary__disclaimer">O desconto máximo varia conforme as linhas selecionadas.</p>
     </aside>
   </main>
 
@@ -1378,7 +1387,7 @@
 
   <div class="mobile-dock" id="mobileDock" aria-live="polite">
     <div class="mobile-dock__meta" id="mobileDockMeta">Quanto mais marmitas&#10;Maior o desconto 💪</div>
-    <div class="mobile-dock__meta-note is-hidden" id="mobileDockMetaNote">10% OFF ativo</div>
+    <div class="mobile-dock__meta-note is-hidden" id="mobileDockMetaNote">Desconto ativo</div>
     <button type="button" class="btn btn--primary" id="mobileReviewBtn" disabled>Conferir pedido</button>
     <div class="mobile-dock__meters">
       <div class="mobile-dock__meter-row">
@@ -1394,20 +1403,20 @@
     </div>
   </div>
 
+  <div class="modal" id="alertModal" role="dialog" aria-modal="true" aria-labelledby="alertTitle">
+    <div class="modal__card alert-modal__card" id="alertCard">
+      <h3 id="alertTitle">Aviso</h3>
+      <p class="alert-modal__message" id="alertMessage"></p>
+      <div class="alert-modal__actions">
+        <button type="button" class="btn btn--primary alert-modal__ok" id="alertOkBtn">OK</button>
+      </div>
+    </div>
+  </div>
+
   <script src="catalog.js"></script>
   <script>
     const MAX_OBS_LENGTH = 400;
-    const DEFAULT_FEATURES = {
-      webhookUrl: "SEU_WEBHOOK_AQUI",
-      pricingRules: {
-        descontoProgressivo: [],
-        freteGratis: {
-          valorMinimoCentavos: 35000,
-          valorFreteCentavos: 2000
-        }
-      }
-    };
-
+    const TECH_ERROR_MESSAGE = '<strong>Houve uma falha técnica.</strong><br>Por favor, tente novamente em instantes.<br>Se o problema persistir, solicite <strong>"Atendimento humano"</strong> no WhatsApp.';
     const catalog = window.CATALOG || { version: "sem-versao", moeda: "BRL", linhas: [] };
     const lines = (catalog.linhas || []).map((line) => ({
       id: line.id,
@@ -1447,7 +1456,7 @@
     };
 
     const getMaxDiscountPercentual = () =>
-      pricingRules.descontoProgressivo.reduce((max, rule) =>
+      (pricingRules?.descontoProgressivo || []).reduce((max, rule) =>
         Math.max(max, Number(rule?.percentual) || 0), 0);
 
     const getUnitPriceWithMaxDiscountCentavos = (precoCentavos, pisoPrecoCentavos = null) => {
@@ -1474,42 +1483,40 @@
       return Math.min(...effectiveDiscounts);
     };
 
+    // Normaliza e valida regras comerciais vindas do features.json.
+    // Retorna null quando os dados sao invalidos.
     const normalizePricingRules = (raw) => {
-      const descontoProgressivo = Array.isArray(raw?.descontoProgressivo)
-        ? raw.descontoProgressivo
-          .map((item) => ({
-            minUnidades: Number(item?.minUnidades),
-            maxUnidades: item?.maxUnidades === null ? null : Number(item?.maxUnidades),
-            percentual: Number(item?.percentual)
-          }))
-          .filter((item) =>
-            Number.isInteger(item.minUnidades)
-            && item.minUnidades > 0
-            && (item.maxUnidades === null || (Number.isInteger(item.maxUnidades) && item.maxUnidades >= item.minUnidades))
-            && Number.isFinite(item.percentual)
-            && item.percentual >= 0
-          )
-          .sort((a, b) => b.minUnidades - a.minUnidades)
-        : DEFAULT_FEATURES.pricingRules.descontoProgressivo;
+      if (!Array.isArray(raw?.descontoProgressivo)) return null;
+      const descontoProgressivo = raw.descontoProgressivo
+        .map((item) => ({
+          minUnidades: Number(item?.minUnidades),
+          maxUnidades: item?.maxUnidades === null ? null : Number(item?.maxUnidades),
+          percentual: Number(item?.percentual)
+        }))
+        .filter((item) =>
+          Number.isInteger(item.minUnidades)
+          && item.minUnidades > 0
+          && (item.maxUnidades === null || (Number.isInteger(item.maxUnidades) && item.maxUnidades >= item.minUnidades))
+          && Number.isFinite(item.percentual)
+          && item.percentual >= 0
+        )
+        .sort((a, b) => b.minUnidades - a.minUnidades);
+      if (!descontoProgressivo.length) return null;
 
       const valorMinimoCentavos = Number(raw?.freteGratis?.valorMinimoCentavos);
       const valorFreteCentavos = Number(raw?.freteGratis?.valorFreteCentavos);
-      const freteGratis = {
-        valorMinimoCentavos: Number.isInteger(valorMinimoCentavos) && valorMinimoCentavos >= 0
-          ? valorMinimoCentavos
-          : DEFAULT_FEATURES.pricingRules.freteGratis.valorMinimoCentavos,
-        valorFreteCentavos: Number.isInteger(valorFreteCentavos) && valorFreteCentavos >= 0
-          ? valorFreteCentavos
-          : DEFAULT_FEATURES.pricingRules.freteGratis.valorFreteCentavos
-      };
+      if (!Number.isInteger(valorMinimoCentavos) || valorMinimoCentavos < 0) return null;
+      if (!Number.isInteger(valorFreteCentavos) || valorFreteCentavos < 0) return null;
+      const freteGratis = { valorMinimoCentavos, valorFreteCentavos };
 
       return { descontoProgressivo, freteGratis };
     };
 
-    let webhookUrl = DEFAULT_FEATURES.webhookUrl;
-    let pricingRules = normalizePricingRules(DEFAULT_FEATURES.pricingRules);
+    let webhookUrl = "";
+    let pricingRules = null;
     let latestDockSnapshot = null;
 
+    // Calcula o desconto ativo pela faixa de unidades e respeita pisoPrecoCentavos por item.
     const getDiscountInfo = (selectedItems, totalUnidades, totalBrutoCentavos) => {
       const rule = pricingRules.descontoProgressivo.find((item) =>
         totalUnidades >= item.minUnidades
@@ -1535,9 +1542,10 @@
       };
     };
 
+    // Calcula elegibilidade de frete gratis e valor efetivamente cobrado.
     const getShippingInfo = (totalLiquidoCentavos) => {
-      const valorMinimoCentavos = pricingRules.freteGratis.valorMinimoCentavos;
-      const valorFreteCentavos = pricingRules.freteGratis.valorFreteCentavos;
+      const valorMinimoCentavos = pricingRules?.freteGratis?.valorMinimoCentavos ?? 0;
+      const valorFreteCentavos = pricingRules?.freteGratis?.valorFreteCentavos ?? 0;
       const elegivel = Number.isInteger(totalLiquidoCentavos) && totalLiquidoCentavos >= valorMinimoCentavos;
       const faltamCentavos = elegivel
         ? 0
@@ -1558,8 +1566,6 @@
     const reviewOrderBtn = document.getElementById("reviewOrderBtn");
     const sendOrderBtn = document.getElementById("sendOrderBtn");
     const clearOrderBtn = document.getElementById("clearOrderBtn");
-    const feedback = document.getElementById("feedback");
-    const payloadPreview = document.getElementById("payloadPreview");
     const businessNotice = document.getElementById("businessNotice");
     const summaryDisclaimer = document.querySelector(".summary__disclaimer");
     const heroPromo = document.getElementById("heroPromo");
@@ -1578,6 +1584,10 @@
     const dockDiscountPct = document.getElementById("dockDiscountPct");
     const dockShippingLabel = document.getElementById("dockShippingLabel");
     const dockShippingPct = document.getElementById("dockShippingPct");
+    const alertModal = document.getElementById("alertModal");
+    const alertCard = document.getElementById("alertCard");
+    const alertMessage = document.getElementById("alertMessage");
+    const alertOkBtn = document.getElementById("alertOkBtn");
 
     const isBusinessNoticeVisible = () => {
       if (!businessNotice) return false;
@@ -1705,18 +1715,19 @@
       `;
     };
 
+    // Carrega configuracao data-driven (webhook + regras) em runtime.
     const loadFeatures = async () => {
-      try {
-        const response = await fetch("features.json", { cache: "no-store" });
-        if (!response.ok) return;
-        const data = await response.json();
-        const nextWebhookUrl = String(data?.webhookUrl || "").trim();
-        webhookUrl = nextWebhookUrl || DEFAULT_FEATURES.webhookUrl;
-        pricingRules = normalizePricingRules(data);
-      } catch (error) {
-        webhookUrl = DEFAULT_FEATURES.webhookUrl;
-        pricingRules = normalizePricingRules(DEFAULT_FEATURES.pricingRules);
-      }
+      const response = await fetch("features.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`features_http_${response.status}`);
+
+      const data = await response.json();
+      const nextWebhookUrl = String(data?.webhookUrl || "").trim();
+      const nextPricingRules = normalizePricingRules(data);
+      if (!nextWebhookUrl) throw new Error("features_webhook_url_invalido");
+      if (!nextPricingRules) throw new Error("features_pricing_rules_invalidas");
+
+      webhookUrl = nextWebhookUrl;
+      pricingRules = nextPricingRules;
     };
 
     const renderAlbums = () => {
@@ -1999,6 +2010,8 @@
     };
 
     const updateMobileDock = (snapshot = null) => {
+      // Regras visuais do dock: mostra progresso ate o proximo objetivo;
+      // quando atingir desconto maximo/frete gratis, troca barra por status aplicado.
       const rulesAsc = [...pricingRules.descontoProgressivo].sort((a, b) => a.minUnidades - b.minUnidades);
       const firstRule = rulesAsc[0] || null;
       const secondRule = rulesAsc[1] || firstRule;
@@ -2089,8 +2102,10 @@
     };
 
     const showFeedback = (message, type = "ok") => {
-      feedback.className = `feedback show ${type}`;
-      feedback.textContent = message;
+      alertCard.classList.remove("ok", "error");
+      alertCard.classList.add(type === "error" ? "error" : "ok");
+      alertMessage.innerHTML = message;
+      alertModal.classList.add("show");
     };
 
     const sanitizeObservation = (value) =>
@@ -2119,6 +2134,8 @@
       return { ok: true };
     };
 
+    // Payload enviado ao webhook/proxy.
+    // Evite mudar nomes de campos sem alinhar com o consumidor backend.
     const buildPayload = () => {
       const orderItems = getSelectedItems()
         .map((product) => ({
@@ -2211,8 +2228,6 @@
     clearOrderBtn.addEventListener("click", () => {
       selected.clear();
       obsPedido.value = "";
-      payloadPreview.classList.remove("show");
-      payloadPreview.textContent = "";
       renderProducts();
       renderSummary();
       reviewModal.classList.remove("show");
@@ -2245,6 +2260,14 @@
       if (event.target === reviewModal) reviewModal.classList.remove("show");
     });
 
+    alertOkBtn.addEventListener("click", () => {
+      alertModal.classList.remove("show");
+    });
+
+    alertModal.addEventListener("click", (event) => {
+      if (event.target === alertModal) alertModal.classList.remove("show");
+    });
+
     let dockSyncTicking = false;
     const syncDockMetaWithViewport = () => {
       if (dockSyncTicking) return;
@@ -2258,19 +2281,17 @@
     window.addEventListener("resize", syncDockMetaWithViewport);
 
     sendOrderBtn.addEventListener("click", async () => {
-      payloadPreview.classList.remove("show");
-
       const payload = buildPayload();
       const validation = validatePayload(payload);
       if (!validation.ok) {
         console.warn("Falha de validacao de payload", validation.reason, payload);
-        showFeedback("Não foi possível concluir agora. Revise o pedido e tente novamente.", "error");
+        showFeedback(TECH_ERROR_MESSAGE, "error");
         return;
       }
 
-      if (!webhookUrl || webhookUrl.includes("SEU_WEBHOOK_AQUI")) {
+      if (!webhookUrl) {
         console.warn("Webhook não configurado.");
-        showFeedback("Não foi possível concluir agora. Tente novamente em instantes.", "error");
+        showFeedback(TECH_ERROR_MESSAGE, "error");
         return;
       }
 
@@ -2297,7 +2318,7 @@
         renderSummary();
       } catch (err) {
         console.error("Falha no envio do pedido", err);
-        showFeedback("Não foi possível concluir agora. Tente novamente em instantes.", "error");
+        showFeedback(TECH_ERROR_MESSAGE, "error");
       } finally {
         sendOrderBtn.disabled = false;
         sendOrderBtn.textContent = originalSendLabel;
@@ -2305,7 +2326,17 @@
     });
 
     const init = async () => {
-      await loadFeatures();
+      try {
+        // Fail-fast: sem features.json valido, bloqueia revisao/envio para evitar pedido com regra inconsistente.
+        await loadFeatures();
+      } catch (error) {
+        console.error("Falha ao carregar configuracao comercial", error);
+        showFeedback(TECH_ERROR_MESSAGE, "error");
+        reviewOrderBtn.disabled = true;
+        mobileReviewBtn.disabled = true;
+        sendOrderBtn.disabled = true;
+        return;
+      }
       updateSummaryDisclaimer();
       updateHeroPromo();
       updateBusinessNotice();
