@@ -997,6 +997,23 @@
         max-height: 40px;
       }
 
+      .mobile-dock__meta-note {
+        position: absolute;
+        left: 10px;
+        top: 52px;
+        font-size: 0.62rem;
+        line-height: 1;
+        font-weight: 700;
+        color: #2f8f3f;
+        transition: opacity .2s ease;
+        opacity: 1;
+        pointer-events: none;
+      }
+
+      .mobile-dock__meta-note.is-hidden {
+        opacity: 0;
+      }
+
       .mobile-dock__meta.is-hidden {
         opacity: 0;
         max-height: 0;
@@ -1235,6 +1252,7 @@
 
   <div class="mobile-dock" id="mobileDock" aria-live="polite">
     <div class="mobile-dock__meta" id="mobileDockMeta">Quanto mais marmitas&#10;Maior o desconto 💪</div>
+    <div class="mobile-dock__meta-note is-hidden" id="mobileDockMetaNote">10% OFF ativo</div>
     <button type="button" class="btn btn--primary" id="mobileReviewBtn" disabled>Conferir pedido</button>
     <div class="mobile-dock__meters">
       <div class="mobile-dock__meter-row">
@@ -1421,6 +1439,7 @@
     const headerCartBtn = document.getElementById("headerCartBtn");
     const headerCartCount = document.getElementById("headerCartCount");
     const mobileDockMeta = document.getElementById("mobileDockMeta");
+    const mobileDockMetaNote = document.getElementById("mobileDockMetaNote");
     const mobileReviewBtn = document.getElementById("mobileReviewBtn");
     const dockDiscountFill = document.getElementById("dockDiscountFill");
     const dockShippingFill = document.getElementById("dockShippingFill");
@@ -1808,8 +1827,14 @@
       const noticeVisible = isBusinessNoticeVisible();
       mobileDock.classList.toggle("is-hidden", noticeVisible);
       mobileDockMeta.classList.toggle("is-hidden", noticeVisible);
+      const firstDiscountActive = Boolean(
+        snapshot &&
+        firstRule &&
+        Number(snapshot.discountInfo?.percentual || 0) >= Number(firstRule.percentual)
+      );
 
       if (!snapshot || snapshot.totalUnidades <= 0) {
+        mobileDockMetaNote.classList.add("is-hidden");
         mobileDockMeta.textContent = noticeVisible
           ? "Quanto mais marmitas\nMaior o desconto 💪"
           : "Quanto mais marmitas\nMaior o desconto 💪";
@@ -1825,6 +1850,9 @@
 
       mobileReviewBtn.disabled = false;
       const nextDiscountRule = rulesAsc.find((rule) => snapshot.totalUnidades < rule.minUnidades) || null;
+      const showFirstDiscountNote = firstDiscountActive && Boolean(nextDiscountRule);
+      mobileDockMetaNote.classList.toggle("is-hidden", !showFirstDiscountNote || noticeVisible);
+      mobileDockMetaNote.textContent = firstRule ? `${firstRule.percentual}% OFF ativo` : "Desconto ativo";
       const nextDiscountProgress = nextDiscountRule
         ? Math.max(0, Math.min(100, Math.round((snapshot.totalUnidades / nextDiscountRule.minUnidades) * 100)))
         : 100;
@@ -1850,7 +1878,7 @@
         return;
       }
 
-      if (snapshot.shippingInfo.elegivel && !nextDiscountRule) {
+      if (!nextDiscountRule) {
         mobileDockMeta.textContent = "Desconto máximo aplicado. Aproveite!";
         return;
       }
