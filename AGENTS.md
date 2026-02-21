@@ -11,6 +11,15 @@ This is a static front-end repository for the 3Fit ordering page.
 
 There is no `src/` split yet; keep related changes grouped and readable inside `index.html`.
 
+## Deployment Architecture
+This project uses a free and secure split deployment:
+
+- Frontend: GitHub Pages (public static site).
+- Backend proxy: Cloudflare Worker (`workers.dev`).
+- Secret handling: real n8n webhook stays only in Cloudflare Secret `WEBHOOK_URL`.
+
+`features.json` must point to the Worker URL, never to the real webhook.
+
 ## Build, Test, and Development Commands
 No build step is required.
 
@@ -49,7 +58,12 @@ Git history currently mixes styles (e.g., short backup commits and descriptive m
 
 ## Security & Configuration Tips
 - Do not commit real webhook secrets/endpoints.
-- Keep `features.json` safe for public versioning (use placeholders when needed).
+- `features.json` must contain only the Worker URL (public proxy), never n8n endpoint.
+- Keep Cloudflare Worker protections enabled:
+  - allowed origin(s) validation
+  - rate limit (per IP/window)
+  - upstream timeout (fail fast)
+- When a webhook is exposed, rotate it immediately and update only the Cloudflare Secret.
 
 ## Checklist de Release
 Antes de publicar, execute esta conferência mínima:
@@ -61,3 +75,5 @@ Antes de publicar, execute esta conferência mínima:
 5. Payload do pedido revisado no envio (campos de desconto, frete, totais e itens).
 6. `features.json` revisado (sem endpoints secretos e com regras comerciais corretas).
 7. Último `git diff` revisado para evitar mudanças acidentais.
+8. Worker validado em produção (`403/405` fora do fluxo esperado, `200` no envio real).
+9. Secret `WEBHOOK_URL` conferido no Cloudflare após rotação de credenciais.
