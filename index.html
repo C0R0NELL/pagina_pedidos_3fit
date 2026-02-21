@@ -20,7 +20,7 @@
       --text-soft: #4b5a4b;
       --primary: #3cc13f;
       --primary-strong: #2d9f30;
-      --accent: #ff9000;
+      --accent: #ef6c00;
       --line: #dce8dc;
       --ok: #0a8f46;
       --danger: #c23939;
@@ -217,7 +217,7 @@
     }
 
     .hero__highlight {
-      color: #ff8a00;
+      color: var(--accent);
       font-weight: 900;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
     }
@@ -807,7 +807,7 @@
     }
 
     .offer__status--hit {
-      color: #c66a16;
+      color: var(--accent);
       font-size: 0.8rem;
       line-height: 1.24;
     }
@@ -997,6 +997,10 @@
         max-height: 40px;
       }
 
+      .mobile-dock__meta-highlight {
+        color: var(--accent);
+      }
+
       .mobile-dock__meta-note {
         position: absolute;
         left: 10px;
@@ -1004,7 +1008,7 @@
         font-size: 0.62rem;
         line-height: 1;
         font-weight: 700;
-        color: #2f8f3f;
+        color: var(--accent);
         transition: opacity .2s ease;
         opacity: 1;
         pointer-events: none;
@@ -1879,7 +1883,7 @@
       }
 
       if (!nextDiscountRule) {
-        mobileDockMeta.textContent = "Desconto máximo aplicado. Aproveite!";
+        mobileDockMeta.innerHTML = 'Desconto máximo aplicado. <span class="mobile-dock__meta-highlight">Aproveite! 🧡</span>';
         return;
       }
 
