@@ -13,20 +13,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f3f6f3;
+      --bg: #f8f6f4;
       --surface: #ffffff;
-      --surface-soft: #f7fbf7;
-      --text: #223022;
-      --text-soft: #4b5a4b;
-      --primary: #3cc13f;
-      --primary-strong: #2d9f30;
-      --accent: #ef6c00;
-      --line: #dce8dc;
-      --ok: #0a8f46;
+      --surface-soft: #fff8f2;
+      --text: #171513;
+      --text-soft: #5a5149;
+      --primary: #d85a00;
+      --primary-strong: #ae4600;
+      --accent: #d85a00;
+      --accent-text: #b34700;
+      --line: #eadfd3;
+      --ok: #923f00;
       --danger: #c23939;
       --radius-lg: 18px;
       --radius-md: 12px;
-      --shadow: 0 10px 30px rgba(29, 62, 31, 0.12);
+      --shadow: 0 10px 30px rgba(23, 21, 19, 0.1);
     }
 
     * { box-sizing: border-box; }
@@ -36,8 +37,8 @@
       font-family: "Montserrat", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 8% 2%, rgba(60, 193, 63, 0.14), transparent 33%),
-        radial-gradient(circle at 90% 0%, rgba(255, 144, 0, 0.16), transparent 31%),
+        radial-gradient(circle at 8% 2%, rgba(239, 108, 0, 0.13), transparent 33%),
+        radial-gradient(circle at 90% 0%, rgba(0, 0, 0, 0.06), transparent 31%),
         var(--bg);
       line-height: 1.4;
       overflow-x: hidden;
@@ -114,11 +115,11 @@
       background: #fff;
       border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 6px 14px rgba(22, 44, 24, 0.08);
+      box-shadow: 0 6px 14px rgba(23, 21, 19, 0.12);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: #2e442f;
+      color: #221e1a;
       font-size: 1.2rem;
     }
 
@@ -135,13 +136,13 @@
       justify-content: center;
       font-size: 0.68rem;
       font-weight: 800;
-      background: #7c8b7d;
+      background: #5e5750;
       color: #fff;
       border: 2px solid #fff;
     }
 
     .cart-btn.has-items .cart__count {
-      background: #2ca132;
+      background: var(--accent);
     }
 
     .hero {
@@ -170,7 +171,7 @@
       content: "";
       width: 210px;
       height: 210px;
-      background: radial-gradient(circle, rgba(60, 193, 63, 0.2), transparent 70%);
+      background: radial-gradient(circle, rgba(239, 108, 0, 0.17), transparent 70%);
       position: absolute;
       bottom: -85px;
       right: -70px;
@@ -182,7 +183,7 @@
       position: absolute;
       inset: -2px;
       border-radius: inherit;
-      background: linear-gradient(120deg, rgba(60, 193, 63, 0.2), rgba(255, 180, 88, 0.22), rgba(60, 193, 63, 0.2));
+      background: linear-gradient(120deg, rgba(239, 108, 0, 0.2), rgba(255, 182, 118, 0.24), rgba(23, 21, 19, 0.08));
       opacity: 0;
       z-index: 0;
       pointer-events: none;
@@ -217,7 +218,7 @@
     }
 
     .hero__highlight {
-      color: var(--accent);
+      color: var(--accent-text);
       font-weight: 900;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
     }
@@ -240,7 +241,7 @@
     }
 
     .hero__promo-card {
-      border: 1px solid #d8ead8;
+      border: 1px solid var(--line);
       border-radius: 11px;
       background: #fff;
       padding: 8px 10px;
@@ -252,12 +253,12 @@
     }
 
     .hero__promo-card strong {
-      color: #245e29;
+      color: #2c241c;
       font-weight: 800;
     }
 
     .hero__promo-card span {
-      color: #486448;
+      color: var(--accent-text);
       font-weight: 700;
     }
 
@@ -281,7 +282,7 @@
     .btn--primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-strong));
       color: #fff;
-      box-shadow: 0 10px 20px rgba(49, 151, 51, 0.27);
+      box-shadow: 0 10px 20px rgba(239, 108, 0, 0.33);
     }
 
     .btn--ghost {
@@ -313,13 +314,13 @@
       justify-content: center;
       opacity: 0;
       transform: scale(0.6);
-      color: #1f7424;
+      color: var(--accent-text);
     }
 
     #clearOrderBtn.is-done {
-      border-color: #9bd79d;
-      background: #eef9ef;
-      color: #1f7424;
+      border-color: #f2c199;
+      background: #fff3e8;
+      color: var(--accent-text);
     }
 
     #clearOrderBtn.is-done .clear-order-ok {
@@ -391,7 +392,7 @@
       width: 100%;
       padding: 12px;
       border-radius: 10px;
-      border: 1px solid #cfe0cf;
+      border: 1px solid var(--line);
       background: #fff;
       font: inherit;
       color: var(--text);
@@ -406,7 +407,7 @@
     }
 
     .album {
-      border: 1px solid #d8e8d8;
+      border: 1px solid var(--line);
       border-radius: 12px;
       background: #fff;
       overflow: hidden;
@@ -419,12 +420,12 @@
 
     .album:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(29, 62, 31, 0.12);
+      box-shadow: 0 8px 18px rgba(23, 21, 19, 0.12);
     }
 
     .album.active {
-      border-color: #8ed290;
-      box-shadow: 0 0 0 2px #d8f0d8;
+      border-color: #f0b788;
+      box-shadow: 0 0 0 2px #ffe6d1;
     }
 
     .album img {
@@ -432,7 +433,7 @@
       aspect-ratio: 16 / 10;
       object-fit: cover;
       display: block;
-      border-bottom: 1px solid #d8e8d8;
+      border-bottom: 1px solid var(--line);
     }
 
     .album__meta {
@@ -444,12 +445,12 @@
     .album__meta strong {
       font-size: 0.84rem;
       letter-spacing: .03em;
-      color: #1c6220;
+      color: #2a221b;
     }
 
     .album__meta span {
       font-size: 0.78rem;
-      color: #5a6b5a;
+      color: var(--text-soft);
     }
 
     .album-head {
@@ -466,10 +467,10 @@
     }
 
     .album-clear {
-      border: 1px solid #cfe0cf;
+      border: 1px solid var(--line);
       border-radius: 10px;
       background: #fff;
-      color: #355035;
+      color: #3e352e;
       padding: 8px 10px;
       font: inherit;
       cursor: pointer;
@@ -487,7 +488,7 @@
     }
 
     .product {
-      border: 1px solid #d8e8d8;
+      border: 1px solid var(--line);
       border-radius: 12px;
       padding: 10px;
       background: var(--surface-soft);
@@ -497,7 +498,7 @@
     }
 
     .product small {
-      color: #207724;
+      color: var(--accent-text);
       font-weight: 700;
       font-size: 0.72rem;
       letter-spacing: .03em;
@@ -528,11 +529,11 @@
     }
 
     .product__price-current {
-      color: #1f6f24;
+      color: #2b231d;
     }
 
     .product__price-max-discount {
-      color: #2f4130;
+      color: #4f453d;
       font-size: 0.73rem;
       font-weight: 600;
     }
@@ -542,7 +543,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border: 1px solid #cfe0cf;
+      border: 1px solid var(--line);
       border-radius: 10px;
       background: #fff;
       padding: 4px;
@@ -557,8 +558,8 @@
       font-size: 1rem;
       cursor: pointer;
       font-weight: 700;
-      background: #eef7ef;
-      color: #1b7220;
+      background: #fff0e4;
+      color: var(--accent-text);
     }
 
     .qty input {
@@ -591,8 +592,8 @@
     }
 
     .summary {
-      border: 1px dashed #bfd6bf;
-      background: #fbfefb;
+      border: 1px dashed #f0b788;
+      background: #fffaf6;
       border-radius: 10px;
       padding: 10px;
       margin-bottom: 12px;
@@ -604,7 +605,7 @@
       margin: 8px 0 0;
       font-size: 0.75rem;
       line-height: 1.35;
-      color: #536653;
+      color: var(--text-soft);
     }
 
     .summary__line {
@@ -623,25 +624,33 @@
       overflow-wrap: normal;
       word-break: normal;
       hyphens: none;
-      color: #2f4130;
+      color: #2b231d;
     }
 
     #reviewSummary .summary__item-name--dish {
       display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      line-height: 1.25;
+    }
+
+    #reviewSummary .summary__line--dish {
+      align-items: center;
+      margin-bottom: 6px;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed var(--line);
     }
 
     .summary__item-meta {
       font-weight: 700;
-      color: #1e7c23;
+      color: var(--accent-text);
       white-space: nowrap;
       text-align: right;
     }
 
     .summary__group {
-      border: 1px solid #dce9dc;
+      border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
       padding: 8px;
@@ -656,17 +665,17 @@
       margin-bottom: 6px;
       font-size: 0.78rem;
       font-weight: 800;
-      color: #1f6f24;
+      color: var(--accent-text);
       letter-spacing: .02em;
       text-transform: uppercase;
     }
 
     .summary__subtotal {
-      border-top: 1px dashed #dce9dc;
+      border-top: 1px dashed var(--line);
       margin-top: 6px;
       padding-top: 6px;
       font-size: 0.78rem;
-      color: #456145;
+      color: #5d5249;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
@@ -676,7 +685,7 @@
     .total {
       margin-top: 8px;
       padding-top: 8px;
-      border-top: 1px solid #d7e7d7;
+      border-top: 1px solid var(--line);
       font-weight: 700;
     }
 
@@ -684,6 +693,61 @@
       margin-top: 0;
       padding-top: 0;
       border-top: 0;
+    }
+
+    .summary__meters {
+      margin-top: 8px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .summary__meter-note {
+      margin: 0 0 2px;
+      font-size: 0.76rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--accent-text);
+    }
+
+    .summary__meter-disclaimer {
+      margin: 4px 0 0;
+      font-size: 0.75rem;
+      line-height: 1.3;
+      color: var(--text-soft);
+    }
+
+    .summary__meter {
+      display: grid;
+      gap: 4px;
+    }
+
+    .summary__meter-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #5d5249;
+    }
+
+    .summary__meter-pct {
+      color: var(--accent-text);
+      font-weight: 800;
+    }
+
+    .summary__meter-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #f2ded0;
+      overflow: hidden;
+    }
+
+    .summary__meter-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff9b4a, #d85a00);
+      transition: width .2s ease;
     }
 
     .form {
@@ -713,13 +777,13 @@
     }
 
     .actions .btn--primary {
-      box-shadow: 0 6px 12px rgba(49, 151, 51, 0.2);
+      box-shadow: 0 6px 12px rgba(239, 108, 0, 0.24);
     }
 
     .notice {
       margin: 0;
-      border: 1px solid #d9e8d9;
-      background: #f8fcf8;
+      border: 1px solid #f2c7a4;
+      background: #fff7f1;
       border-radius: 12px;
       padding: 10px;
     }
@@ -728,14 +792,14 @@
       margin: 0 0 6px;
       font-size: 0.76rem;
       font-weight: 800;
-      color: #255f2a;
+      color: var(--accent-text);
       letter-spacing: 0.02em;
       text-transform: uppercase;
     }
 
     .offer__hero {
       margin: 0 0 8px;
-      border: 1px solid #d8ebd8;
+      border: 1px solid var(--line);
       border-radius: 10px;
       background: #fff;
       padding: 8px;
@@ -745,14 +809,14 @@
       margin: 0 0 2px;
       font-size: 1.03rem;
       font-weight: 800;
-      color: #1f7424;
+      color: var(--accent-text);
       line-height: 1.15;
     }
 
     .offer__hero-sub {
       margin: 0;
       font-size: 0.79rem;
-      color: #3f5f40;
+      color: #5a5149;
       line-height: 1.22;
       font-weight: 600;
       letter-spacing: 0.003em;
@@ -765,7 +829,7 @@
     }
 
     .offer__card {
-      border: 1px solid #dbeadb;
+      border: 1px solid var(--line);
       border-radius: 10px;
       background: #fff;
       padding: 7px 8px;
@@ -776,12 +840,12 @@
     }
 
     .offer__card strong {
-      color: #29472b;
+      color: #2c241c;
       font-weight: 700;
     }
 
     .offer__card span {
-      color: #5c6d5c;
+      color: var(--text-soft);
     }
 
     .offer__card-prefix {
@@ -790,24 +854,24 @@
     }
 
     .offer__card.active {
-      border-color: #92d094;
-      background: #eef9ef;
+      border-color: #f0b788;
+      background: #fff3e8;
     }
 
     .offer__card.active strong {
-      color: #1f7424;
+      color: var(--accent-text);
     }
 
     .offer__status {
       margin: 0;
       font-size: 0.74rem;
-      color: #3f5a3f;
+      color: #5a5149;
       line-height: 1.2;
       font-weight: 700;
     }
 
     .offer__status--hit {
-      color: var(--accent);
+      color: var(--accent-text);
       font-size: 0.8rem;
       line-height: 1.24;
     }
@@ -848,20 +912,20 @@
       justify-content: space-between;
       gap: 8px;
       font-size: 0.72rem;
-      color: #4f664f;
+      color: #5d5249;
       font-weight: 700;
     }
 
     .offer__track {
       height: 8px;
       border-radius: 999px;
-      background: #e2eee2;
+      background: #f4dfcf;
       overflow: hidden;
     }
 
     .offer__fill {
       height: 100%;
-      background: linear-gradient(90deg, #57b95c, #2ca132);
+      background: linear-gradient(90deg, #ff9b4a, #ef6c00);
       border-radius: inherit;
       transition: width .2s ease;
     }
@@ -875,14 +939,14 @@
     }
 
     .feedback.show { display: block; }
-    .feedback.ok { background: #e7f8eb; color: var(--ok); border: 1px solid #b7e5c2; }
+    .feedback.ok { background: #fff3e6; color: var(--ok); border: 1px solid #f3c8a3; }
     .feedback.error { background: #ffecec; color: var(--danger); border: 1px solid #f1c4c4; }
 
     .payload {
       margin-top: 10px;
       border-radius: 10px;
-      border: 1px solid #d5e5d5;
-      background: #f8fbf8;
+      border: 1px solid var(--line);
+      background: #fffaf6;
       padding: 8px;
       max-height: 150px;
       overflow: auto;
@@ -911,13 +975,13 @@
     }
 
     .modal__card {
-      width: min(720px, 100%);
+      width: min(500px, 100%);
       max-height: 92vh;
       overflow: auto;
       background: #fff;
-      border: 1px solid #d7e7d7;
+      border: 1px solid var(--line);
       border-radius: 16px;
-      box-shadow: 0 20px 50px rgba(17, 42, 19, 0.24);
+      box-shadow: 0 20px 50px rgba(23, 21, 19, 0.24);
       padding: 14px;
     }
 
@@ -935,9 +999,9 @@
     }
 
     .modal__close {
-      border: 1px solid #d0e0d0;
+      border: 1px solid var(--line);
       background: #fff;
-      color: #375137;
+      color: #4d433a;
       border-radius: 10px;
       font: inherit;
       font-weight: 700;
@@ -972,11 +1036,11 @@
         right: 10px;
         bottom: 10px;
         z-index: 60;
-        border: 1px solid #cfe2cf;
+        border: 1px solid #efcfb4;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(4px);
         border-radius: 14px;
-        box-shadow: 0 14px 28px rgba(20, 48, 22, 0.2);
+        box-shadow: 0 14px 28px rgba(23, 21, 19, 0.2);
         padding: 9px;
         transition: opacity .2s ease, transform .2s ease;
       }
@@ -989,7 +1053,7 @@
 
       .mobile-dock__meta {
         font-size: 0.8rem;
-        color: #2c4a2f;
+        color: #2d241d;
         font-weight: 700;
         line-height: 1.25;
         white-space: pre-line;
@@ -998,7 +1062,7 @@
       }
 
       .mobile-dock__meta-highlight {
-        color: var(--accent);
+        color: var(--accent-text);
       }
 
       .mobile-dock__meta-note {
@@ -1008,7 +1072,7 @@
         font-size: 0.62rem;
         line-height: 1;
         font-weight: 700;
-        color: var(--accent);
+        color: var(--accent-text);
         transition: opacity .2s ease;
         opacity: 1;
         pointer-events: none;
@@ -1038,14 +1102,14 @@
         align-items: center;
         gap: 8px;
         font-size: 0.68rem;
-        color: #496249;
+        color: #5b5047;
         font-weight: 700;
       }
 
       .mobile-dock__meter {
         height: 6px;
         border-radius: 999px;
-        background: #dfeadf;
+        background: #f2ded0;
         overflow: hidden;
       }
 
@@ -1053,7 +1117,7 @@
         height: 100%;
         width: 0%;
         border-radius: inherit;
-        background: linear-gradient(90deg, #57b95c, #2ca132);
+        background: linear-gradient(90deg, #ff9b4a, #ef6c00);
         transition: width .2s ease;
       }
 
@@ -1136,16 +1200,15 @@
 
       .product h3 {
         grid-area: name;
-        font-size: 0.86rem;
+        font-size: 0.83rem;
         line-height: 1.22;
         margin-right: 2px;
-        min-height: calc(1.22em * 3);
-        max-height: calc(1.22em * 3);
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        line-clamp: 3;
+        min-height: 0;
+        max-height: none;
+        overflow: visible;
+        display: block;
+        -webkit-line-clamp: unset;
+        line-clamp: unset;
       }
 
       .product__price {
@@ -1163,6 +1226,18 @@
         grid-area: qty;
         margin-top: 0;
         align-self: center;
+        gap: 6px;
+        padding: 3px;
+      }
+
+      .qty button {
+        width: 28px;
+        height: 28px;
+        font-size: 0.95rem;
+      }
+
+      .qty input {
+        width: 28px;
       }
 
       .hero h1 { max-width: none; }
@@ -1203,7 +1278,7 @@
           </div>
           <div class="hero__promo-card">
             <strong>Frete grátis</strong>
-            <span>Acima de R$ 350,00</span>
+            <span>Acima de R$ 350</span>
           </div>
         </div>
       </div>
@@ -1315,7 +1390,12 @@
 
     const formatCurrency = (centavos) => {
       if (!Number.isInteger(centavos)) return "Preço a preencher";
-      return new Intl.NumberFormat("pt-BR", { style: "currency", currency: catalog.moeda || "BRL" })
+      return new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: catalog.moeda || "BRL",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })
         .format(centavos / 100);
     };
 
@@ -1702,7 +1782,7 @@
         const itemLines = items
           .map((item) => {
             const itemSubtotal = Number.isInteger(item.precoCentavos) ? formatCurrency(item.precoCentavos * item.qty) : "Preço pendente";
-            return `<div class="summary__line"><span class="summary__item-name summary__item-name--dish" title="${item.name}">${item.name}</span><span class="summary__item-meta">x${item.qty} | ${itemSubtotal}</span></div>`;
+            return `<div class="summary__line summary__line--dish"><span class="summary__item-name summary__item-name--dish" title="${item.name}">${item.name}</span><span class="summary__item-meta">x${item.qty} | ${itemSubtotal}</span></div>`;
           })
           .join("");
 
@@ -1715,6 +1795,37 @@
         `;
       }).join("");
 
+      const rulesAsc = [...pricingRules.descontoProgressivo].sort((a, b) => a.minUnidades - b.minUnidades);
+      const maxPercentual = getMaxDiscountPercentual();
+      const isMaxPercentual = (percentual) => Number(percentual) === Number(maxPercentual);
+      const formatOffLabel = (percentual) =>
+        isMaxPercentual(percentual) ? `até ${percentual}% OFF` : `${percentual}% OFF`;
+      const firstRule = rulesAsc[0] || null;
+      const nextDiscountRule = rulesAsc.find((rule) => snapshot.totalUnidades < rule.minUnidades) || null;
+      const nextDiscountProgress = nextDiscountRule
+        ? Math.max(0, Math.min(100, Math.round((snapshot.totalUnidades / nextDiscountRule.minUnidades) * 100)))
+        : 100;
+      const freteProgress = Math.max(
+        0,
+        Math.min(100, Math.round((snapshot.discountInfo.totalLiquidoCentavos / pricingRules.freteGratis.valorMinimoCentavos) * 100))
+      );
+      const discountMeterLabel = nextDiscountRule
+        ? `Rumo a ${formatOffLabel(nextDiscountRule.percentual)}`
+        : "Desconto máximo aplicado";
+      const shippingMeterLabel = "Rumo ao frete grátis";
+      const discountActiveNote = snapshot.discountInfo.percentual > 0 && nextDiscountRule
+        ? `${snapshot.discountInfo.percentual}% OFF ativo!`
+        : snapshot.discountInfo.percentual > 0
+          ? "Desconto máximo aplicado!"
+          : "";
+      const progressDisclaimer = !nextDiscountRule
+        ? ""
+        : snapshot.discountInfo.percentual > 0 && firstRule && snapshot.discountInfo.percentual >= Number(firstRule.percentual)
+          ? "Adicione mais marmitas para conseguir mais desconto."
+          : "Adicione mais marmitas para conseguir desconto.";
+      const shippingActiveNote = snapshot.shippingInfo.elegivel
+        ? "Frete grátis aplicado!"
+        : "";
       const pricingLines = snapshot.hasMissingAnyPrice
         ? `
           <div class="summary__line total">
@@ -1736,7 +1847,7 @@
             <span class="summary__item-meta">-${formatCurrency(snapshot.discountInfo.descontoCentavos)}</span>
           </div>
           <div class="summary__line total">
-            <span class="summary__item-name">Total com desconto</span>
+            <span class="summary__item-name">${snapshot.discountInfo.percentual > 0 ? "Total com desconto" : "Total sem desconto"}</span>
             <span class="summary__item-meta">${formatCurrency(snapshot.discountInfo.totalLiquidoCentavos)}</span>
           </div>
           <div class="summary__line">
@@ -1747,11 +1858,31 @@
             <span class="summary__item-name">Total final</span>
             <span class="summary__item-meta">${formatCurrency(snapshot.totalFinalCentavos)}</span>
           </div>
-          <div class="summary__line">
-            <span class="summary__item-name">Frete grátis</span>
-            <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : `acima de ${formatCurrency(snapshot.shippingInfo.valorMinimoCentavos)}`}</span>
+          <div class="summary__meters">
+            ${discountActiveNote ? `<p class="summary__meter-note">${discountActiveNote}</p>` : ""}
+            ${shippingActiveNote ? `<p class="summary__meter-note">${shippingActiveNote}</p>` : ""}
+            ${nextDiscountRule ? `
+            <div class="summary__meter">
+              <div class="summary__meter-top">
+                <span>${discountMeterLabel}</span>
+                <span class="summary__meter-pct">${nextDiscountProgress}%</span>
+              </div>
+              <div class="summary__meter-track">
+                <div class="summary__meter-fill" style="width:${nextDiscountProgress}%"></div>
+              </div>
+            </div>` : ""}
+            ${snapshot.shippingInfo.elegivel ? "" : `
+            <div class="summary__meter">
+              <div class="summary__meter-top">
+                <span>${shippingMeterLabel}</span>
+                <span class="summary__meter-pct">${freteProgress}%</span>
+              </div>
+              <div class="summary__meter-track">
+                <div class="summary__meter-fill" style="width:${freteProgress}%"></div>
+              </div>
+            </div>`}
+            ${progressDisclaimer ? `<p class="summary__meter-disclaimer">${progressDisclaimer}</p>` : ""}
           </div>
-          ${snapshot.shippingInfo.elegivel ? "" : `<div class="summary__line"><span class="summary__item-name">Faltam para frete grátis</span><span class="summary__item-meta">${formatCurrency(snapshot.shippingInfo.faltamCentavos)}</span></div>`}
         `;
 
       return groupsHtml + pricingLines;
@@ -1760,7 +1891,7 @@
     const renderSummary = () => {
       const selectedItems = getSelectedItems();
       if (!selectedItems.length) {
-        summary.innerHTML = "<p style='margin:0;color:#5f6d5f;'>Nenhum item selecionado.</p>";
+        summary.innerHTML = "<p style='margin:0;color:var(--text-soft);'>Nenhum item selecionado.</p>";
         updateBusinessNotice({ totalUnidades: 0, descontoPercentualAtivo: 0, totalLiquidoCentavos: 0 });
         latestDockSnapshot = null;
         updateMobileDock(null);
@@ -1779,7 +1910,7 @@
             <span class="summary__item-name">Total atual</span>
             <span class="summary__item-meta">Preço pendente</span>
           </div>
-          <p style="margin:6px 0 0;font-size:.76rem;color:#536653;">Toque em <strong>Conferir pedido</strong> para ver todos os detalhes.</p>
+          <p style="margin:6px 0 0;font-size:.76rem;color:var(--text-soft);">Toque em <strong>Conferir pedido</strong> para ver todos os detalhes.</p>
         `
         : `
           <div class="summary__line total">
@@ -1796,9 +1927,9 @@
           </div>
           <div class="summary__line">
             <span class="summary__item-name">Frete grátis</span>
-            <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : `faltam ${formatCurrency(snapshot.shippingInfo.faltamCentavos)}`}</span>
+            <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "aplicado!" : `faltam ${formatCurrency(snapshot.shippingInfo.faltamCentavos)}`}</span>
           </div>
-          <p style="margin:6px 0 0;font-size:.76rem;color:#536653;">Toque em <strong>Conferir pedido</strong> para revisar e enviar.</p>
+          <p style="margin:6px 0 0;font-size:.76rem;color:var(--text-soft);">Toque em <strong>Conferir pedido</strong> para revisar e enviar.</p>
         `;
 
       updateBusinessNotice({
@@ -1814,7 +1945,7 @@
     const renderReviewSummary = () => {
       const selectedItems = getSelectedItems();
       if (!selectedItems.length) {
-        reviewSummary.innerHTML = "<p style='margin:0;color:#5f6d5f;'>Nenhum item selecionado.</p>";
+        reviewSummary.innerHTML = "<p style='margin:0;color:var(--text-soft);'>Nenhum item selecionado.</p>";
         return;
       }
       reviewSummary.innerHTML = buildDetailedSummaryHtml(selectedItems, getOrderSnapshot(selectedItems));
