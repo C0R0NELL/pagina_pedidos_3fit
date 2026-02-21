@@ -290,6 +290,57 @@
       border: 1px solid var(--line);
     }
 
+    #clearOrderBtn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      padding-right: 28px;
+    }
+
+    #clearOrderBtn .clear-order-label {
+      white-space: nowrap;
+    }
+
+    #clearOrderBtn .clear-order-ok {
+      position: absolute;
+      right: 10px;
+      width: 1.1em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.6);
+      color: #1f7424;
+    }
+
+    #clearOrderBtn.is-done {
+      border-color: #9bd79d;
+      background: #eef9ef;
+      color: #1f7424;
+    }
+
+    #clearOrderBtn.is-done .clear-order-ok {
+      animation: clearOrderCheck .65s cubic-bezier(.22, .7, .25, 1) forwards;
+    }
+
+    @keyframes clearOrderCheck {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-20deg);
+      }
+      55% {
+        opacity: 1;
+        transform: scale(1.18) rotate(0deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
     .hero__cover {
       position: relative;
       border-radius: var(--radius-lg);
@@ -658,6 +709,7 @@
       font-size: 0.95rem;
       line-height: 1.15;
       min-height: 52px;
+      white-space: nowrap;
     }
 
     .actions .btn--primary {
@@ -940,6 +992,7 @@
         color: #2c4a2f;
         font-weight: 700;
         line-height: 1.25;
+        white-space: pre-line;
         transition: opacity .2s ease, max-height .2s ease, margin .2s ease;
         max-height: 40px;
       }
@@ -997,6 +1050,22 @@
     @media (max-width: 640px) {
       .hero { padding-top: 20px; }
       .topbar { padding: 10px 0; }
+      .hero__promo-card {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: 3px;
+      }
+
+      .hero__promo-card span {
+        white-space: normal;
+      }
+
+      .actions .btn {
+        font-size: 0.84rem;
+        min-height: 48px;
+        padding: 9px 8px;
+      }
+
       .albums {
         display: flex;
         flex-wrap: nowrap;
@@ -1062,6 +1131,11 @@
         grid-area: price;
         margin: 0;
         font-size: 0.82rem;
+      }
+
+      .product__price-max-discount {
+        white-space: nowrap;
+        font-size: 0.69rem;
       }
 
       .qty {
@@ -1131,7 +1205,7 @@
       <h2>Resumo do pedido</h2>
       <div class="summary" id="summary"></div>
       <div class="actions">
-        <button type="button" id="clearOrderBtn" class="btn btn--ghost">Limpar pedido</button>
+        <button type="button" id="clearOrderBtn" class="btn btn--ghost"><span class="clear-order-label">Limpar pedido</span><span class="clear-order-ok" aria-hidden="true">✓</span></button>
         <button type="button" id="reviewOrderBtn" class="btn btn--primary">Conferir pedido</button>
       </div>
 
@@ -1160,7 +1234,7 @@
   </div>
 
   <div class="mobile-dock" id="mobileDock" aria-live="polite">
-    <div class="mobile-dock__meta" id="mobileDockMeta">Selecione pratos para conferir o pedido</div>
+    <div class="mobile-dock__meta" id="mobileDockMeta">Quanto mais marmitas&#10;Maior o desconto 💪</div>
     <button type="button" class="btn btn--primary" id="mobileReviewBtn" disabled>Conferir pedido</button>
     <div class="mobile-dock__meters">
       <div class="mobile-dock__meter-row">
@@ -1184,7 +1258,8 @@
       pricingRules: {
         descontoProgressivo: [],
         freteGratis: {
-          valorMinimoCentavos: 35000
+          valorMinimoCentavos: 35000,
+          valorFreteCentavos: 2000
         }
       }
     };
@@ -1269,10 +1344,14 @@
         : DEFAULT_FEATURES.pricingRules.descontoProgressivo;
 
       const valorMinimoCentavos = Number(raw?.freteGratis?.valorMinimoCentavos);
+      const valorFreteCentavos = Number(raw?.freteGratis?.valorFreteCentavos);
       const freteGratis = {
         valorMinimoCentavos: Number.isInteger(valorMinimoCentavos) && valorMinimoCentavos >= 0
           ? valorMinimoCentavos
-          : DEFAULT_FEATURES.pricingRules.freteGratis.valorMinimoCentavos
+          : DEFAULT_FEATURES.pricingRules.freteGratis.valorMinimoCentavos,
+        valorFreteCentavos: Number.isInteger(valorFreteCentavos) && valorFreteCentavos >= 0
+          ? valorFreteCentavos
+          : DEFAULT_FEATURES.pricingRules.freteGratis.valorFreteCentavos
       };
 
       return { descontoProgressivo, freteGratis };
@@ -1309,12 +1388,14 @@
 
     const getShippingInfo = (totalLiquidoCentavos) => {
       const valorMinimoCentavos = pricingRules.freteGratis.valorMinimoCentavos;
+      const valorFreteCentavos = pricingRules.freteGratis.valorFreteCentavos;
       const elegivel = Number.isInteger(totalLiquidoCentavos) && totalLiquidoCentavos >= valorMinimoCentavos;
       const faltamCentavos = elegivel
         ? 0
         : Math.max(0, valorMinimoCentavos - (Number.isInteger(totalLiquidoCentavos) ? totalLiquidoCentavos : 0));
+      const valorCobradoCentavos = elegivel ? 0 : valorFreteCentavos;
 
-      return { valorMinimoCentavos, elegivel, faltamCentavos };
+      return { valorMinimoCentavos, valorFreteCentavos, valorCobradoCentavos, elegivel, faltamCentavos };
     };
 
     const selected = new Map();
@@ -1362,6 +1443,7 @@
     };
 
     let activeCategory = null;
+    let clearOrderFeedbackTimer = null;
 
     const updateBusinessNotice = (state = {}) => {
       const totalUnidades = Number.isFinite(state.totalUnidades) ? state.totalUnidades : 0;
@@ -1491,7 +1573,6 @@
       albumGrid.innerHTML = categories.map((cat) => {
         const line = lineById[cat];
         const cover = line?.capa || "images/logo.png";
-        const count = line?.itens?.length || 0;
         const label = line?.nome || cat;
         const gramatura = line?.gramatura || "Gramatura a definir";
         return `
@@ -1499,7 +1580,6 @@
             <img src="${cover}" alt="Capa ${label}" loading="lazy" onerror="this.onerror=null;this.src='images/logo.png';" />
             <div class="album__meta">
               <strong>${label}</strong>
-              <span>${count} pratos</span>
               <span>${gramatura}</span>
             </div>
           </button>
@@ -1565,10 +1645,19 @@
         ? { percentual: 0, descontoCentavos: 0, totalLiquidoCentavos: null }
         : getDiscountInfo(selectedItems, totalUnidades, totalBrutoCentavos);
       const shippingInfo = hasMissingAnyPrice
-        ? { elegivel: false, valorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos, faltamCentavos: null }
+        ? {
+          elegivel: false,
+          valorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos,
+          valorFreteCentavos: pricingRules.freteGratis.valorFreteCentavos,
+          valorCobradoCentavos: null,
+          faltamCentavos: null
+        }
         : getShippingInfo(discountInfo.totalLiquidoCentavos);
+      const totalFinalCentavos = hasMissingAnyPrice
+        ? null
+        : discountInfo.totalLiquidoCentavos + shippingInfo.valorCobradoCentavos;
 
-      return { totalUnidades, hasMissingAnyPrice, totalBrutoCentavos, discountInfo, shippingInfo };
+      return { totalUnidades, hasMissingAnyPrice, totalBrutoCentavos, discountInfo, shippingInfo, totalFinalCentavos };
     };
 
     const buildDetailedSummaryHtml = (selectedItems, snapshot) => {
@@ -1620,12 +1709,20 @@
             <span class="summary__item-meta">${formatCurrency(snapshot.totalBrutoCentavos)}</span>
           </div>
           <div class="summary__line">
-            <span class="summary__item-name">Desconto progressivo ${snapshot.discountInfo.percentual > 0 ? `(${snapshot.discountInfo.percentual === getMaxDiscountPercentual() ? `até ${snapshot.discountInfo.percentual}%` : `${snapshot.discountInfo.percentual}%`})` : "(0%)"}</span>
+            <span class="summary__item-name">Desconto progressivo</span>
             <span class="summary__item-meta">-${formatCurrency(snapshot.discountInfo.descontoCentavos)}</span>
           </div>
           <div class="summary__line total">
             <span class="summary__item-name">Total com desconto</span>
             <span class="summary__item-meta">${formatCurrency(snapshot.discountInfo.totalLiquidoCentavos)}</span>
+          </div>
+          <div class="summary__line">
+            <span class="summary__item-name">Frete</span>
+            <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "Grátis" : formatCurrency(snapshot.shippingInfo.valorCobradoCentavos)}</span>
+          </div>
+          <div class="summary__line total">
+            <span class="summary__item-name">Total final</span>
+            <span class="summary__item-meta">${formatCurrency(snapshot.totalFinalCentavos)}</span>
           </div>
           <div class="summary__line">
             <span class="summary__item-name">Frete grátis</span>
@@ -1714,8 +1811,8 @@
 
       if (!snapshot || snapshot.totalUnidades <= 0) {
         mobileDockMeta.textContent = noticeVisible
-          ? "Quanto mais marmitas, maior o desconto"
-          : "Selecione pratos para conferir o pedido";
+          ? "Quanto mais marmitas\nMaior o desconto 💪"
+          : "Quanto mais marmitas\nMaior o desconto 💪";
         mobileReviewBtn.disabled = true;
         dockDiscountFill.style.width = "0%";
         dockShippingFill.style.width = "0%";
@@ -1748,21 +1845,19 @@
 
       if (snapshot.hasMissingAnyPrice) {
         mobileDockMeta.textContent = noticeVisible
-          ? "Quanto mais marmitas, maior o desconto"
-          : "Quanto mais marmitas, maior o desconto";
+          ? "Quanto mais marmitas\nMaior o desconto 💪"
+          : "Quanto mais marmitas\nMaior o desconto 💪";
         return;
       }
 
       if (snapshot.shippingInfo.elegivel && !nextDiscountRule) {
-        mobileDockMeta.textContent = noticeVisible
-          ? "Vantagens liberadas e detalhes visíveis neste bloco"
-          : "Vantagens liberadas. Role para baixo e confira os detalhes";
+        mobileDockMeta.textContent = "Desconto máximo aplicado. Aproveite!";
         return;
       }
 
       mobileDockMeta.textContent = noticeVisible
-        ? "Quanto mais marmitas, maior o desconto"
-        : "Quanto mais marmitas, maior o desconto";
+        ? "Quanto mais marmitas\nMaior o desconto 💪"
+        : "Quanto mais marmitas\nMaior o desconto 💪";
     };
 
     const updateHeaderCart = (totalUnidades) => {
@@ -1849,13 +1944,17 @@
               maxUnidades: rule.maxUnidades,
               percentual: rule.percentual
             })),
-            freteGratisValorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos
+            freteGratisValorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos,
+            freteValorCentavos: pricingRules.freteGratis.valorFreteCentavos
           },
           totalUnidades: snapshot.totalUnidades,
           totalBrutoCentavos: precoPendente ? null : snapshot.totalBrutoCentavos,
           descontoPercentual: discountInfo?.percentual ?? 0,
           descontoCentavos: discountInfo?.descontoCentavos ?? 0,
           totalCentavos: discountInfo?.totalLiquidoCentavos ?? (precoPendente ? null : snapshot.totalBrutoCentavos),
+          totalComFreteCentavos: snapshot.totalFinalCentavos,
+          freteValorCentavos: shippingInfo?.valorFreteCentavos ?? pricingRules.freteGratis.valorFreteCentavos,
+          freteCobradoCentavos: shippingInfo?.valorCobradoCentavos ?? null,
           freteGratisElegivel: shippingInfo?.elegivel ?? false,
           freteGratisFaltamCentavos: shippingInfo?.faltamCentavos ?? null,
           precoPendente: precoPendente,
@@ -1888,6 +1987,17 @@
       setQty(input.dataset.id, input.value);
     });
 
+    const animateClearOrderFeedback = () => {
+      clearOrderBtn.classList.remove("is-done");
+      window.clearTimeout(clearOrderFeedbackTimer);
+      void clearOrderBtn.offsetWidth;
+      clearOrderBtn.classList.add("is-done");
+      clearOrderFeedbackTimer = window.setTimeout(() => {
+        clearOrderBtn.classList.remove("is-done");
+        clearOrderFeedbackTimer = null;
+      }, 1200);
+    };
+
     clearOrderBtn.addEventListener("click", () => {
       selected.clear();
       obsPedido.value = "";
@@ -1896,7 +2006,7 @@
       renderProducts();
       renderSummary();
       reviewModal.classList.remove("show");
-      showFeedback("Pedido limpo com sucesso.", "ok");
+      animateClearOrderFeedback();
     });
 
     const openReviewModal = () => {
