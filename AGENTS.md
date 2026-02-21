@@ -1,79 +1,44 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
-This is a static front-end repository for the 3Fit ordering page.
+## Intentions (What Must Be Preserved)
+- Keep the ordering experience clear, fast, and mobile-first.
+- Keep business rules data-driven (`features.json`), not hardcoded in UI text.
+- Preserve visual consistency through CSS tokens in `:root`.
+- Treat integration/security as first-class: public frontend, protected backend proxy.
 
-- `index.html`: Main application file (layout, styles, and client-side logic).
-- `catalog.js`: Product catalog and line metadata consumed by the UI.
-- `features.json`: Runtime business configuration (discount tiers, shipping rules, webhook URL).
-- `images/`: Brand and product assets used by cards and banners.
-- `README.md`, `CNAME`, `LICENSE`: Project metadata and deployment/domain info.
+## Change Mapping (Where to Edit)
+- Product catalog, lines, dish names, per-line pricing:
+  - `catalog.js`
+- Commercial rules (discount tiers, shipping thresholds, public proxy URL):
+  - `features.json`
+- UX/UI behavior, copy, modal/dock logic, payload shape:
+  - `index.html`
+- Images and branding assets:
+  - `images/`
 
-There is no `src/` split yet; keep related changes grouped and readable inside `index.html`.
+## Project Structure
+- `index.html`: main app (markup + CSS + JS).
+- `catalog.js`: product/line source data.
+- `features.json`: runtime commercial config.
+- `images/`: visual assets.
 
-## Deployment Architecture
-This project uses a free and secure split deployment:
+## Local Development
+- `python3 -m http.server 3000` -> run at `http://127.0.0.1:3000/index.html`
+- `rg "pattern" index.html` -> fast search
+- `git diff -- index.html` -> review behavior/UI changes
 
-- Frontend: GitHub Pages (public static site).
-- Backend proxy: Cloudflare Worker (`workers.dev`).
-- Secret handling: real n8n webhook stays only in Cloudflare Secret `WEBHOOK_URL`.
+## Validation Checklist (Before Merge/Deploy)
+1. Desktop + mobile layout sanity (cards, dock, modals, buttons).
+2. Discount states: none, first tier, max tier.
+3. Shipping states: not eligible and eligible.
+4. Payload review: totals, discount, shipping, items.
+5. `features.json` reviewed for correct business values.
 
-`features.json` must point to the Worker URL, never to the real webhook.
+## Security Boundaries
+- Never commit real secret endpoints.
+- Public repo is fine; secrets must stay server-side (Cloudflare Worker secret).
+- If an endpoint is exposed, rotate it immediately.
 
-## Build, Test, and Development Commands
-No build step is required.
-
-- `python3 -m http.server 3000`
-  - Run locally at `http://127.0.0.1:3000/index.html`.
-- `rg "pattern" index.html`
-  - Fast code search (selectors, strings, logic blocks).
-- `git diff -- index.html`
-  - Review UI and business-logic edits before commit.
-
-## Coding Style & Naming Conventions
-- Use 2-space indentation in HTML, CSS, and JS blocks.
-- Prefer data-driven values in `features.json` and CSS tokens in `:root`.
-- JavaScript naming: `camelCase` for variables/functions; descriptive names (`getOrderSnapshot`, `buildPayload`).
-- CSS naming follows existing component conventions (`block__element`, `block--modifier`).
-- Keep user-facing copy in pt-BR unless technical wording requires otherwise.
-
-## Testing Guidelines
-There is currently no automated test framework in this repository. Use manual validation:
-
-1. Verify desktop and mobile layouts.
-2. Validate discount/freight scenarios (no discount, first tier, max tier).
-3. Confirm payload fields in review/send flow and webhook request behavior.
-
-For pricing or payload changes, test at least one case per discount tier.
-
-## Commit & Pull Request Guidelines
-Git history currently mixes styles (e.g., short backup commits and descriptive messages). Prefer clear, scoped commits going forward.
-
-- Commit format example: `mobile-dock: show 10% OFF active note`
-- PR checklist:
-  - Summary of what changed and why.
-  - Screenshots for UI updates (desktop + mobile).
-  - Payload/schema notes when webhook fields change.
-  - Manual test steps and outcomes.
-
-## Security & Configuration Tips
-- Do not commit real webhook secrets/endpoints.
-- `features.json` must contain only the Worker URL (public proxy), never n8n endpoint.
-- Keep Cloudflare Worker protections enabled:
-  - allowed origin(s) validation
-  - rate limit (per IP/window)
-  - upstream timeout (fail fast)
-- When a webhook is exposed, rotate it immediately and update only the Cloudflare Secret.
-
-## Checklist de Release
-Antes de publicar, execute esta conferência mínima:
-
-1. Layout em desktop e mobile sem quebras visuais (cards, modal, dock e botões principais).
-2. Fluxos de desconto validados: sem desconto, primeira faixa (ex.: 10%) e desconto máximo.
-3. Fluxo de frete validado: não elegível e elegível para frete grátis.
-4. Modal de conferência com textos/valores corretos e estados de progresso consistentes.
-5. Payload do pedido revisado no envio (campos de desconto, frete, totais e itens).
-6. `features.json` revisado (sem endpoints secretos e com regras comerciais corretas).
-7. Último `git diff` revisado para evitar mudanças acidentais.
-8. Worker validado em produção (`403/405` fora do fluxo esperado, `200` no envio real).
-9. Secret `WEBHOOK_URL` conferido no Cloudflare após rotação de credenciais.
+## Commit & PR Expectations
+- Use scoped, descriptive commits (e.g., `mobile-dock: improve max discount status`).
+- PR should include: what changed, why, screenshots (desktop/mobile), and manual test notes.
