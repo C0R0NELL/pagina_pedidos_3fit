@@ -236,7 +236,7 @@
       margin-top: 18px;
       display: grid;
       gap: 8px;
-      max-width: 420px;
+      max-width: 500px;
     }
 
     .hero__promo-card {
@@ -457,14 +457,33 @@
       margin: 0;
       font-size: .92rem;
       line-height: 1.28;
-      min-height: 44px;
+      min-height: calc(1.28em * 3);
+      max-height: calc(1.28em * 3);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
     }
 
     .product__price {
       font-size: 0.84rem;
-      font-weight: 700;
-      color: #1f6f24;
       margin-top: -2px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      line-height: 1.2;
+    }
+
+    .product__price-current {
+      color: #1f6f24;
+    }
+
+    .product__price-max-discount {
+      color: #2f4130;
+      font-size: 0.73rem;
+      font-weight: 600;
     }
 
     .qty {
@@ -528,6 +547,13 @@
       margin-bottom: 12px;
       max-height: none;
       overflow: visible;
+    }
+
+    .summary__disclaimer {
+      margin: 8px 0 0;
+      font-size: 0.75rem;
+      line-height: 1.35;
+      color: #536653;
     }
 
     .summary__line {
@@ -596,6 +622,12 @@
       font-weight: 700;
     }
 
+    .summary > .summary__line.total:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
     .form {
       display: grid;
       gap: 9px;
@@ -652,7 +684,7 @@
 
     .offer__hero-strong {
       margin: 0 0 2px;
-      font-size: 0.96rem;
+      font-size: 1.03rem;
       font-weight: 800;
       color: #1f7424;
       line-height: 1.15;
@@ -660,9 +692,11 @@
 
     .offer__hero-sub {
       margin: 0;
-      font-size: 0.77rem;
-      color: #587058;
-      line-height: 1.2;
+      font-size: 0.79rem;
+      color: #3f5f40;
+      line-height: 1.22;
+      font-weight: 600;
+      letter-spacing: 0.003em;
     }
 
     .offer__grid {
@@ -691,6 +725,11 @@
       color: #5c6d5c;
     }
 
+    .offer__card-prefix {
+      font-size: 0.82em;
+      margin-right: 3px;
+    }
+
     .offer__card.active {
       border-color: #92d094;
       background: #eef9ef;
@@ -708,12 +747,29 @@
       font-weight: 700;
     }
 
+    .offer__status--hit {
+      color: #c66a16;
+      font-size: 0.8rem;
+      line-height: 1.24;
+    }
+
     .offer__meters + .offer__status {
       margin-top: 8px;
     }
 
     .offer__status + .offer__status {
       margin-top: 4px;
+    }
+
+    .offer__status--target {
+      font-size: 0.71rem;
+      letter-spacing: -0.01em;
+    }
+
+    @media (min-width: 1025px) {
+      .offer__status--target {
+        white-space: nowrap;
+      }
     }
 
     .offer__meters {
@@ -983,10 +1039,16 @@
 
       .product h3 {
         grid-area: name;
-        min-height: 0;
         font-size: 0.86rem;
         line-height: 1.22;
         margin-right: 2px;
+        min-height: calc(1.22em * 3);
+        max-height: calc(1.22em * 3);
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
       }
 
       .product__price {
@@ -1028,14 +1090,14 @@
   <section class="hero">
     <div class="container hero__content">
       <div class="hero__left">
-        <h1>Aqui o seu pedido <span class="hero__highlight">3Fit</span> é <span class="hero__highlight">personalizado</span>.<br>Aproveite!</h1>
+        <h1>Aqui, o seu pedido <span class="hero__highlight">3Fit</span> é <span class="hero__highlight">personalizado</span>.<br>Aproveite!</h1>
         <p>
           Selecione os pratos, ajuste quantidades e envie seu pedido 🧡
         </p>
         <div class="hero__promo" id="heroPromo">
           <div class="hero__promo-card">
             <strong>Desconto progressivo</strong>
-            <span>Até 30% OFF</span>
+            <span>Calculando oferta...</span>
           </div>
           <div class="hero__promo-card">
             <strong>Frete grátis</strong>
@@ -1067,6 +1129,7 @@
       </div>
 
       <p class="notice" id="businessNotice"></p>
+      <p class="summary__disclaimer">O desconto máximo pode variar de 23% a 30%, a depender das linhas.</p>
       <div id="feedback" class="feedback"></div>
       <pre id="payloadPreview" class="payload" aria-hidden="true"></pre>
     </aside>
@@ -1112,10 +1175,7 @@
     const DEFAULT_FEATURES = {
       webhookUrl: "SEU_WEBHOOK_AQUI",
       pricingRules: {
-        descontoProgressivo: [
-          { minUnidades: 14, maxUnidades: 20, percentual: 10 },
-          { minUnidades: 21, maxUnidades: null, percentual: 30 }
-        ],
+        descontoProgressivo: [],
         freteGratis: {
           valorMinimoCentavos: 35000
         }
@@ -1128,6 +1188,8 @@
       nome: line.nome || line.id,
       gramatura: line.gramatura || "",
       capa: line.capa,
+      precoCentavos: Number.isInteger(line.precoCentavos) ? line.precoCentavos : null,
+      pisoPrecoCentavos: Number.isInteger(line.pisoPrecoCentavos) ? line.pisoPrecoCentavos : null,
       itens: (line.itens || []).filter((item) => item.ativo !== false)
     }));
 
@@ -1138,7 +1200,12 @@
         lineId: line.id,
         lineName: line.nome,
         name: item.nome,
-        precoCentavos: Number.isInteger(item.precoCentavos) ? item.precoCentavos : null
+        precoCentavos: Number.isInteger(item.precoCentavos)
+          ? item.precoCentavos
+          : line.precoCentavos,
+        pisoPrecoCentavos: Number.isInteger(item.pisoPrecoCentavos)
+          ? item.pisoPrecoCentavos
+          : line.pisoPrecoCentavos
       }))
     );
 
@@ -1146,6 +1213,19 @@
       if (!Number.isInteger(centavos)) return "Preço a preencher";
       return new Intl.NumberFormat("pt-BR", { style: "currency", currency: catalog.moeda || "BRL" })
         .format(centavos / 100);
+    };
+
+    const getMaxDiscountPercentual = () =>
+      pricingRules.descontoProgressivo.reduce((max, rule) =>
+        Math.max(max, Number(rule?.percentual) || 0), 0);
+
+    const getUnitPriceWithMaxDiscountCentavos = (precoCentavos, pisoPrecoCentavos = null) => {
+      if (!Number.isInteger(precoCentavos)) return null;
+      const maxDiscountPercentual = getMaxDiscountPercentual();
+      const fatorDesconto = Math.max(0, 1 - (maxDiscountPercentual / 100));
+      const precoComDesconto = Math.round(precoCentavos * fatorDesconto);
+      if (!Number.isInteger(pisoPrecoCentavos)) return precoComDesconto;
+      return Math.max(precoComDesconto, pisoPrecoCentavos);
     };
 
     const normalizePricingRules = (raw) => {
@@ -1256,22 +1336,36 @@
       const nextDiscountRule = rulesAsc.find((rule) => totalUnidades < rule.minUnidades) || null;
       const nextHigherRule = rulesAsc.find((rule) => rule.percentual > descontoPercentualAtivo && totalUnidades < rule.minUnidades) || null;
 
-      let destaqueTitulo = "Ganhe até 30% OFF";
-      let destaqueSub = "Aumente a quantidade para destravar vantagens.";
-      let descontoStatus = "Comece seu pedido para ativar descontos.";
+      const maxPercentual = getMaxDiscountPercentual();
+      const isMaxPercentual = (percentual) => Number(percentual) === Number(maxPercentual);
+      const formatOffLabel = (percentual) =>
+        isMaxPercentual(percentual) ? `até ${percentual}% OFF` : `${percentual}% OFF`;
+      let destaqueTitulo = `Ganhe até ${maxPercentual}% OFF`;
+      let destaqueSub = "Quanto mais marmitas no pedido<br>mais desconto no seu bolso 💪";
+      let descontoStatusPrimario = "";
+      let descontoStatusSecundario = "";
       if (descontoPercentualAtivo > 0 && nextHigherRule) {
-        destaqueTitulo = `${descontoPercentualAtivo}% OFF ativo`;
+        destaqueTitulo = `${formatOffLabel(descontoPercentualAtivo)} ativo`;
         destaqueSub = "Você já destravou desconto progressivo.";
-        descontoStatus = `Desconto de ${descontoPercentualAtivo}% ativo. Faltam ${Math.max(0, nextHigherRule.minUnidades - totalUnidades)} marmitas para ${nextHigherRule.percentual}% OFF.`;
+        descontoStatusPrimario = `Desconto de ${descontoPercentualAtivo}% OFF ativo.`;
+        descontoStatusSecundario = `Faltam ${Math.max(0, nextHigherRule.minUnidades - totalUnidades)} marmitas para desconto máximo.`;
       } else if (descontoPercentualAtivo > 0) {
-        destaqueTitulo = `${descontoPercentualAtivo}% OFF máximo`;
+        destaqueTitulo = `${formatOffLabel(descontoPercentualAtivo)} liberado`;
         destaqueSub = "Parabéns, você atingiu a melhor faixa.";
-        descontoStatus = `Desconto máximo ativo: ${descontoPercentualAtivo}% OFF.`;
+        descontoStatusPrimario = "Desconto máximo ativado. Aproveite! 🧡";
       } else if (nextDiscountRule) {
-        descontoStatus = `Faltam ${Math.max(0, nextDiscountRule.minUnidades - totalUnidades)} marmitas para liberar ${nextDiscountRule.percentual}% OFF.`;
+        descontoStatusSecundario = `Faltam ${Math.max(0, nextDiscountRule.minUnidades - totalUnidades)} marmitas para ${formatOffLabel(nextDiscountRule.percentual)}.`;
       }
 
-      const freteStatus = freteElegivel ? "Frete grátis aplicado." : `Faltam ${formatCurrency(freteFaltamCentavos)} para frete grátis.`;
+      const freteStatus = freteElegivel ? "Frete grátis aplicado com sucesso." : `Faltam ${formatCurrency(freteFaltamCentavos)} para frete grátis.`;
+      const statusLinhas = [
+        { mensagem: descontoStatusPrimario, hit: descontoPercentualAtivo > 0, target: false },
+        { mensagem: freteStatus, hit: freteElegivel, target: false },
+        { mensagem: descontoStatusSecundario, hit: false, target: true }
+      ]
+        .filter((item) => Boolean(item.mensagem))
+        .map((item) => `<p class="offer__status ${item.hit ? "offer__status--hit" : ""} ${item.target ? "offer__status--target" : ""}">${item.mensagem}</p>`)
+        .join("");
       const nextDiscountProgress = nextDiscountRule
         ? Math.max(0, Math.min(100, Math.round((totalUnidades / nextDiscountRule.minUnidades) * 100)))
         : 100;
@@ -1281,11 +1375,14 @@
         const label = rule.maxUnidades === null
           ? `${rule.minUnidades}+ marmitas`
           : `${rule.minUnidades} a ${rule.maxUnidades} marmitas`;
+        const descontoLabel = rule.maxUnidades === null
+          ? `<span class="offer__card-prefix">até</span>${rule.percentual}% OFF`
+          : `${rule.percentual}% OFF`;
         const isActive = descontoPercentualAtivo >= rule.percentual && descontoPercentualAtivo > 0;
         return `
           <div class="offer__card ${isActive ? "active" : ""}">
             <strong>${label}</strong>
-            <span>${rule.percentual}% OFF</span>
+            <span>${descontoLabel}</span>
           </div>
         `;
       }).join("");
@@ -1299,38 +1396,36 @@
           ${discountCards}
           <div class="offer__card ${freteElegivel ? "active" : ""}">
             <strong>Frete grátis</strong>
-            <span>${freteElegivel ? "Frete grátis aplicado" : `Acima de ${formatCurrency(freteMinimoCentavos)}`}</span>
+            <span>${freteElegivel ? "Aplicado!" : `Acima de ${formatCurrency(freteMinimoCentavos)}`}</span>
           </div>
         </div>
         <div class="offer__meters">
           <div class="offer__meter">
             <div class="offer__meter-top">
-              <span>${nextDiscountRule ? `Rumo a ${nextDiscountRule.percentual}% OFF` : `${rulesAsc[rulesAsc.length - 1]?.percentual || 0}% OFF alcançado`}</span>
+              <span>${nextDiscountRule ? `Rumo a ${formatOffLabel(nextDiscountRule.percentual)}` : `${formatOffLabel(rulesAsc[rulesAsc.length - 1]?.percentual || 0)} alcançado`}</span>
               <span>${nextDiscountRule ? `${nextDiscountProgress}%` : "100%"}</span>
             </div>
             <div class="offer__track"><div class="offer__fill" style="width:${nextDiscountProgress}%"></div></div>
           </div>
           <div class="offer__meter">
             <div class="offer__meter-top">
-              <span>${freteElegivel ? "Frete grátis alcançado" : "Meta frete grátis"}</span>
+              <span>${freteElegivel ? "Frete grátis alcançado" : "Rumo a frete grátis"}</span>
               <span>${freteProgress}%</span>
             </div>
             <div class="offer__track"><div class="offer__fill" style="width:${freteProgress}%"></div></div>
           </div>
         </div>
-        <p class="offer__status">${descontoStatus}</p>
-        <p class="offer__status">${freteStatus}</p>
+        ${statusLinhas}
       `;
     };
 
     const updateHeroPromo = () => {
-      const maxPercentual = pricingRules.descontoProgressivo.reduce((max, rule) =>
-        Math.max(max, Number(rule.percentual) || 0), 0);
+      const maxPercentual = getMaxDiscountPercentual();
 
       heroPromo.innerHTML = `
         <div class="hero__promo-card">
           <strong>Desconto progressivo</strong>
-          <span>Até ${maxPercentual}% OFF</span>
+          <span>Até ${maxPercentual}% OFF em alguns pratos</span>
         </div>
         <div class="hero__promo-card">
           <strong>Frete grátis</strong>
@@ -1381,6 +1476,7 @@
     const renderProducts = () => {
       const currentLineName = lineById[activeCategory]?.nome || activeCategory;
       const currentLineGramatura = lineById[activeCategory]?.gramatura || "";
+      const maxDiscountPercentual = getMaxDiscountPercentual();
       albumTitle.textContent = activeCategory
         ? `Pratos da linha ${currentLineName}${currentLineGramatura ? ` (${currentLineGramatura})` : ""}`
         : "Selecione uma linha para ver os pratos";
@@ -1395,11 +1491,15 @@
 
       productGrid.innerHTML = filtered.map((product) => {
         const qty = selected.get(product.id) || 0;
+        const precoComMaiorDesconto = getUnitPriceWithMaxDiscountCentavos(product.precoCentavos, product.pisoPrecoCentavos);
         return `
           <article class="product">
             <small>${product.lineName}</small>
             <h3>${product.name}</h3>
-            <div class="product__price">${formatCurrency(product.precoCentavos)}</div>
+            <div class="product__price">
+              <span class="product__price-current">${formatCurrency(product.precoCentavos)}</span>
+              <span class="product__price-max-discount">${formatCurrency(precoComMaiorDesconto)} no desconto máx.</span>
+            </div>
             <div class="qty">
               <button type="button" data-action="minus" data-id="${product.id}" aria-label="Diminuir quantidade">-</button>
               <input type="number" min="0" value="${qty}" data-action="input" data-id="${product.id}" aria-label="Quantidade" />
@@ -1481,7 +1581,7 @@
             <span class="summary__item-meta">${formatCurrency(snapshot.totalBrutoCentavos)}</span>
           </div>
           <div class="summary__line">
-            <span class="summary__item-name">Desconto progressivo ${snapshot.discountInfo.percentual > 0 ? `(${snapshot.discountInfo.percentual}%)` : "(0%)"}</span>
+            <span class="summary__item-name">Desconto progressivo ${snapshot.discountInfo.percentual > 0 ? `(${snapshot.discountInfo.percentual === getMaxDiscountPercentual() ? `até ${snapshot.discountInfo.percentual}%` : `${snapshot.discountInfo.percentual}%`})` : "(0%)"}</span>
             <span class="summary__item-meta">-${formatCurrency(snapshot.discountInfo.descontoCentavos)}</span>
           </div>
           <div class="summary__line total">
@@ -1528,6 +1628,10 @@
             <span class="summary__item-meta">${snapshot.totalUnidades} un.</span>
           </div>
           <div class="summary__line">
+            <span class="summary__item-name">Desconto aplicado ${snapshot.discountInfo.percentual > 0 ? `(${snapshot.discountInfo.percentual === getMaxDiscountPercentual() ? `até ${snapshot.discountInfo.percentual}%` : `${snapshot.discountInfo.percentual}%`})` : ""}</span>
+            <span class="summary__item-meta">${snapshot.discountInfo.percentual > 0 ? `-${formatCurrency(snapshot.discountInfo.descontoCentavos)}` : "—"}</span>
+          </div>
+          <div class="summary__line">
             <span class="summary__item-name">Total com desconto</span>
             <span class="summary__item-meta">${formatCurrency(snapshot.discountInfo.totalLiquidoCentavos)}</span>
           </div>
@@ -1535,7 +1639,7 @@
             <span class="summary__item-name">Frete grátis</span>
             <span class="summary__item-meta">${snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : `faltam ${formatCurrency(snapshot.shippingInfo.faltamCentavos)}`}</span>
           </div>
-          <p style="margin:6px 0 0;font-size:.76rem;color:#536653;">Toque em <strong>Conferir pedido</strong> para revisar o pedido e enviar.</p>
+          <p style="margin:6px 0 0;font-size:.76rem;color:#536653;">Toque em <strong>Conferir pedido</strong> para revisar e enviar.</p>
         `;
 
       updateBusinessNotice({
@@ -1561,6 +1665,10 @@
       const rulesAsc = [...pricingRules.descontoProgressivo].sort((a, b) => a.minUnidades - b.minUnidades);
       const firstRule = rulesAsc[0] || null;
       const secondRule = rulesAsc[1] || firstRule;
+      const maxPercentual = getMaxDiscountPercentual();
+      const isMaxPercentual = (percentual) => Number(percentual) === Number(maxPercentual);
+      const formatOffLabel = (percentual) =>
+        isMaxPercentual(percentual) ? `até ${percentual}% OFF` : `${percentual}% OFF`;
       const noticeVisible = isBusinessNoticeVisible();
       mobileDock.classList.toggle("is-hidden", noticeVisible);
       mobileDockMeta.classList.toggle("is-hidden", noticeVisible);
@@ -1572,7 +1680,7 @@
         mobileReviewBtn.disabled = true;
         dockDiscountFill.style.width = "0%";
         dockShippingFill.style.width = "0%";
-        dockDiscountLabel.textContent = firstRule ? `Rumo a ${firstRule.percentual}% OFF` : "Rumo ao desconto";
+        dockDiscountLabel.textContent = firstRule ? `Rumo a ${formatOffLabel(firstRule.percentual)}` : "Rumo ao desconto";
         dockShippingLabel.textContent = "Rumo ao frete grátis";
         dockDiscountPct.textContent = "0%";
         dockShippingPct.textContent = "0%";
@@ -1593,9 +1701,9 @@
       dockDiscountPct.textContent = `${nextDiscountProgress}%`;
       dockShippingPct.textContent = `${freteProgress}%`;
       if (nextDiscountRule) {
-        dockDiscountLabel.textContent = `Rumo a ${nextDiscountRule.percentual}% OFF`;
+        dockDiscountLabel.textContent = `Rumo a ${formatOffLabel(nextDiscountRule.percentual)}`;
       } else {
-        dockDiscountLabel.textContent = secondRule ? `${secondRule.percentual}% OFF alcançado` : "Desconto máximo atingido";
+        dockDiscountLabel.textContent = secondRule ? `${formatOffLabel(secondRule.percentual)} alcançado` : "Desconto máximo atingido";
       }
       dockShippingLabel.textContent = snapshot.shippingInfo.elegivel ? "Frete grátis aplicado" : "Rumo ao frete grátis";
 
