@@ -1,5 +1,5 @@
 {
-  "webhookUrl": "https://webhook.server.sollucion.com/webhook/78692cd5-512c-456e-860e-6d1e6212233f",
+  "webhookUrl": "https://api-webhook-privado-pagina-pedidos-3fit.yurih-gomes10.workers.dev",
   "descontoProgressivo": [
     {
       "minUnidades": 14,
