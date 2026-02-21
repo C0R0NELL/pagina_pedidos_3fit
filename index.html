@@ -575,6 +575,13 @@
       color: #2f4130;
     }
 
+    #reviewSummary .summary__item-name--dish {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .summary__item-meta {
       font-weight: 700;
       color: #1e7c23;
@@ -1129,7 +1136,7 @@
       </div>
 
       <p class="notice" id="businessNotice"></p>
-      <p class="summary__disclaimer">O desconto máximo pode variar de 23% a 30%, a depender das linhas.</p>
+      <p class="summary__disclaimer">O desconto máximo pode variar de 23% a 34%, a depender das linhas.</p>
       <div id="feedback" class="feedback"></div>
       <pre id="payloadPreview" class="payload" aria-hidden="true"></pre>
     </aside>
@@ -1228,6 +1235,21 @@
       return Math.max(precoComDesconto, pisoPrecoCentavos);
     };
 
+    const getMinEffectiveMaxDiscountPercentual = () => {
+      const effectiveDiscounts = products
+        .map((product) => {
+          if (!Number.isInteger(product.precoCentavos) || product.precoCentavos <= 0) return null;
+          const precoNoMaxDesconto = getUnitPriceWithMaxDiscountCentavos(product.precoCentavos, product.pisoPrecoCentavos);
+          if (!Number.isInteger(precoNoMaxDesconto)) return null;
+          const percentual = Math.floor(((product.precoCentavos - precoNoMaxDesconto) / product.precoCentavos) * 100);
+          return Math.max(0, percentual);
+        })
+        .filter((value) => Number.isInteger(value));
+
+      if (!effectiveDiscounts.length) return 0;
+      return Math.min(...effectiveDiscounts);
+    };
+
     const normalizePricingRules = (raw) => {
       const descontoProgressivo = Array.isArray(raw?.descontoProgressivo)
         ? raw.descontoProgressivo
@@ -1260,19 +1282,28 @@
     let pricingRules = normalizePricingRules(DEFAULT_FEATURES.pricingRules);
     let latestDockSnapshot = null;
 
-    const getDiscountInfo = (totalUnidades, totalBrutoCentavos) => {
+    const getDiscountInfo = (selectedItems, totalUnidades, totalBrutoCentavos) => {
       const rule = pricingRules.descontoProgressivo.find((item) =>
         totalUnidades >= item.minUnidades
         && (item.maxUnidades === null || totalUnidades <= item.maxUnidades)
       ) || null;
       const percentual = rule?.percentual || 0;
-      const descontoCentavos = percentual > 0
-        ? Math.round(totalBrutoCentavos * (percentual / 100))
-        : 0;
+      const totalLiquidoCentavos = percentual > 0
+        ? selectedItems.reduce((acc, item) => {
+          if (!Number.isInteger(item.precoCentavos) || !Number.isFinite(item.qty)) return acc;
+          const fatorDesconto = Math.max(0, 1 - (percentual / 100));
+          const precoComDesconto = Math.round(item.precoCentavos * fatorDesconto);
+          const precoUnitarioAplicado = Number.isInteger(item.pisoPrecoCentavos)
+            ? Math.max(precoComDesconto, item.pisoPrecoCentavos)
+            : precoComDesconto;
+          return acc + (precoUnitarioAplicado * item.qty);
+        }, 0)
+        : totalBrutoCentavos;
+      const descontoCentavos = Math.max(0, totalBrutoCentavos - totalLiquidoCentavos);
       return {
         percentual,
         descontoCentavos,
-        totalLiquidoCentavos: totalBrutoCentavos - descontoCentavos
+        totalLiquidoCentavos
       };
     };
 
@@ -1300,6 +1331,7 @@
     const feedback = document.getElementById("feedback");
     const payloadPreview = document.getElementById("payloadPreview");
     const businessNotice = document.getElementById("businessNotice");
+    const summaryDisclaimer = document.querySelector(".summary__disclaimer");
     const heroPromo = document.getElementById("heroPromo");
     const reviewModal = document.getElementById("reviewModal");
     const reviewSummary = document.getElementById("reviewSummary");
@@ -1320,6 +1352,13 @@
       if (!businessNotice) return false;
       const rect = businessNotice.getBoundingClientRect();
       return rect.top < (window.innerHeight - 140) && rect.bottom > 110;
+    };
+
+    const updateSummaryDisclaimer = () => {
+      if (!summaryDisclaimer) return;
+      const minPercentual = getMinEffectiveMaxDiscountPercentual();
+      const maxPercentual = getMaxDiscountPercentual();
+      summaryDisclaimer.textContent = `O desconto máximo pode variar de ${minPercentual}% a ${maxPercentual}%, a depender das linhas.`;
     };
 
     let activeCategory = null;
@@ -1524,7 +1563,7 @@
       }, 0);
       const discountInfo = hasMissingAnyPrice
         ? { percentual: 0, descontoCentavos: 0, totalLiquidoCentavos: null }
-        : getDiscountInfo(totalUnidades, totalBrutoCentavos);
+        : getDiscountInfo(selectedItems, totalUnidades, totalBrutoCentavos);
       const shippingInfo = hasMissingAnyPrice
         ? { elegivel: false, valorMinimoCentavos: pricingRules.freteGratis.valorMinimoCentavos, faltamCentavos: null }
         : getShippingInfo(discountInfo.totalLiquidoCentavos);
@@ -1551,13 +1590,13 @@
         const itemLines = items
           .map((item) => {
             const itemSubtotal = Number.isInteger(item.precoCentavos) ? formatCurrency(item.precoCentavos * item.qty) : "Preço pendente";
-            return `<div class="summary__line"><span class="summary__item-name">${item.name}</span><span class="summary__item-meta">x${item.qty} | ${itemSubtotal}</span></div>`;
+            return `<div class="summary__line"><span class="summary__item-name summary__item-name--dish" title="${item.name}">${item.name}</span><span class="summary__item-meta">x${item.qty} | ${itemSubtotal}</span></div>`;
           })
           .join("");
 
         return `
           <section class="summary__group">
-            <div class="summary__group-title"><span class="summary__item-name">${lineLabel}${lineGramatura ? ` (${lineGramatura})` : ""}</span><span class="summary__item-meta">${items.length} pratos</span></div>
+            <div class="summary__group-title"><span class="summary__item-name">${lineLabel}${lineGramatura ? ` (${lineGramatura})` : ""}</span></div>
             ${itemLines}
             <div class="summary__subtotal"><span class="summary__item-name">Subtotal da linha</span><span class="summary__item-meta">${subtotal} un. | ${hasMissingPrice ? "Preço pendente" : formatCurrency(subtotalCentavos)}</span></div>
           </section>
@@ -1947,6 +1986,7 @@
 
     const init = async () => {
       await loadFeatures();
+      updateSummaryDisclaimer();
       updateHeroPromo();
       updateBusinessNotice();
       renderAlbums();
