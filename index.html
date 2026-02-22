@@ -1511,6 +1511,7 @@
         lineId: line.id,
         lineName: line.nome,
         name: item.nome,
+        gramatura: item.gramatura == null ? "" : String(item.gramatura).trim(),
         precoCentavos: Number.isInteger(item.precoCentavos)
           ? item.precoCentavos
           : line.precoCentavos,
@@ -1852,7 +1853,7 @@
         const precoComMaiorDesconto = getUnitPriceWithMaxDiscountCentavos(product.precoCentavos, product.pisoPrecoCentavos);
         return `
           <article class="product">
-            <small>${product.lineName}</small>
+            <small>${product.lineName}${product.gramatura ? ` | ${product.gramatura}` : ""}</small>
             <h3>${product.name}</h3>
             <div class="product__price">
               <span class="product__price-current">${formatCurrency(product.precoCentavos)}</span>
