@@ -34,6 +34,12 @@
 4. Payload review: totals, discount, shipping, items.
 5. `features.json` reviewed for correct business values.
 
+## Production Pipeline (Current)
+- Cloudflare Worker deploy is currently manual (copy/paste in Cloudflare dashboard).
+- If `catalog.js` or `features.json` changes, the Worker data blocks (`CATALOG` and `FEATURES`) must be manually synced before production is considered updated.
+- Agents must explicitly remind this dependency in the final handoff whenever catalog/rules are changed.
+- Keep local Worker source in repo for maintenance (`worker/cloudflare-worker.js`), but do not assume auto CI/CD deploy.
+
 ## Security Boundaries
 - Never commit real secret endpoints.
 - Public repo is fine; secrets must stay server-side (Cloudflare Worker secret).

@@ -1492,6 +1492,7 @@
   <script>
     const MAX_OBS_LENGTH = 400;
     const TECH_ERROR_MESSAGE = '<strong>Houve uma falha técnica.</strong><br>Por favor, tente novamente em instantes.<br>Se o problema persistir, solicite <strong>"Atendimento humano"</strong> no WhatsApp.';
+    const CALC_DIVERGENCE_ERROR_MESSAGE = 'Encontramos divergências no cálculo do formulário.<br>Caso o erro persista, solicite <strong>Atendimento humano</strong> no WhatsApp.';
     const catalog = window.CATALOG || { version: "sem-versao", moeda: "BRL", linhas: [] };
     const lines = (catalog.linhas || []).map((line) => ({
       id: line.id,
@@ -2185,6 +2186,25 @@
       alertModal.classList.add("show");
     };
 
+    const getSendOrderErrorMessage = (response, workerError = null) => {
+      if (response.status === 422 && workerError?.error === "calc_mismatch") {
+        return CALC_DIVERGENCE_ERROR_MESSAGE;
+      }
+      return TECH_ERROR_MESSAGE;
+    };
+
+    const readWorkerErrorPayload = async (response) => {
+      try {
+        return await response.clone().json();
+      } catch {
+        try {
+          return { raw: await response.clone().text() };
+        } catch {
+          return null;
+        }
+      }
+    };
+
     const sanitizeObservation = (value) =>
       String(value || "")
         .replace(/[\u0000-\u001F\u007F]/g, " ")
@@ -2440,7 +2460,16 @@
         });
 
         if (!response.ok) {
-          throw new Error(`status_${response.status}`);
+          const workerError = await readWorkerErrorPayload(response);
+          if (workerError) {
+            console.warn("Worker rejeitou o pedido", {
+              status: response.status,
+              workerError
+            });
+          }
+          const errorMessage = getSendOrderErrorMessage(response, workerError);
+          showFeedback(errorMessage, "error");
+          return;
         }
 
         showFeedback("Pedido enviado com sucesso. Em breve entraremos em contato.", "ok");

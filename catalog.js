@@ -5,6 +5,9 @@
   - Para desativar temporariamente um prato, use ativo: false no item
   - Mantenha ids estaveis (linha e item) para evitar quebrar payloads/historico
   - Regras de desconto/frete ficam no features.json (nao neste arquivo)
+  - IMPORTANTE: alterou este arquivo ou o features.json?
+    Atualize cloudflare-worker.js e tbm atualize **manualmente** o Worker lá na Cloudflare (blocos CATALOG/FEATURES),
+    publique o Worker e valide um envio real, isso é segurança anti manipulação de valores no front-end no envio do pedido no formulário
   - Exemplos:
     - R$ 36,00 => precoCentavos: 3600
     - R$ 19,57 => precoCentavos: 1957
