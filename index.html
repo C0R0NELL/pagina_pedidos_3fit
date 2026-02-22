@@ -1372,7 +1372,7 @@
 <body>
   <header class="topbar">
     <div class="container topbar__wrap">
-      <a class="brand" href="#" aria-label="Revendedor 3Fit">
+      <a class="brand" id="brandReloadBtn" href="#" aria-label="Revendedor 3Fit">
         <img src="images/logo.png" alt="Logo 3Fit" />
         <div>
           <strong>3Fit - Taboão da Serra</strong>
@@ -1667,6 +1667,7 @@
     const alertCard = document.getElementById("alertCard");
     const alertMessage = document.getElementById("alertMessage");
     const alertOkBtn = document.getElementById("alertOkBtn");
+    const brandReloadBtn = document.getElementById("brandReloadBtn");
 
     const isBusinessNoticeVisible = () => {
       if (!businessNotice) return false;
@@ -2371,6 +2372,11 @@
       renderSummary();
       reviewModal.classList.remove("show");
       animateClearOrderFeedback();
+    });
+
+    brandReloadBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.location.reload();
     });
 
     const openReviewModal = () => {
