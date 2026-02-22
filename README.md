@@ -4,7 +4,7 @@ Página criada para disponibilizar um formulário de pedidos para a revenda lice
 
 ## Sincronização Manual do Worker (Cloudflare)
 
-IMPORTANTE: qualquer alteração em `catalog.js` ou `features.json` precisa ser replicada manualmente no Worker da Cloudflare.
+IMPORTANTE: qualquer alteração em `catalog.js` ou `features.json` precisa ser replicada em `cloudflare-worker.js` e depois manualmente no Worker no site da Cloudflare.
 
 Checklist rápido após mudanças comerciais:
 - atualizar `catalog.js` e/ou `features.json`;
