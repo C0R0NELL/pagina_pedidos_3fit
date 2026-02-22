@@ -35,13 +35,13 @@ const CATALOG = {
         {
           "id": "cutting-001",
           "nome": "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-          "gramatura": "",
+          "gramatura": "250g",
           "ativo": true
         },
         {
           "id": "cutting-002",
           "nome": "Macarrão a Bolonhesa",
-          "gramatura": "",
+          "gramatura": "280g",
           "ativo": true
         },
         {
@@ -103,37 +103,37 @@ const CATALOG = {
         {
           "id": "diaadia-001",
           "nome": "Espaguete a bolonhesa",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "diaadia-002",
           "nome": "Pernil suíno desfiado ao molho de laranja e mel, arroz branco e purê de abóbora",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "diaadia-003",
           "nome": "Panqueca de frango ao molho branco de queijo parmesão",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "diaadia-004",
           "nome": "Strogonoff de frango com arroz branco e batata rústica assada",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "diaadia-005",
           "nome": "Carne moída com cenoura e batata, arroz branco e feijão carioca",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "diaadia-006",
           "nome": "Picadinho de carne com legumes, arroz branco, feijão carioca e farofa de cenoura",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         }
       ]
@@ -189,31 +189,31 @@ const CATALOG = {
         {
           "id": "reeduc-001",
           "nome": "Pernil Suíno ao Molho de Laranja e Mel com arroz integral e purê de abóbora",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "reeduc-002",
           "nome": "Macarrão Integral à Bolonhesa",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "reeduc-003",
           "nome": "Almôndegas de Frango ao Molho de Tomate com arroz integral e cenoura ralada",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "reeduc-004",
           "nome": "Panqueca Red Integral de Frango ao Molho de Tomate e Cenoura",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "reeduc-005",
           "nome": "Carne Moída com Purê de Batata Doce",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         }
       ]
@@ -229,31 +229,31 @@ const CATALOG = {
         {
           "id": "lowcarb-001",
           "nome": "Frango à Pizzaiolo com Legumes",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "lowcarb-002",
           "nome": "Carne Moída com Mix de Legumes",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "lowcarb-003",
           "nome": "Espaguete de Cenoura à Bolonhesa",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "lowcarb-004",
           "nome": "Ragú com Abóbora em Cubos",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         },
         {
           "id": "lowcarb-005",
           "nome": "Iscas de Frango Refogado com Pimentões Coloridos e Cenoura no Vapor",
-          "gramatura": "",
+          "gramatura": "200g",
           "ativo": true
         }
       ]
@@ -642,7 +642,7 @@ export default {
   async fetch(req, env) {
     const allowedOrigins = [
       // DEV LOCAL: keep enabled while testing
-      "http://127.0.0.1:3000",
+      //"http://127.0.0.1:3000",
 
       // PRODUCTION
       "https://3fit.sollucion.com",
