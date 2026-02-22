@@ -15,6 +15,9 @@
  *
  * Required env secret:
  * - WEBHOOK_URL
+ * 
+ * IMPORTANTE:
+ * As alterações aqui, não estão sendo refletidas automaticamente no Cloudflare, então é necessário também acessar o site deles e atualizar manualmente.
  */
 
 const CATALOG = {
