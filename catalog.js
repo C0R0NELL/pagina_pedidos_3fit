@@ -15,7 +15,7 @@
   - Para adicionar nova marmita: adicione um item em "itens"
 */
 
-window.CATALOG = {
+window.CATALOG = { // QUALQUER ALTERAÇÃO AQUI (catalog.js) OU EM features.json, TEM QUE SER REPETIDA MANUALMENTE NO WORKER NO SITE CLOUDFLARE (e não somente em cloudflare-worker.js) ISSO É PARA GARANTIR A INTEGRIDADE DOS DADOS NO ENVIO DO PEDIDO
   version: "2026-02-20",
   moeda: "BRL",
   linhas: [
