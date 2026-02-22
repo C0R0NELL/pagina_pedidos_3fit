@@ -786,6 +786,73 @@
       gap: 9px;
     }
 
+    .whatsapp-field {
+      border: 1px solid #25D366;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f1fff6 0%, #ffffff 100%);
+      padding: 8px 8px 9px;
+      display: grid;
+      gap: 6px;
+      box-shadow: inset 0 0 0 1px rgba(37, 211, 102, 0.12);
+    }
+
+    .whatsapp-field__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 2px;
+    }
+
+    .whatsapp-field__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #128C7E;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .whatsapp-field__dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #25D366;
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+    }
+
+    .whatsapp-field__required {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .whatsapp-field .field {
+      border-color: rgba(37, 211, 102, 0.45);
+      background: #fff;
+    }
+
+    .form__hint {
+      margin: -2px 2px 0;
+      font-size: 0.78rem;
+      line-height: 1.3;
+      color: var(--danger);
+      display: none;
+    }
+
+    .form__hint.show {
+      display: block;
+    }
+
+    .field.is-invalid {
+      border-color: var(--danger-line);
+      box-shadow: 0 0 0 2px var(--danger-bg);
+    }
+
     .form textarea {
       min-height: 74px;
       resize: vertical;
@@ -1376,6 +1443,14 @@
       </div>
       <div class="summary" id="reviewSummary"></div>
       <div class="form">
+        <div class="whatsapp-field">
+          <div class="whatsapp-field__head">
+            <p class="whatsapp-field__label"><span class="whatsapp-field__dot" aria-hidden="true"></span> WhatsApp</p>
+            <p class="whatsapp-field__required">Obrigatório</p>
+          </div>
+          <input class="field" id="whatsappPedido" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(DDD) + número" />
+        </div>
+        <p class="form__hint" id="whatsappHint">O número de WhatsApp precisa ser preenchido para validarmos o pedido.</p>
         <textarea class="field" id="obsPedido" placeholder="Observações do pedido (opcional)"></textarea>
       </div>
       <div class="modal__actions">
@@ -1562,6 +1637,8 @@
     const albumGrid = document.getElementById("albumGrid");
     const albumTitle = document.getElementById("albumTitle");
     const summary = document.getElementById("summary");
+    const whatsappPedido = document.getElementById("whatsappPedido");
+    const whatsappHint = document.getElementById("whatsappHint");
     const obsPedido = document.getElementById("obsPedido");
     const reviewOrderBtn = document.getElementById("reviewOrderBtn");
     const sendOrderBtn = document.getElementById("sendOrderBtn");
@@ -1980,7 +2057,7 @@
             <span class="summary__item-meta">${snapshot.discountInfo.percentual > 0 ? `-${formatCurrency(snapshot.discountInfo.descontoCentavos)}` : "—"}</span>
           </div>
           <div class="summary__line">
-            <span class="summary__item-name">Total com desconto</span>
+            <span class="summary__item-name">${snapshot.discountInfo.percentual > 0 ? "Total com desconto" : "Total sem desconto"}</span>
             <span class="summary__item-meta">${formatCurrency(snapshot.discountInfo.totalLiquidoCentavos)}</span>
           </div>
           <div class="summary__line">
@@ -2115,6 +2192,44 @@
         .trim()
         .slice(0, MAX_OBS_LENGTH);
 
+    const normalizeBrazilPhoneDigits = (value) => {
+      let digits = String(value || "").replace(/\D/g, "");
+      if (digits.length >= 12 && digits.startsWith("55")) {
+        digits = digits.slice(2);
+      }
+      return digits;
+    };
+
+    const isValidBrazilWhatsapp = (value) => {
+      const digits = normalizeBrazilPhoneDigits(value);
+      if (digits.length !== 11) return false;
+
+      const ddd = Number(digits.slice(0, 2));
+      const firstLocalDigit = digits[2];
+      return ddd >= 11 && ddd <= 99 && firstLocalDigit === "9";
+    };
+
+    const formatBrazilWhatsapp = (value) => {
+      const digits = normalizeBrazilPhoneDigits(value).slice(0, 11);
+      if (digits.length <= 2) return digits;
+      if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+    };
+
+    const getPrefilledWhatsappFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const rawValue = params.get("wa") || "";
+      return formatBrazilWhatsapp(rawValue);
+    };
+
+    const updateWhatsappValidationUi = () => {
+      const isValid = isValidBrazilWhatsapp(whatsappPedido.value);
+      sendOrderBtn.disabled = !isValid;
+      whatsappHint.classList.toggle("show", !isValid);
+      whatsappPedido.classList.toggle("is-invalid", !isValid);
+      return isValid;
+    };
+
     const validatePayload = (payload) => {
       if (!payload?.pedido) return { ok: false, reason: "payload_sem_pedido" };
       if (!Array.isArray(payload.pedido.itens) || payload.pedido.itens.length === 0) return { ok: false, reason: "sem_itens" };
@@ -2160,6 +2275,7 @@
           geradoEm: new Date().toISOString(),
           revendedor: "Revendedor autorizado 3Fit",
           canalAtendimento: "whatsapp-agente-ia",
+          contatoWhatsapp: `55${normalizeBrazilPhoneDigits(whatsappPedido.value)}`,
           catalogVersion: catalog.version,
           moeda: catalog.moeda || "BRL"
         },
@@ -2227,7 +2343,9 @@
 
     clearOrderBtn.addEventListener("click", () => {
       selected.clear();
+      whatsappPedido.value = "";
       obsPedido.value = "";
+      updateWhatsappValidationUi();
       renderProducts();
       renderSummary();
       reviewModal.classList.remove("show");
@@ -2242,6 +2360,7 @@
       }
       renderReviewSummary();
       reviewModal.classList.add("show");
+      updateWhatsappValidationUi();
     };
 
     reviewOrderBtn.addEventListener("click", openReviewModal);
@@ -2258,6 +2377,16 @@
 
     reviewModal.addEventListener("click", (event) => {
       if (event.target === reviewModal) reviewModal.classList.remove("show");
+    });
+
+    whatsappPedido.addEventListener("input", () => {
+      whatsappPedido.value = formatBrazilWhatsapp(whatsappPedido.value);
+      updateWhatsappValidationUi();
+    });
+
+    whatsappPedido.addEventListener("blur", () => {
+      whatsappPedido.value = formatBrazilWhatsapp(whatsappPedido.value);
+      updateWhatsappValidationUi();
     });
 
     alertOkBtn.addEventListener("click", () => {
@@ -2281,6 +2410,10 @@
     window.addEventListener("resize", syncDockMetaWithViewport);
 
     sendOrderBtn.addEventListener("click", async () => {
+      if (!updateWhatsappValidationUi()) {
+        return;
+      }
+
       const payload = buildPayload();
       const validation = validatePayload(payload);
       if (!validation.ok) {
@@ -2320,7 +2453,7 @@
         console.error("Falha no envio do pedido", err);
         showFeedback(TECH_ERROR_MESSAGE, "error");
       } finally {
-        sendOrderBtn.disabled = false;
+        updateWhatsappValidationUi();
         sendOrderBtn.textContent = originalSendLabel;
       }
     });
@@ -2340,9 +2473,11 @@
       updateSummaryDisclaimer();
       updateHeroPromo();
       updateBusinessNotice();
+      whatsappPedido.value = getPrefilledWhatsappFromUrl();
       renderAlbums();
       renderProducts();
       renderSummary();
+      updateWhatsappValidationUi();
     };
 
     init();
