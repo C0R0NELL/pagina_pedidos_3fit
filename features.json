@@ -1,5 +1,6 @@
 {
   "webhookUrl": "https://api-webhook-privado-pagina-pedidos-3fit.yurih-gomes10.workers.dev",
+  "minimoUnidadesParaConferir": 7,
   "descontoProgressivo": [
     {
       "minUnidades": 14,

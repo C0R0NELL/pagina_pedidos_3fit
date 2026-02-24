@@ -53,6 +53,7 @@
       --shadow-primary-sm: 0 6px 12px rgba(232, 111, 13, 0.24);
       --shadow-modal: 0 20px 50px rgba(23, 21, 19, 0.24);
       --shadow-dock: 0 14px 28px rgba(23, 21, 19, 0.2);
+      --modal-edge-gap: 16px;
       --overlay-backdrop: rgba(13, 24, 14, 0.55);
       --overlay-panel: rgba(255, 255, 255, 0.95);
       --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-strong));
@@ -73,6 +74,10 @@
       background: var(--gradient-bg-layer-1), var(--gradient-bg-layer-2), var(--bg);
       line-height: 1.4;
       overflow-x: hidden;
+    }
+
+    body.has-open-modal {
+      overflow: hidden;
     }
 
     .container {
@@ -1068,6 +1073,32 @@
       padding: 8px 14px;
     }
 
+    .center-notice {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(.98);
+      width: min(420px, calc(100% - 28px));
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: rgba(23, 21, 19, 0.93);
+      color: #fff;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.35;
+      box-shadow: var(--shadow-modal);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .center-notice.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
     .modal {
       position: fixed;
       inset: 0;
@@ -1075,7 +1106,11 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: calc(var(--modal-edge-gap) + env(safe-area-inset-top, 0px))
+        calc(var(--modal-edge-gap) + env(safe-area-inset-right, 0px))
+        calc(var(--modal-edge-gap) + env(safe-area-inset-bottom, 0px))
+        calc(var(--modal-edge-gap) + env(safe-area-inset-left, 0px));
+      overflow: auto;
       z-index: 70;
     }
 
@@ -1085,13 +1120,21 @@
 
     .modal__card {
       width: min(500px, 100%);
-      max-height: 92vh;
+      max-height: calc(100dvh - (2 * var(--modal-edge-gap)) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
       overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 16px;
       box-shadow: var(--shadow-modal);
       padding: 14px;
+    }
+
+    @supports not (height: 100dvh) {
+      .modal__card {
+        max-height: calc(100vh - (2 * var(--modal-edge-gap)) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+      }
     }
 
     .modal__head {
@@ -1488,6 +1531,8 @@
     </div>
   </div>
 
+  <div class="center-notice" id="centerNotice" role="status" aria-live="polite"></div>
+
   <script src="catalog.js"></script>
   <script>
     const MAX_OBS_LENGTH = 400;
@@ -1586,12 +1631,25 @@
       if (!Number.isInteger(valorFreteCentavos) || valorFreteCentavos < 0) return null;
       const freteGratis = { valorMinimoCentavos, valorFreteCentavos };
 
-      return { descontoProgressivo, freteGratis };
+      const minimoUnidadesParaConferir = Number(raw?.minimoUnidadesParaConferir);
+      if (!Number.isInteger(minimoUnidadesParaConferir) || minimoUnidadesParaConferir <= 0) return null;
+
+      return { descontoProgressivo, freteGratis, minimoUnidadesParaConferir };
     };
 
     let webhookUrl = "";
     let pricingRules = null;
     let latestDockSnapshot = null;
+
+    const getEffectiveUnitPriceCentavos = (item, percentual) => {
+      if (!Number.isInteger(item?.precoCentavos)) return null;
+      if (!(percentual > 0)) return item.precoCentavos;
+      const fatorDesconto = Math.max(0, 1 - (percentual / 100));
+      const precoComDesconto = Math.round(item.precoCentavos * fatorDesconto);
+      return Number.isInteger(item.pisoPrecoCentavos)
+        ? Math.max(precoComDesconto, item.pisoPrecoCentavos)
+        : precoComDesconto;
+    };
 
     // Calcula o desconto ativo pela faixa de unidades e respeita pisoPrecoCentavos por item.
     const getDiscountInfo = (selectedItems, totalUnidades, totalBrutoCentavos) => {
@@ -1600,22 +1658,27 @@
         && (item.maxUnidades === null || totalUnidades <= item.maxUnidades)
       ) || null;
       const percentual = rule?.percentual || 0;
-      const totalLiquidoCentavos = percentual > 0
-        ? selectedItems.reduce((acc, item) => {
-          if (!Number.isInteger(item.precoCentavos) || !Number.isFinite(item.qty)) return acc;
-          const fatorDesconto = Math.max(0, 1 - (percentual / 100));
-          const precoComDesconto = Math.round(item.precoCentavos * fatorDesconto);
-          const precoUnitarioAplicado = Number.isInteger(item.pisoPrecoCentavos)
-            ? Math.max(precoComDesconto, item.pisoPrecoCentavos)
-            : precoComDesconto;
-          return acc + (precoUnitarioAplicado * item.qty);
-        }, 0)
-        : totalBrutoCentavos;
+      const itemTotalsById = selectedItems.reduce((acc, item) => {
+        if (!Number.isFinite(item.qty)) return acc;
+        const precoUnitarioEfetivoCentavos = getEffectiveUnitPriceCentavos(item, percentual);
+        acc[item.id] = {
+          precoUnitarioEfetivoCentavos,
+          subtotalEfetivoCentavos: Number.isInteger(precoUnitarioEfetivoCentavos)
+            ? precoUnitarioEfetivoCentavos * item.qty
+            : null
+        };
+        return acc;
+      }, {});
+      const totalLiquidoCentavos = selectedItems.reduce((acc, item) => {
+        const subtotalEfetivo = itemTotalsById[item.id]?.subtotalEfetivoCentavos;
+        return acc + (Number.isInteger(subtotalEfetivo) ? subtotalEfetivo : 0);
+      }, 0);
       const descontoCentavos = Math.max(0, totalBrutoCentavos - totalLiquidoCentavos);
       return {
         percentual,
         descontoCentavos,
-        totalLiquidoCentavos
+        totalLiquidoCentavos,
+        itemTotalsById
       };
     };
 
@@ -1667,6 +1730,7 @@
     const alertCard = document.getElementById("alertCard");
     const alertMessage = document.getElementById("alertMessage");
     const alertOkBtn = document.getElementById("alertOkBtn");
+    const centerNotice = document.getElementById("centerNotice");
     const brandReloadBtn = document.getElementById("brandReloadBtn");
 
     const isBusinessNoticeVisible = () => {
@@ -1684,6 +1748,20 @@
 
     let activeCategory = null;
     let clearOrderFeedbackTimer = null;
+    let centerNoticeTimer = null;
+
+    const getUnitsNoun = (value) => (Number(value) === 1 ? "unidade" : "unidades");
+    const getMissingUnitsForReview = (totalUnidades) => {
+      const minimoUnidades = Number.isInteger(pricingRules?.minimoUnidadesParaConferir)
+        ? pricingRules.minimoUnidadesParaConferir
+        : 1;
+      return Math.max(0, minimoUnidades - (Number.isInteger(totalUnidades) ? totalUnidades : 0));
+    };
+    const updateReviewButtonsState = (totalUnidades) => {
+      const hasItems = Number.isInteger(totalUnidades) && totalUnidades > 0;
+      reviewOrderBtn.disabled = !hasItems;
+      mobileReviewBtn.disabled = !hasItems;
+    };
 
     const updateBusinessNotice = (state = {}) => {
       const totalUnidades = Number.isFinite(state.totalUnidades) ? state.totalUnidades : 0;
@@ -2034,6 +2112,7 @@
         latestDockSnapshot = null;
         updateMobileDock(null);
         updateHeaderCart(0);
+        updateReviewButtonsState(0);
         return;
       }
 
@@ -2078,6 +2157,7 @@
       latestDockSnapshot = snapshot;
       updateMobileDock(snapshot);
       updateHeaderCart(snapshot.totalUnidades);
+      updateReviewButtonsState(snapshot.totalUnidades);
     };
 
     const renderReviewSummary = () => {
@@ -2113,7 +2193,6 @@
         mobileDockMeta.textContent = noticeVisible
           ? "Quanto mais marmitas\nMaior o desconto 💪"
           : "Quanto mais marmitas\nMaior o desconto 💪";
-        mobileReviewBtn.disabled = true;
         dockDiscountFill.style.width = "0%";
         dockShippingFill.style.width = "0%";
         dockDiscountLabel.textContent = firstRule ? `Rumo a ${formatOffLabel(firstRule.percentual)}` : "Rumo ao desconto";
@@ -2123,7 +2202,6 @@
         return;
       }
 
-      mobileReviewBtn.disabled = false;
       const nextDiscountRule = rulesAsc.find((rule) => snapshot.totalUnidades < rule.minUnidades) || null;
       const showFirstDiscountNote = firstDiscountActive && Boolean(nextDiscountRule);
       mobileDockMetaNote.classList.toggle("is-hidden", !showFirstDiscountNote || noticeVisible);
@@ -2181,11 +2259,31 @@
       if (reviewModal.classList.contains("show")) renderReviewSummary();
     };
 
+    const syncModalBodyState = () => {
+      const hasVisibleModal = reviewModal.classList.contains("show") || alertModal.classList.contains("show");
+      document.body.classList.toggle("has-open-modal", hasVisibleModal);
+    };
+
+    const setModalVisible = (modalElement, visible) => {
+      modalElement.classList.toggle("show", visible);
+      syncModalBodyState();
+    };
+
     const showFeedback = (message, type = "ok") => {
       alertCard.classList.remove("ok", "error");
       alertCard.classList.add(type === "error" ? "error" : "ok");
       alertMessage.innerHTML = message;
-      alertModal.classList.add("show");
+      setModalVisible(alertModal, true);
+    };
+
+    const showCenterNotice = (message, durationMs = 3000) => {
+      centerNotice.textContent = String(message || "");
+      centerNotice.classList.add("show");
+      window.clearTimeout(centerNoticeTimer);
+      centerNoticeTimer = window.setTimeout(() => {
+        centerNotice.classList.remove("show");
+        centerNoticeTimer = null;
+      }, durationMs);
     };
 
     const getSendOrderErrorMessage = (response, workerError = null) => {
@@ -2274,22 +2372,31 @@
     // Payload enviado ao webhook/proxy.
     // Evite mudar nomes de campos sem alinhar com o consumidor backend.
     const buildPayload = () => {
-      const orderItems = getSelectedItems()
+      const selectedItems = getSelectedItems();
+      const snapshot = getOrderSnapshot(selectedItems);
+      const precoPendente = snapshot.hasMissingAnyPrice;
+      const discountInfo = precoPendente ? null : snapshot.discountInfo;
+      const shippingInfo = precoPendente ? null : snapshot.shippingInfo;
+      const itemTotalsById = discountInfo?.itemTotalsById || {};
+
+      const orderItems = selectedItems
         .map((product) => ({
           id: product.id,
           linhaId: product.lineId,
           linha: product.lineName,
           linhaGramatura: lineById[product.lineId]?.gramatura || "",
           produto: product.name,
-          quantidade: selected.get(product.id),
+          quantidade: product.qty,
           precoUnitarioCentavos: product.precoCentavos,
-          subtotalCentavos: Number.isInteger(product.precoCentavos) ? product.precoCentavos * selected.get(product.id) : null
+          subtotalCentavos: Number.isInteger(product.precoCentavos) ? product.precoCentavos * product.qty : null,
+          precoUnitarioEfetivoCentavos: precoPendente
+            ? null
+            : itemTotalsById[product.id]?.precoUnitarioEfetivoCentavos ?? product.precoCentavos,
+          subtotalEfetivoCentavos: precoPendente
+            ? null
+            : itemTotalsById[product.id]?.subtotalEfetivoCentavos
+              ?? (Number.isInteger(product.precoCentavos) ? product.precoCentavos * product.qty : null)
         }));
-
-      const snapshot = getOrderSnapshot(getSelectedItems());
-      const precoPendente = snapshot.hasMissingAnyPrice;
-      const discountInfo = precoPendente ? null : snapshot.discountInfo;
-      const shippingInfo = precoPendente ? null : snapshot.shippingInfo;
 
       return {
         metadata: {
@@ -2370,7 +2477,7 @@
       updateWhatsappValidationUi();
       renderProducts();
       renderSummary();
-      reviewModal.classList.remove("show");
+      setModalVisible(reviewModal, false);
       animateClearOrderFeedback();
     });
 
@@ -2385,8 +2492,17 @@
         showFeedback("Selecione pelo menos um prato antes de conferir.", "error");
         return;
       }
+      const totalUnidades = selectedItems.reduce((acc, item) => acc + item.qty, 0);
+      const missingUnitsForReview = getMissingUnitsForReview(totalUnidades);
+      if (missingUnitsForReview > 0) {
+        showCenterNotice(
+          "Pedido mínimo são 7 unidades 💪",
+          3000
+        );
+        return;
+      }
       renderReviewSummary();
-      reviewModal.classList.add("show");
+      setModalVisible(reviewModal, true);
       updateWhatsappValidationUi();
     };
 
@@ -2395,15 +2511,15 @@
     headerCartBtn.addEventListener("click", openReviewModal);
 
     closeReviewModal.addEventListener("click", () => {
-      reviewModal.classList.remove("show");
+      setModalVisible(reviewModal, false);
     });
 
     cancelReviewBtn.addEventListener("click", () => {
-      reviewModal.classList.remove("show");
+      setModalVisible(reviewModal, false);
     });
 
     reviewModal.addEventListener("click", (event) => {
-      if (event.target === reviewModal) reviewModal.classList.remove("show");
+      if (event.target === reviewModal) setModalVisible(reviewModal, false);
     });
 
     whatsappPedido.addEventListener("input", () => {
@@ -2417,11 +2533,11 @@
     });
 
     alertOkBtn.addEventListener("click", () => {
-      alertModal.classList.remove("show");
+      setModalVisible(alertModal, false);
     });
 
     alertModal.addEventListener("click", (event) => {
-      if (event.target === alertModal) alertModal.classList.remove("show");
+      if (event.target === alertModal) setModalVisible(alertModal, false);
     });
 
     let dockSyncTicking = false;
@@ -2482,7 +2598,7 @@
         showFeedback("Pedido enviado com sucesso. Em breve entraremos em contato.", "ok");
         obsPedido.value = "";
         selected.clear();
-        reviewModal.classList.remove("show");
+        setModalVisible(reviewModal, false);
         renderProducts();
         renderSummary();
       } catch (err) {

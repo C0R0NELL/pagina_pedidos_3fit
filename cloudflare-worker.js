@@ -476,6 +476,16 @@ function getServerConfig() {
   return serverConfigCache;
 }
 
+function getEffectiveUnitPriceCentavos(item, percentual) {
+  if (!Number.isInteger(item?.precoCentavos)) return null;
+  if (!(percentual > 0)) return item.precoCentavos;
+  const fatorDesconto = Math.max(0, 1 - (percentual / 100));
+  const precoComDesconto = Math.round(item.precoCentavos * fatorDesconto);
+  return Number.isInteger(item.pisoPrecoCentavos)
+    ? Math.max(precoComDesconto, item.pisoPrecoCentavos)
+    : precoComDesconto;
+}
+
 function getDiscountInfo(selectedItems, totalUnidades, totalBrutoCentavos, pricingRules) {
   const rule = pricingRules.descontoProgressivo.find((item) =>
     totalUnidades >= item.minUnidades
@@ -483,17 +493,13 @@ function getDiscountInfo(selectedItems, totalUnidades, totalBrutoCentavos, prici
   ) || null;
 
   const percentual = rule?.percentual || 0;
-
-  const totalLiquidoCentavos = percentual > 0
-    ? selectedItems.reduce((acc, item) => {
-      const fatorDesconto = Math.max(0, 1 - (percentual / 100));
-      const precoComDesconto = Math.round(item.precoCentavos * fatorDesconto);
-      const precoUnitarioAplicado = Number.isInteger(item.pisoPrecoCentavos)
-        ? Math.max(precoComDesconto, item.pisoPrecoCentavos)
-        : precoComDesconto;
-      return acc + (precoUnitarioAplicado * item.quantidade);
-    }, 0)
-    : totalBrutoCentavos;
+  const totalLiquidoCentavos = selectedItems.reduce((acc, item) => {
+    const precoUnitarioEfetivoCentavos = getEffectiveUnitPriceCentavos(item, percentual);
+    const subtotalEfetivoCentavos = Number.isInteger(precoUnitarioEfetivoCentavos)
+      ? precoUnitarioEfetivoCentavos * item.quantidade
+      : 0;
+    return acc + subtotalEfetivoCentavos;
+  }, 0);
 
   const descontoCentavos = Math.max(0, totalBrutoCentavos - totalLiquidoCentavos);
   return { percentual, descontoCentavos, totalLiquidoCentavos };
@@ -590,16 +596,25 @@ function validateAndNormalizePayload(payload, config) {
     fail("calc_mismatch", mismatches);
   }
 
-  const itens = selectedItems.map((item) => ({
-    id: item.id,
-    linhaId: item.lineId,
-    linha: item.lineName,
-    linhaGramatura: item.lineGramatura || item.clientLineGramatura,
-    produto: item.name,
-    quantidade: item.quantidade,
-    precoUnitarioCentavos: item.precoCentavos,
-    subtotalCentavos: item.precoCentavos * item.quantidade
-  }));
+  const itens = selectedItems.map((item) => {
+    const precoUnitarioEfetivoCentavos = getEffectiveUnitPriceCentavos(item, discountInfo.percentual);
+    return {
+      id: item.id,
+      linhaId: item.lineId,
+      linha: item.lineName,
+      linhaGramatura: item.lineGramatura || item.clientLineGramatura,
+      produto: item.name,
+      quantidade: item.quantidade,
+      precoUnitarioCentavos: item.precoCentavos,
+      subtotalCentavos: item.precoCentavos * item.quantidade,
+      precoUnitarioEfetivoCentavos: Number.isInteger(precoUnitarioEfetivoCentavos)
+        ? precoUnitarioEfetivoCentavos
+        : item.precoCentavos,
+      subtotalEfetivoCentavos: Number.isInteger(precoUnitarioEfetivoCentavos)
+        ? precoUnitarioEfetivoCentavos * item.quantidade
+        : item.precoCentavos * item.quantidade
+    };
+  });
 
   return {
     metadata: {
