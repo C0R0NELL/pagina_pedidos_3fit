@@ -1631,10 +1631,10 @@
       if (!Number.isInteger(valorFreteCentavos) || valorFreteCentavos < 0) return null;
       const freteGratis = { valorMinimoCentavos, valorFreteCentavos };
 
-      const minimoUnidadesParaConferir = Number(raw?.minimoUnidadesParaConferir);
-      if (!Number.isInteger(minimoUnidadesParaConferir) || minimoUnidadesParaConferir <= 0) return null;
+      const pedidoMinimo = Number(raw?.pedidoMinimo);
+      if (!Number.isInteger(pedidoMinimo) || pedidoMinimo <= 0) return null;
 
-      return { descontoProgressivo, freteGratis, minimoUnidadesParaConferir };
+      return { descontoProgressivo, freteGratis, pedidoMinimo };
     };
 
     let webhookUrl = "";
@@ -1752,8 +1752,8 @@
 
     const getUnitsNoun = (value) => (Number(value) === 1 ? "unidade" : "unidades");
     const getMissingUnitsForReview = (totalUnidades) => {
-      const minimoUnidades = Number.isInteger(pricingRules?.minimoUnidadesParaConferir)
-        ? pricingRules.minimoUnidadesParaConferir
+      const minimoUnidades = Number.isInteger(pricingRules?.pedidoMinimo)
+        ? pricingRules.pedidoMinimo
         : 1;
       return Math.max(0, minimoUnidades - (Number.isInteger(totalUnidades) ? totalUnidades : 0));
     };

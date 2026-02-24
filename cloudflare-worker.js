@@ -303,6 +303,7 @@ const CATALOG = {
 
 const FEATURES = {
   "webhookUrl": "https://api-webhook-privado-pagina-pedidos-3fit.yurih-gomes10.workers.dev",
+  "pedidoMinimo": 7,
   "descontoProgressivo": [
     {
       "minUnidades": 14,
