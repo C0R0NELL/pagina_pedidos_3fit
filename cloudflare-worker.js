@@ -53,7 +53,7 @@ const CATALOG = {
         {
           "id": "cutting-004",
           "nome": "Macarrão c/ Frango ao Molho Branco",
-          "gramatura": "",
+          "gramatura": "280g",
           "ativo": true
         }
       ]
@@ -69,25 +69,25 @@ const CATALOG = {
         {
           "id": "bulking-001",
           "nome": "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-          "gramatura": "",
+          "gramatura": "450g",
           "ativo": true
         },
         {
           "id": "bulking-002",
           "nome": "Macarrão a Bolonhesa",
-          "gramatura": "",
+          "gramatura": "450g",
           "ativo": true
         },
         {
           "id": "bulking-003",
           "nome": "Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-          "gramatura": "",
+          "gramatura": "400g",
           "ativo": true
         },
         {
           "id": "bulking-004",
           "nome": "Macarrão c/ Frango ao Molho Branco",
-          "gramatura": "",
+          "gramatura": "450g",
           "ativo": true
         }
       ]
@@ -149,31 +149,31 @@ const CATALOG = {
         {
           "id": "sardinha-001",
           "nome": "Picadinho de frango c/ batata, cenoura e arroz branco",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "sardinha-002",
           "nome": "Iscas de frango refogada aceboladas e batata inglesa no vapor",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "sardinha-003",
           "nome": "Iscas de frango c/ mix de legumes",
-          "gramatura": "",
+          "gramatura": "350g",
           "ativo": true
         },
         {
           "id": "sardinha-004",
           "nome": "Escondidinho de carne moída c/ batata doce",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         },
         {
           "id": "sardinha-005",
           "nome": "Carne moída c/ arroz branco e cenoura refogada",
-          "gramatura": "",
+          "gramatura": "300g",
           "ativo": true
         }
       ]
@@ -275,25 +275,25 @@ const CATALOG = {
         {
           "id": "basa-002",
           "nome": "Escondidinho de carne c/ Batata inglesa",
-          "gramatura": "",
+          "gramatura": "400g",
           "ativo": true
         },
         {
           "id": "basa-003",
           "nome": "Espaguete à Bolonhesa",
-          "gramatura": "",
+          "gramatura": "400g",
           "ativo": true
         },
         {
           "id": "basa-004",
           "nome": "Almôndegas de Frango ao molho de Tomate c/ Arroz & Cenoura",
-          "gramatura": "",
+          "gramatura": "400g",
           "ativo": true
         },
         {
           "id": "basa-005",
           "nome": "Panqueca de Frango ao Molho Branco",
-          "gramatura": "",
+          "gramatura": "400g",
           "ativo": true
         }
       ]

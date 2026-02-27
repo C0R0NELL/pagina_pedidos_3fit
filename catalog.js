@@ -33,7 +33,7 @@ window.CATALOG = {
         { id: "cutting-001", nome: "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada", gramatura: "250g", ativo: true },
         { id: "cutting-002", nome: "Macarrão a Bolonhesa", gramatura: "280g", ativo: true },
         { id: "cutting-003", nome: "Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos", gramatura: "180g", ativo: true },
-        { id: "cutting-004", nome: "Macarrão c/ Frango ao Molho Branco", gramatura: "", ativo: true }
+        { id: "cutting-004", nome: "Macarrão c/ Frango ao Molho Branco", gramatura: "280g", ativo: true }
       ]
     },
     {
@@ -44,10 +44,10 @@ window.CATALOG = {
       precoCentavos: 3500,
       pisoPrecoCentavos: 2597,
       itens: [
-        { id: "bulking-001", nome: "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada", gramatura: "", ativo: true },
-        { id: "bulking-002", nome: "Macarrão a Bolonhesa", gramatura: "", ativo: true },
-        { id: "bulking-003", nome: "Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos", gramatura: "", ativo: true },
-        { id: "bulking-004", nome: "Macarrão c/ Frango ao Molho Branco", gramatura: "", ativo: true }
+        { id: "bulking-001", nome: "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada", gramatura: "450g", ativo: true },
+        { id: "bulking-002", nome: "Macarrão a Bolonhesa", gramatura: "450g", ativo: true },
+        { id: "bulking-003", nome: "Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos", gramatura: "400g", ativo: true },
+        { id: "bulking-004", nome: "Macarrão c/ Frango ao Molho Branco", gramatura: "450g", ativo: true }
       ]
     },
     {
@@ -72,13 +72,13 @@ window.CATALOG = {
       gramatura: "300 a 350g",
       capa: "images/sardinha.png",
       precoCentavos: 3500,
-      pisoPrecoCentavos: 2597,
+      pisoPrecoCentavos: 2497,
       itens: [
-        { id: "sardinha-001", nome: "Picadinho de frango c/ batata, cenoura e arroz branco", gramatura: "", ativo: true },
-        { id: "sardinha-002", nome: "Iscas de frango refogada aceboladas e batata inglesa no vapor", gramatura: "", ativo: true },
-        { id: "sardinha-003", nome: "Iscas de frango c/ mix de legumes", gramatura: "", ativo: true },
-        { id: "sardinha-004", nome: "Escondidinho de carne moída c/ batata doce", gramatura: "", ativo: true },
-        { id: "sardinha-005", nome: "Carne moída c/ arroz branco e cenoura refogada", gramatura: "", ativo: true }
+        { id: "sardinha-001", nome: "Picadinho de frango c/ batata, cenoura e arroz branco", gramatura: "300g", ativo: true },
+        { id: "sardinha-002", nome: "Iscas de frango refogada aceboladas e batata inglesa no vapor", gramatura: "300g", ativo: true },
+        { id: "sardinha-003", nome: "Iscas de frango c/ mix de legumes", gramatura: "350g", ativo: true },
+        { id: "sardinha-004", nome: "Escondidinho de carne moída c/ batata doce", gramatura: "300g", ativo: true },
+        { id: "sardinha-005", nome: "Carne moída c/ arroz branco e cenoura refogada", gramatura: "300g", ativo: true }
       ]
     },
     {
@@ -120,10 +120,10 @@ window.CATALOG = {
       pisoPrecoCentavos: 2597,
       itens: [
         { id: "basa-001", nome: "Carne desfiada c/ abóbora", gramatura: "", ativo: true },
-        { id: "basa-002", nome: "Escondidinho de carne c/ Batata inglesa", gramatura: "", ativo: true },
+        { id: "basa-002", nome: "Escondidinho de carne c/ Batata inglesa", gramatura: "400g", ativo: true },
         { id: "basa-003", nome: "Espaguete à Bolonhesa", gramatura: "", ativo: true },
-        { id: "basa-004", nome: "Almôndegas de Frango ao molho de Tomate c/ Arroz & Cenoura", gramatura: "", ativo: true },
-        { id: "basa-005", nome: "Panqueca de Frango ao Molho Branco", gramatura: "", ativo: true }
+        { id: "basa-004", nome: "Almôndegas de Frango ao molho de Tomate c/ Arroz & Cenoura", gramatura: "400g", ativo: true },
+        { id: "basa-005", nome: "Panqueca de Frango ao Molho Branco", gramatura: "400g", ativo: true }
       ]
     }
   ]
