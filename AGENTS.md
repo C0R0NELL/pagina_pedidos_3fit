@@ -10,6 +10,8 @@
 ## Change Mapping (Where to Edit)
 - Product catalog, lines, dish names, per-line pricing:
   - `catalog.js`
+- Dynamic stock availability (`estoque` + per-item `ativo`):
+  - `stock.json`
 - Commercial rules (discount tiers, shipping thresholds, public proxy URL):
   - `features.json`
 - UX/UI behavior, copy, modal/dock logic, payload shape:
@@ -22,6 +24,7 @@
 ## Project Structure
 - `index.html`: main app (markup + CSS + JS).
 - `catalog.js`: product/line source data.
+- `stock.json`: dynamic stock snapshot published by n8n.
 - `features.json`: runtime commercial config.
 - `images/`: visual assets.
 
@@ -42,6 +45,19 @@
 - If `catalog.js` or `features.json` changes, the Worker data blocks (`CATALOG` and `FEATURES`) must be manually synced before production is considered updated.
 - Agents must explicitly remind this dependency in the final handoff whenever catalog/rules are changed.
 - Keep local Worker source in repo for maintenance (`cloudflare-worker.js`), but do not assume auto CI/CD deploy.
+
+## Dynamic Stock Guardrails (Critical)
+- `catalog.js` is stable source for structure/pricing; dynamic availability must come from `stock.json` only.
+- Stock key contract: `LINHA - NOME DO PRATO` with exact match after `trim` + whitespace collapse.
+- n8n diff decision must compare only `items`; do not use `version`/`updatedAt` to decide update.
+- Current production flow updates existing `stock.json` (no create step); missing `stock.json` must fail execution.
+- Worker must keep server-side enforcement for stock (`422 stock_unavailable` and `422 item_stock_exceeded`).
+
+## Stock Update Chain (Critical)
+- Production orchestration: `CRON - Fluxos com agendamento` triggers `ATUALIZA SITE CONFORME ESTOQUE`.
+- Stock-only changes: spreadsheet -> `stock.json` commit (no Worker static block sync required).
+- Catalog changes (`catalog.js`): spreadsheet keys must be updated to match; Worker `CATALOG` block must be manually synced and deployed.
+- Commercial changes (`features.json`): Worker `FEATURES` block must be manually synced and deployed.
 
 ## Security Boundaries
 - Never commit real secret endpoints.

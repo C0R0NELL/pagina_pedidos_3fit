@@ -2,6 +2,15 @@
 
 Página criada para disponibilizar um formulário de pedidos para a revenda licenciada 3FIT.
 
+## Mapa de Responsabilidades (Fonte de Verdade)
+
+- `catalog.js`: cardápio base (linhas, pratos, ids, nomes, preços, estrutura comercial).
+- `stock.json`: disponibilidade dinâmica (estoque e `ativo` por prato).
+- `features.json`: regras comerciais dinâmicas (desconto, frete, thresholds, URL pública do proxy).
+- `cloudflare-worker.js`: validação server-side e anti-tampering (recalcula totais e valida estoque).
+
+Nota: o arquivo de catálogo é `catalog.js` (não `catalog.json`).
+
 ## Sincronização Manual do Worker (Cloudflare)
 
 IMPORTANTE: qualquer alteração em `catalog.js` ou `features.json` precisa ser replicada em `cloudflare-worker.js` e depois manualmente no Worker no site da Cloudflare.
@@ -38,10 +47,41 @@ Regras:
 ## Fluxo n8n de Estoque (produção)
 
 Fluxo alvo: **`ATUALIZA SITE CONFORME ESTOQUE`**.
+Orquestração em produção: **`CRON - Fluxos com agendamento`** dispara esse fluxo.
 
 Política operacional:
 - execução a cada 30 minutos;
 - montar/validar `stock.json` a partir da planilha;
 - falhar execução em caso de `key` duplicada;
-- commitar no GitHub somente quando houver diff real no conteúdo;
+- commitar no GitHub somente quando houver diff real em `items` (ignorar `version`/`updatedAt`);
 - não alterar outros fluxos em produção.
+- fluxo atual não cria `stock.json`; ele edita o arquivo existente (se faltar no repo, a execução falha).
+
+## Notas Críticas para Futuras Mudanças
+
+- `catalog.js` é fonte estável de cardápio/preço/estrutura; disponibilidade dinâmica pertence ao `stock.json`.
+- `ativo` por prato deve ser operado no `stock.json` (junto com `estoque`).
+- Worker é a barreira anti-manipulação: pedido acima do estoque deve retornar `422 item_stock_exceeded`.
+
+## Cadeia de Modificação (O Que Muda em Cada Cenário)
+
+1. Mudança de estoque/ativo (operação diária):
+- planilha -> `ATUALIZA SITE CONFORME ESTOQUE` -> commit de `stock.json` (apenas com diff em `items`) -> frontend/worker passam a usar novo snapshot.
+- não exige sync manual de bloco estático no Worker.
+
+2. Mudança de catálogo (renomear prato, adicionar/remover prato, adicionar/remover linha):
+- editar `catalog.js`;
+- atualizar planilha para refletir as novas chaves `LINHA - NOME DO PRATO`;
+- sincronizar bloco `CATALOG` no `cloudflare-worker.js`;
+- deploy manual do Worker na Cloudflare;
+- validar execução do fluxo de estoque (ele falha se houver mismatch entre planilha e catálogo, por segurança).
+
+3. Mudança de regra comercial (desconto/frete/thresholds/proxy):
+- editar `features.json`;
+- sincronizar bloco `FEATURES` no `cloudflare-worker.js`;
+- deploy manual do Worker na Cloudflare;
+- validar pedido real (cálculo de desconto/frete).
+
+4. Mudança de contrato de payload/UI:
+- alterar `index.html` + `cloudflare-worker.js` no mesmo change set;
+- validar anti-tampering e compatibilidade de payload ponta a ponta.
