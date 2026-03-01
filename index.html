@@ -682,6 +682,7 @@
       font-size: 0.75rem;
       line-height: 1.35;
       color: var(--text-soft);
+      white-space: pre-line;
     }
 
     .restock-note {
@@ -2198,7 +2199,7 @@
       if (!summaryDisclaimer) return;
       const minPercentual = getMinEffectiveMaxDiscountPercentual();
       const maxPercentual = getMaxDiscountPercentual();
-      summaryDisclaimer.textContent = `O desconto máximo pode variar de ${minPercentual}% a ${maxPercentual}%, a depender das linhas.`;
+      summaryDisclaimer.textContent = `O desconto máximo pode variar de ${minPercentual}% a ${maxPercentual}%\na depender das linhas.`;
     };
 
     let activeCategory = null;
@@ -2583,7 +2584,17 @@
       }
       restockNotice.append(linkButton);
       if (afterText) {
-        restockNotice.append(document.createTextNode(afterText));
+        const startsWithParagraphGap = /^\s*\n{2,}/.test(afterText);
+        const desktopAfterText = afterText
+          .split(/\n{2,}/)
+          .map((chunk) => chunk.replace(/\s+/g, " ").trim())
+          .filter(Boolean)
+          .join("\n\n");
+
+        if (desktopAfterText) {
+          const prefix = startsWithParagraphGap ? "\n\n" : " ";
+          restockNotice.append(document.createTextNode(`${prefix}${desktopAfterText}`));
+        }
       }
     };
 
