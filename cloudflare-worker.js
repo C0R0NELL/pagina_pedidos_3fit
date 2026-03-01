@@ -20,6 +20,15 @@
  * As alterações aqui, não estão sendo refletidas automaticamente na Cloudflare, então é necessário também acessar o site deles e atualizar manualmente.
  */
 
+const ALLOWED_ORIGINS = [
+  // DEV LOCAL: keep enabled while testing
+  // "http://127.0.0.1:3000",
+
+  // PRODUCTION
+  "https://3fit.sollucion.com",
+  "https://www.3fit.sollucion.com"
+];
+
 const CATALOG = {
   "version": "2026-02-20",
   "moeda": "BRL",
@@ -750,18 +759,9 @@ function validateAndNormalizePayload(payload, config, stockSnapshot) {
 
 export default {
   async fetch(req, env) {
-    const allowedOrigins = [
-      // DEV LOCAL: keep enabled while testing
-      //"http://127.0.0.1:3000",
-
-      // PRODUCTION
-      "https://3fit.sollucion.com",
-      "https://www.3fit.sollucion.com"
-    ];
-
-    const fallbackOrigin = allowedOrigins[0];
+    const fallbackOrigin = ALLOWED_ORIGINS[0];
     const origin = req.headers.get("Origin") || "";
-    const originAllowed = allowedOrigins.includes(origin);
+    const originAllowed = ALLOWED_ORIGINS.includes(origin);
 
     if (req.method === "OPTIONS") {
       return new Response(null, {
