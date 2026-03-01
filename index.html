@@ -1559,6 +1559,10 @@
   <script src="catalog.js"></script>
   <script>
     const MAX_OBS_LENGTH = 400;
+    const UI_TIMINGS_MS = Object.freeze({
+      centerNotice: 2000,
+      clearOrderFeedback: 1200
+    });
     const TECH_ERROR_MESSAGE = '<strong>Houve uma falha técnica.</strong><br>Por favor, tente novamente em instantes.<br>Se o problema persistir, solicite <strong>"Atendimento humano"</strong> no WhatsApp.';
     const CALC_DIVERGENCE_ERROR_MESSAGE = 'Encontramos divergências no cálculo do formulário.<br>Caso o erro persista, solicite <strong>Atendimento humano</strong> no WhatsApp.';
     const STOCK_UNAVAILABLE_ERROR_MESSAGE = '<strong>Estoque indisponível no momento.</strong><br>Por favor, tente novamente em instantes.';
@@ -2441,7 +2445,7 @@
       setModalVisible(alertModal, true);
     };
 
-    const showCenterNotice = (message, durationMs = 3000) => {
+    const showCenterNotice = (message, durationMs = UI_TIMINGS_MS.centerNotice) => {
       centerNotice.textContent = String(message || "");
       centerNotice.classList.add("show");
       window.clearTimeout(centerNoticeTimer);
@@ -2623,7 +2627,7 @@
       if (button.dataset.action === "plus") {
         const stockLimit = getProductStockLimit(id);
         if (current >= stockLimit) {
-          showCenterNotice(STOCK_MAX_REACHED_MESSAGE, 3000);
+          showCenterNotice(STOCK_MAX_REACHED_MESSAGE);
           return;
         }
         setQty(id, current + 1);
@@ -2645,7 +2649,7 @@
       clearOrderFeedbackTimer = window.setTimeout(() => {
         clearOrderBtn.classList.remove("is-done");
         clearOrderFeedbackTimer = null;
-      }, 1200);
+      }, UI_TIMINGS_MS.clearOrderFeedback);
     };
 
     clearOrderBtn.addEventListener("click", () => {
@@ -2677,10 +2681,7 @@
       const totalUnidades = selectedItems.reduce((acc, item) => acc + item.qty, 0);
       const missingUnitsForReview = getMissingUnitsForReview(totalUnidades);
       if (missingUnitsForReview > 0) {
-        showCenterNotice(
-          `Pedido mínimo são ${getMinUnitsForReview()} unidades 💪`,
-          3000
-        );
+        showCenterNotice(`Pedido mínimo são ${getMinUnitsForReview()} unidades 💪`);
         return;
       }
       renderReviewSummary();
