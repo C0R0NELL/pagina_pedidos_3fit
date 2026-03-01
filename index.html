@@ -1945,6 +1945,16 @@
       normalizeStockKey(`${lineName || ""} - ${productName || ""}`);
 
     const lineById = Object.fromEntries(lines.map((line) => [line.id, line]));
+    const LINE_VISUAL_NAME_OVERRIDES = Object.freeze({
+      CUTTING: Object.freeze({
+        firstLine: "CUTTING by",
+        secondLine: "Léo Stronda"
+      }),
+      BULKING: Object.freeze({
+        firstLine: "BULKING by",
+        secondLine: "Léo Stronda"
+      })
+    });
     const products = lines.flatMap((line) =>
       line.itens.map((item, idx) => ({
         id: item.id || `${line.id.toLowerCase()}-${idx + 1}`,
@@ -2683,12 +2693,16 @@
         const line = lineById[cat];
         const cover = line?.capa || "images/logo.png";
         const label = line?.nome || cat;
+        const visualOverride = LINE_VISUAL_NAME_OVERRIDES[cat] || null;
+        const displayLabel = visualOverride
+          ? `${visualOverride.firstLine}<br>${visualOverride.secondLine}`
+          : label;
         const gramatura = line?.gramatura || "Gramatura a definir";
         return `
           <button type="button" class="album ${cat === activeCategory ? "active" : ""}" data-album="${cat}">
             <img src="${cover}" alt="Capa ${label}" loading="lazy" onerror="this.onerror=null;this.src='images/logo.png';" />
             <div class="album__meta">
-              <strong>${label}</strong>
+              <strong>${displayLabel}</strong>
               <span>${gramatura}</span>
             </div>
           </button>
