@@ -652,14 +652,6 @@
       color: var(--text-soft);
     }
 
-    .stock-updated-at {
-      margin: 0 2px 0;
-      font-size: 0.75rem;
-      line-height: 1.35;
-      color: var(--text-soft);
-      text-align: left;
-    }
-
     .summary__line {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -1191,10 +1183,6 @@
     @media (max-width: 1030px) {
       .layout { grid-template-columns: 1fr; }
       .sidebar { position: static; }
-      .stock-updated-at {
-        margin: 0 2px 0;
-        text-align: left;
-      }
       .hero__content { grid-template-columns: 1fr; }
       .hero__cover { min-height: 230px; }
 
@@ -1485,7 +1473,6 @@
         </div>
         <div id="productGrid" class="product-grid"></div>
       </section>
-      <p class="stock-updated-at" id="stockUpdatedAt">Última atualização do estoque indisponível.</p>
     </div>
 
     <aside class="panel sidebar">
@@ -1753,7 +1740,6 @@
     const clearOrderBtn = document.getElementById("clearOrderBtn");
     const businessNotice = document.getElementById("businessNotice");
     const summaryDisclaimer = document.querySelector(".summary__disclaimer");
-    const stockUpdatedAt = document.getElementById("stockUpdatedAt");
     const heroPromo = document.getElementById("heroPromo");
     const reviewModal = document.getElementById("reviewModal");
     const reviewSummary = document.getElementById("reviewSummary");
@@ -1814,39 +1800,6 @@
       if (["true", "1", "sim", "s", "yes", "y", "ativo"].includes(text)) return true;
       if (["false", "0", "nao", "não", "n", "no", "inativo"].includes(text)) return false;
       return true;
-    };
-
-    const formatStockUpdatedAt = (value) => {
-      const date = new Date(String(value || ""));
-      if (Number.isNaN(date.getTime())) return "";
-
-      const parts = new Intl.DateTimeFormat("pt-BR", {
-        timeZone: "America/Sao_Paulo",
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false
-      }).formatToParts(date);
-
-      const getPart = (type) => parts.find((part) => part.type === type)?.value || "";
-      const day = getPart("day");
-      const month = getPart("month");
-      const year = getPart("year");
-      const hour = getPart("hour");
-      const minute = getPart("minute");
-
-      if (!day || !month || !year || !hour || !minute) return "";
-      return `${day}/${month}/${year} às ${hour}:${minute}h`;
-    };
-
-    const updateStockUpdatedAtNotice = (stockSnapshot = null) => {
-      if (!stockUpdatedAt) return;
-      const formattedDate = formatStockUpdatedAt(stockSnapshot?.updatedAt);
-      stockUpdatedAt.textContent = formattedDate
-        ? `Última atualização do estoque em ${formattedDate}`
-        : "Última atualização do estoque indisponível.";
     };
 
     const getProductStockLimit = (productId) => {
@@ -1914,7 +1867,6 @@
       if (!stockSnapshot) throw new Error("stock_payload_invalido");
 
       applyStockSnapshot(stockSnapshot);
-      updateStockUpdatedAtNotice(stockSnapshot);
       stockLoaded = true;
     };
 
@@ -2811,7 +2763,6 @@
         await loadStock();
       } catch (error) {
         console.error("Falha ao carregar snapshot de estoque", error);
-        updateStockUpdatedAtNotice(null);
         showFeedback(STOCK_UNAVAILABLE_ERROR_MESSAGE, "error");
         reviewOrderBtn.disabled = true;
         mobileReviewBtn.disabled = true;
