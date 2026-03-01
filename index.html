@@ -1560,14 +1560,14 @@
   <script>
     const MAX_OBS_LENGTH = 400;
     const UI_TIMINGS_MS = Object.freeze({
-      centerNotice: 2000,
+      centerNotice: 1500,
       clearOrderFeedback: 1200
     });
     const TECH_ERROR_MESSAGE = '<strong>Houve uma falha técnica.</strong><br>Por favor, tente novamente em instantes.<br>Se o problema persistir, solicite <strong>"Atendimento humano"</strong> no WhatsApp.';
     const CALC_DIVERGENCE_ERROR_MESSAGE = 'Encontramos divergências no cálculo do formulário.<br>Caso o erro persista, solicite <strong>Atendimento humano</strong> no WhatsApp.';
     const STOCK_UNAVAILABLE_ERROR_MESSAGE = '<strong>Estoque indisponível no momento.</strong><br>Por favor, tente novamente em instantes.';
     const STOCK_DIVERGENCE_ERROR_MESSAGE = 'Alguns itens ficaram sem estoque durante a revisão do pedido.<br>Atualize as quantidades e tente novamente.';
-    const STOCK_MAX_REACHED_MESSAGE = "Disponibilidade máxima atingida para este prato no momento 😕";
+    const STOCK_MAX_REACHED_MESSAGE = "Disponibilidade máxima atingida 😕";
     const catalog = window.CATALOG || { version: "sem-versao", moeda: "BRL", linhas: [] };
     const lines = (catalog.linhas || []).map((line) => ({
       id: line.id,
