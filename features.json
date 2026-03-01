@@ -14,7 +14,7 @@
     }
   ],
   "freteGratis": {
-    "valorMinimoCentavos": 35000,
+    "valorMinimoCentavos": 30000,
     "valorFreteCentavos": 2000
   }
 }

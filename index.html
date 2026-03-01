@@ -424,6 +424,14 @@
       min-width: 0;
     }
 
+    .products-col {
+      grid-column: 1;
+      display: grid;
+      gap: 8px;
+      align-self: start;
+      min-width: 0;
+    }
+
     .field {
       width: 100%;
       padding: 12px;
@@ -642,6 +650,14 @@
       font-size: 0.75rem;
       line-height: 1.35;
       color: var(--text-soft);
+    }
+
+    .stock-updated-at {
+      margin: 0 2px 0;
+      font-size: 0.75rem;
+      line-height: 1.35;
+      color: var(--text-soft);
+      text-align: left;
     }
 
     .summary__line {
@@ -1175,6 +1191,10 @@
     @media (max-width: 1030px) {
       .layout { grid-template-columns: 1fr; }
       .sidebar { position: static; }
+      .stock-updated-at {
+        margin: 0 2px 0;
+        text-align: left;
+      }
       .hero__content { grid-template-columns: 1fr; }
       .hero__cover { min-height: 230px; }
 
@@ -1457,13 +1477,16 @@
   </section>
 
   <main class="container layout" id="pedidoSection">
-    <section class="panel products" aria-label="Lista de produtos">
-      <div id="albumGrid" class="albums" aria-label="Linhas por categoria"></div>
-      <div class="album-head">
-        <h3 id="albumTitle">Selecione uma linha para ver os pratos</h3>
-      </div>
-      <div id="productGrid" class="product-grid"></div>
-    </section>
+    <div class="products-col">
+      <section class="panel products" aria-label="Lista de produtos">
+        <div id="albumGrid" class="albums" aria-label="Linhas por categoria"></div>
+        <div class="album-head">
+          <h3 id="albumTitle">Selecione uma linha para ver os pratos</h3>
+        </div>
+        <div id="productGrid" class="product-grid"></div>
+      </section>
+      <p class="stock-updated-at" id="stockUpdatedAt">Última atualização do estoque indisponível.</p>
+    </div>
 
     <aside class="panel sidebar">
       <h2>Resumo do pedido</h2>
@@ -1538,6 +1561,9 @@
     const MAX_OBS_LENGTH = 400;
     const TECH_ERROR_MESSAGE = '<strong>Houve uma falha técnica.</strong><br>Por favor, tente novamente em instantes.<br>Se o problema persistir, solicite <strong>"Atendimento humano"</strong> no WhatsApp.';
     const CALC_DIVERGENCE_ERROR_MESSAGE = 'Encontramos divergências no cálculo do formulário.<br>Caso o erro persista, solicite <strong>Atendimento humano</strong> no WhatsApp.';
+    const STOCK_UNAVAILABLE_ERROR_MESSAGE = '<strong>Estoque indisponível no momento.</strong><br>Por favor, tente novamente em instantes.';
+    const STOCK_DIVERGENCE_ERROR_MESSAGE = 'Alguns itens ficaram sem estoque durante a revisão do pedido.<br>Atualize as quantidades e tente novamente.';
+    const STOCK_MAX_REACHED_MESSAGE = "Disponibilidade máxima atingida para este prato no momento 😕";
     const catalog = window.CATALOG || { version: "sem-versao", moeda: "BRL", linhas: [] };
     const lines = (catalog.linhas || []).map((line) => ({
       id: line.id,
@@ -1546,8 +1572,16 @@
       capa: line.capa,
       precoCentavos: Number.isInteger(line.precoCentavos) ? line.precoCentavos : null,
       pisoPrecoCentavos: Number.isInteger(line.pisoPrecoCentavos) ? line.pisoPrecoCentavos : null,
-      itens: (line.itens || []).filter((item) => item.ativo !== false)
+      itens: (line.itens || [])
     }));
+
+    const normalizeStockKey = (value) =>
+      String(value || "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const buildStockKey = (lineName, productName) =>
+      normalizeStockKey(`${lineName || ""} - ${productName || ""}`);
 
     const lineById = Object.fromEntries(lines.map((line) => [line.id, line]));
     const products = lines.flatMap((line) =>
@@ -1556,6 +1590,9 @@
         lineId: line.id,
         lineName: line.nome,
         name: item.nome,
+        stockKey: buildStockKey(line.nome, item.nome),
+        estoqueDisponivel: 0,
+        ativoDisponivel: true,
         gramatura: item.gramatura == null ? "" : String(item.gramatura).trim(),
         precoCentavos: Number.isInteger(item.precoCentavos)
           ? item.precoCentavos
@@ -1565,6 +1602,7 @@
           : line.pisoPrecoCentavos
       }))
     );
+    const productById = Object.fromEntries(products.map((product) => [product.id, product]));
 
     const formatCurrency = (centavos) => {
       if (!Number.isInteger(centavos)) return "Preço a preencher";
@@ -1640,6 +1678,7 @@
     let webhookUrl = "";
     let pricingRules = null;
     let latestDockSnapshot = null;
+    let stockLoaded = false;
 
     const getEffectiveUnitPriceCentavos = (item, percentual) => {
       if (!Number.isInteger(item?.precoCentavos)) return null;
@@ -1710,6 +1749,7 @@
     const clearOrderBtn = document.getElementById("clearOrderBtn");
     const businessNotice = document.getElementById("businessNotice");
     const summaryDisclaimer = document.querySelector(".summary__disclaimer");
+    const stockUpdatedAt = document.getElementById("stockUpdatedAt");
     const heroPromo = document.getElementById("heroPromo");
     const reviewModal = document.getElementById("reviewModal");
     const reviewSummary = document.getElementById("reviewSummary");
@@ -1717,6 +1757,7 @@
     const cancelReviewBtn = document.getElementById("cancelReviewBtn");
     const headerCartBtn = document.getElementById("headerCartBtn");
     const headerCartCount = document.getElementById("headerCartCount");
+    const mobileDock = document.getElementById("mobileDock");
     const mobileDockMeta = document.getElementById("mobileDockMeta");
     const mobileDockMetaNote = document.getElementById("mobileDockMetaNote");
     const mobileReviewBtn = document.getElementById("mobileReviewBtn");
@@ -1757,10 +1798,127 @@
         : 1;
       return Math.max(0, minimoUnidades - (Number.isInteger(totalUnidades) ? totalUnidades : 0));
     };
+
+    const getMinUnitsForReview = () =>
+      Number.isInteger(pricingRules?.pedidoMinimo) ? pricingRules.pedidoMinimo : 1;
+
+    const normalizeStockActive = (value) => {
+      if (typeof value === "boolean") return value;
+      if (typeof value === "number") return value > 0;
+      const text = String(value || "").trim().toLowerCase();
+      if (!text) return true;
+      if (["true", "1", "sim", "s", "yes", "y", "ativo"].includes(text)) return true;
+      if (["false", "0", "nao", "não", "n", "no", "inativo"].includes(text)) return false;
+      return true;
+    };
+
+    const formatStockUpdatedAt = (value) => {
+      const date = new Date(String(value || ""));
+      if (Number.isNaN(date.getTime())) return "";
+
+      const parts = new Intl.DateTimeFormat("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).formatToParts(date);
+
+      const getPart = (type) => parts.find((part) => part.type === type)?.value || "";
+      const day = getPart("day");
+      const month = getPart("month");
+      const year = getPart("year");
+      const hour = getPart("hour");
+      const minute = getPart("minute");
+
+      if (!day || !month || !year || !hour || !minute) return "";
+      return `${day}/${month}/${year} às ${hour}:${minute}h`;
+    };
+
+    const updateStockUpdatedAtNotice = (stockSnapshot = null) => {
+      if (!stockUpdatedAt) return;
+      const formattedDate = formatStockUpdatedAt(stockSnapshot?.updatedAt);
+      stockUpdatedAt.textContent = formattedDate
+        ? `Última atualização do estoque em ${formattedDate}`
+        : "Última atualização do estoque indisponível.";
+    };
+
+    const getProductStockLimit = (productId) => {
+      const product = productById[productId];
+      if (!product) return 0;
+      const estoque = Number(product.estoqueDisponivel);
+      if (product.ativoDisponivel === false) return 0;
+      return Number.isInteger(estoque) && estoque > 0
+        ? estoque
+        : 0;
+    };
+
+    const normalizeStockSnapshot = (raw) => {
+      if (!raw || typeof raw !== "object" || !Array.isArray(raw.items)) return null;
+      const itemsByKey = new Map();
+
+      for (const item of raw.items) {
+        const key = normalizeStockKey(item?.key);
+        if (!key || itemsByKey.has(key)) return null;
+        const estoqueRaw = Number(item?.estoque);
+        const estoque = Number.isInteger(estoqueRaw) && estoqueRaw >= 0
+          ? estoqueRaw
+          : 0;
+        const ativo = normalizeStockActive(item?.ativo);
+        itemsByKey.set(key, { estoque, ativo });
+      }
+
+      return {
+        version: String(raw.version || ""),
+        updatedAt: String(raw.updatedAt || ""),
+        itemsByKey
+      };
+    };
+
+    const applyStockSnapshot = (stockSnapshot) => {
+      for (const product of products) {
+        const stockItem = stockSnapshot.itemsByKey.get(product.stockKey);
+        product.estoqueDisponivel = Number.isInteger(stockItem?.estoque) && stockItem.estoque >= 0
+          ? stockItem.estoque
+          : 0;
+        product.ativoDisponivel = stockItem?.ativo !== false;
+      }
+
+      for (const [id, qty] of selected.entries()) {
+        const stockLimit = getProductStockLimit(id);
+        const parsedQty = Number.parseInt(String(qty), 10);
+        const nextQty = Math.min(
+          Math.max(0, Number.isFinite(parsedQty) ? parsedQty : 0),
+          stockLimit
+        );
+        if (nextQty <= 0) {
+          selected.delete(id);
+        } else {
+          selected.set(id, nextQty);
+        }
+      }
+    };
+
+    const loadStock = async () => {
+      const response = await fetch("stock.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`stock_http_${response.status}`);
+
+      const data = await response.json();
+      const stockSnapshot = normalizeStockSnapshot(data);
+      if (!stockSnapshot) throw new Error("stock_payload_invalido");
+
+      applyStockSnapshot(stockSnapshot);
+      updateStockUpdatedAtNotice(stockSnapshot);
+      stockLoaded = true;
+    };
+
     const updateReviewButtonsState = (totalUnidades) => {
-      const hasItems = Number.isInteger(totalUnidades) && totalUnidades > 0;
+      const hasItems = Number.isInteger(totalUnidades) && totalUnidades > 0 && stockLoaded;
       reviewOrderBtn.disabled = !hasItems;
       mobileReviewBtn.disabled = !hasItems;
+      headerCartBtn.disabled = !stockLoaded;
     };
 
     const updateBusinessNotice = (state = {}) => {
@@ -1908,13 +2066,15 @@
 
     const getFilteredProducts = () => {
       if (!activeCategory) return [];
-      return products.filter((product) => product.lineId === activeCategory);
+      return products.filter((product) =>
+        product.lineId === activeCategory
+        && getProductStockLimit(product.id) > 0
+      );
     };
 
     const renderProducts = () => {
       const currentLineName = lineById[activeCategory]?.nome || activeCategory;
       const currentLineGramatura = lineById[activeCategory]?.gramatura || "";
-      const maxDiscountPercentual = getMaxDiscountPercentual();
       albumTitle.textContent = activeCategory
         ? `Pratos da linha ${currentLineName}${currentLineGramatura ? ` (${currentLineGramatura})` : ""}`
         : "Selecione uma linha para ver os pratos";
@@ -1928,8 +2088,10 @@
       }
 
       productGrid.innerHTML = filtered.map((product) => {
-        const qty = selected.get(product.id) || 0;
+        const stockLimit = getProductStockLimit(product.id);
+        const qty = Math.min(selected.get(product.id) || 0, stockLimit);
         const precoComMaiorDesconto = getUnitPriceWithMaxDiscountCentavos(product.precoCentavos, product.pisoPrecoCentavos);
+        const minusDisabled = qty <= 0;
         return `
           <article class="product">
             <small>${product.lineName}${product.gramatura ? ` | ${product.gramatura}` : ""}</small>
@@ -1939,8 +2101,8 @@
               <span class="product__price-max-discount">${formatCurrency(precoComMaiorDesconto)} no desconto máx.</span>
             </div>
             <div class="qty">
-              <button type="button" data-action="minus" data-id="${product.id}" aria-label="Diminuir quantidade">-</button>
-              <input type="number" min="0" value="${qty}" data-action="input" data-id="${product.id}" aria-label="Quantidade" />
+              <button type="button" data-action="minus" data-id="${product.id}" aria-label="Diminuir quantidade" ${minusDisabled ? "disabled" : ""}>-</button>
+              <input type="number" min="0" max="${stockLimit}" value="${qty}" data-action="input" data-id="${product.id}" aria-label="Quantidade" />
               <button type="button" data-action="plus" data-id="${product.id}" aria-label="Aumentar quantidade">+</button>
             </div>
           </article>
@@ -2248,7 +2410,10 @@
     };
 
     const setQty = (id, qty) => {
-      const value = Math.max(0, Number(qty) || 0);
+      const parsedQty = Number.parseInt(String(qty), 10);
+      const numericValue = Number.isFinite(parsedQty) ? parsedQty : 0;
+      const stockLimit = getProductStockLimit(id);
+      const value = Math.min(Math.max(0, numericValue), stockLimit);
       if (value === 0) {
         selected.delete(id);
       } else {
@@ -2289,6 +2454,12 @@
     const getSendOrderErrorMessage = (response, workerError = null) => {
       if (response.status === 422 && workerError?.error === "calc_mismatch") {
         return CALC_DIVERGENCE_ERROR_MESSAGE;
+      }
+      if (response.status === 422 && workerError?.error === "item_stock_exceeded") {
+        return STOCK_DIVERGENCE_ERROR_MESSAGE;
+      }
+      if (response.status === 422 && workerError?.error === "stock_unavailable") {
+        return STOCK_UNAVAILABLE_ERROR_MESSAGE;
       }
       return TECH_ERROR_MESSAGE;
     };
@@ -2344,7 +2515,7 @@
 
     const updateWhatsappValidationUi = () => {
       const isValid = isValidBrazilWhatsapp(whatsappPedido.value);
-      sendOrderBtn.disabled = !isValid;
+      sendOrderBtn.disabled = !isValid || !stockLoaded;
       whatsappHint.classList.toggle("show", !isValid);
       whatsappPedido.classList.toggle("is-invalid", !isValid);
       return isValid;
@@ -2449,7 +2620,14 @@
       if (!button) return;
       const id = button.dataset.id;
       const current = selected.get(id) || 0;
-      if (button.dataset.action === "plus") setQty(id, current + 1);
+      if (button.dataset.action === "plus") {
+        const stockLimit = getProductStockLimit(id);
+        if (current >= stockLimit) {
+          showCenterNotice(STOCK_MAX_REACHED_MESSAGE, 3000);
+          return;
+        }
+        setQty(id, current + 1);
+      }
       if (button.dataset.action === "minus") setQty(id, current - 1);
     });
 
@@ -2487,6 +2665,10 @@
     });
 
     const openReviewModal = () => {
+      if (!stockLoaded) {
+        showFeedback(STOCK_UNAVAILABLE_ERROR_MESSAGE, "error");
+        return;
+      }
       const selectedItems = getSelectedItems();
       if (!selectedItems.length) {
         showFeedback("Selecione pelo menos um prato antes de conferir.", "error");
@@ -2496,7 +2678,7 @@
       const missingUnitsForReview = getMissingUnitsForReview(totalUnidades);
       if (missingUnitsForReview > 0) {
         showCenterNotice(
-          "Pedido mínimo são 7 unidades 💪",
+          `Pedido mínimo são ${getMinUnitsForReview()} unidades 💪`,
           3000
         );
         return;
@@ -2619,8 +2801,21 @@
         showFeedback(TECH_ERROR_MESSAGE, "error");
         reviewOrderBtn.disabled = true;
         mobileReviewBtn.disabled = true;
+        headerCartBtn.disabled = true;
         sendOrderBtn.disabled = true;
         return;
+      }
+
+      try {
+        await loadStock();
+      } catch (error) {
+        console.error("Falha ao carregar snapshot de estoque", error);
+        updateStockUpdatedAtNotice(null);
+        showFeedback(STOCK_UNAVAILABLE_ERROR_MESSAGE, "error");
+        reviewOrderBtn.disabled = true;
+        mobileReviewBtn.disabled = true;
+        headerCartBtn.disabled = true;
+        sendOrderBtn.disabled = true;
       }
       updateSummaryDisclaimer();
       updateHeroPromo();

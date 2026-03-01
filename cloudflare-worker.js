@@ -36,25 +36,21 @@ const CATALOG = {
           "id": "cutting-001",
           "nome": "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
           "gramatura": "250g",
-          "ativo": true
         },
         {
           "id": "cutting-002",
           "nome": "Macarrão a Bolonhesa",
           "gramatura": "280g",
-          "ativo": true
         },
         {
           "id": "cutting-003",
           "nome": "Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
           "gramatura": "180g",
-          "ativo": true
         },
         {
           "id": "cutting-004",
           "nome": "Macarrão c/ Frango ao Molho Branco",
           "gramatura": "280g",
-          "ativo": true
         }
       ]
     },
@@ -70,25 +66,21 @@ const CATALOG = {
           "id": "bulking-001",
           "nome": "Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
           "gramatura": "450g",
-          "ativo": true
         },
         {
           "id": "bulking-002",
           "nome": "Macarrão a Bolonhesa",
           "gramatura": "450g",
-          "ativo": true
         },
         {
           "id": "bulking-003",
           "nome": "Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
           "gramatura": "400g",
-          "ativo": true
         },
         {
           "id": "bulking-004",
           "nome": "Macarrão c/ Frango ao Molho Branco",
           "gramatura": "450g",
-          "ativo": true
         }
       ]
     },
@@ -104,37 +96,31 @@ const CATALOG = {
           "id": "diaadia-001",
           "nome": "Espaguete a bolonhesa",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "diaadia-002",
           "nome": "Pernil suíno desfiado ao molho de laranja e mel, arroz branco e purê de abóbora",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "diaadia-003",
           "nome": "Panqueca de frango ao molho branco de queijo parmesão",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "diaadia-004",
           "nome": "Strogonoff de frango com arroz branco e batata rústica assada",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "diaadia-005",
           "nome": "Carne moída com cenoura e batata, arroz branco e feijão carioca",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "diaadia-006",
           "nome": "Picadinho de carne com legumes, arroz branco, feijão carioca e farofa de cenoura",
           "gramatura": "300g",
-          "ativo": true
         }
       ]
     },
@@ -144,37 +130,32 @@ const CATALOG = {
       "gramatura": "300 a 350g",
       "capa": "images/sardinha.png",
       "precoCentavos": 3500,
-      "pisoPrecoCentavos": 2597,
+      "pisoPrecoCentavos": 2497,
       "itens": [
         {
           "id": "sardinha-001",
           "nome": "Picadinho de frango c/ batata, cenoura e arroz branco",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "sardinha-002",
           "nome": "Iscas de frango refogada aceboladas e batata inglesa no vapor",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "sardinha-003",
           "nome": "Iscas de frango c/ mix de legumes",
           "gramatura": "350g",
-          "ativo": true
         },
         {
           "id": "sardinha-004",
           "nome": "Escondidinho de carne moída c/ batata doce",
           "gramatura": "300g",
-          "ativo": true
         },
         {
           "id": "sardinha-005",
           "nome": "Carne moída c/ arroz branco e cenoura refogada",
           "gramatura": "300g",
-          "ativo": true
         }
       ]
     },
@@ -190,31 +171,26 @@ const CATALOG = {
           "id": "reeduc-001",
           "nome": "Pernil Suíno ao Molho de Laranja e Mel com arroz integral e purê de abóbora",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "reeduc-002",
           "nome": "Macarrão Integral à Bolonhesa",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "reeduc-003",
           "nome": "Almôndegas de Frango ao Molho de Tomate com arroz integral e cenoura ralada",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "reeduc-004",
           "nome": "Panqueca Red Integral de Frango ao Molho de Tomate e Cenoura",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "reeduc-005",
           "nome": "Carne Moída com Purê de Batata Doce",
           "gramatura": "200g",
-          "ativo": true
         }
       ]
     },
@@ -230,31 +206,26 @@ const CATALOG = {
           "id": "lowcarb-001",
           "nome": "Frango à Pizzaiolo com Legumes",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "lowcarb-002",
           "nome": "Carne Moída com Mix de Legumes",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "lowcarb-003",
           "nome": "Espaguete de Cenoura à Bolonhesa",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "lowcarb-004",
           "nome": "Ragú com Abóbora em Cubos",
           "gramatura": "200g",
-          "ativo": true
         },
         {
           "id": "lowcarb-005",
           "nome": "Iscas de Frango Refogado com Pimentões Coloridos e Cenoura no Vapor",
           "gramatura": "200g",
-          "ativo": true
         }
       ]
     },
@@ -270,31 +241,26 @@ const CATALOG = {
           "id": "basa-001",
           "nome": "Carne desfiada c/ abóbora",
           "gramatura": "",
-          "ativo": true
         },
         {
           "id": "basa-002",
           "nome": "Escondidinho de carne c/ Batata inglesa",
           "gramatura": "400g",
-          "ativo": true
         },
         {
           "id": "basa-003",
           "nome": "Espaguete à Bolonhesa",
-          "gramatura": "400g",
-          "ativo": true
+          "gramatura": "",
         },
         {
           "id": "basa-004",
           "nome": "Almôndegas de Frango ao molho de Tomate c/ Arroz & Cenoura",
           "gramatura": "400g",
-          "ativo": true
         },
         {
           "id": "basa-005",
           "nome": "Panqueca de Frango ao Molho Branco",
           "gramatura": "400g",
-          "ativo": true
         }
       ]
     }
@@ -317,7 +283,7 @@ const FEATURES = {
     }
   ],
   "freteGratis": {
-    "valorMinimoCentavos": 35000,
+    "valorMinimoCentavos": 30000,
     "valorFreteCentavos": 2000
   }
 };
@@ -325,6 +291,8 @@ const FEATURES = {
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQ = 5;
 const TIMEOUT_MS = 8_000;
+const STOCK_CACHE_TTL_MS = 60_000;
+const STOCK_FETCH_TIMEOUT_MS = 5_000;
 
 const PHONE_RE = /^55\d{2}9\d{8}$/;
 const OBS_MAX_LEN = 500;
@@ -333,6 +301,7 @@ const MAX_QTY_PER_ITEM = 200;
 
 const ipHits = new Map();
 let serverConfigCache = null;
+let stockCache = null;
 
 class ValidationError extends Error {
   constructor(code, details = null) {
@@ -360,6 +329,107 @@ function sanitizeText(value, maxLen = 140) {
 
 function sanitizeObservation(value) {
   return sanitizeText(value, OBS_MAX_LEN);
+}
+
+function normalizeStockKey(value) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeStockActive(value) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value > 0;
+  const text = String(value || "").trim().toLowerCase();
+  if (!text) return true;
+  if (["true", "1", "sim", "s", "yes", "y", "ativo"].includes(text)) return true;
+  if (["false", "0", "nao", "não", "n", "no", "inativo"].includes(text)) return false;
+  return true;
+}
+
+function buildStockKey(lineName, productName) {
+  return normalizeStockKey(String(lineName || "") + " - " + String(productName || ""));
+}
+
+function normalizeStockSnapshot(raw) {
+  if (!raw || typeof raw !== "object" || !Array.isArray(raw.items)) return null;
+
+  const stockByKey = new Map();
+  for (const entry of raw.items) {
+    const key = normalizeStockKey(entry?.key);
+    if (!key || stockByKey.has(key)) return null;
+
+    const estoqueRaw = Number(entry?.estoque);
+    const estoque = Number.isInteger(estoqueRaw) && estoqueRaw >= 0
+      ? estoqueRaw
+      : 0;
+    const ativo = normalizeStockActive(entry?.ativo);
+    stockByKey.set(key, { estoque, ativo });
+  }
+
+  return {
+    version: sanitizeText(raw.version || "", 60),
+    updatedAt: sanitizeText(raw.updatedAt || "", 60),
+    stockByKey
+  };
+}
+
+function resolveStockUrl(origin, env) {
+  const fromEnv = sanitizeText(env?.STOCK_URL || "", 300);
+  if (fromEnv) return fromEnv;
+
+  const normalizedOrigin = sanitizeText(origin || "", 200).replace(/\/+$/, "");
+  if (!normalizedOrigin) throw new Error("stock_origin_missing");
+
+  return normalizedOrigin + "/stock.json";
+}
+
+async function fetchStockSnapshot(stockUrl) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort("stock_timeout"), STOCK_FETCH_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(stockUrl, {
+      headers: { "Cache-Control": "no-store" },
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error("stock_http_" + String(response.status));
+
+    let payload;
+    try {
+      payload = await response.json();
+    } catch {
+      throw new Error("stock_json_invalid");
+    }
+
+    const stockSnapshot = normalizeStockSnapshot(payload);
+    if (!stockSnapshot) throw new Error("stock_payload_invalid");
+    return stockSnapshot;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function getStockSnapshot(origin, env) {
+  const stockUrl = resolveStockUrl(origin, env);
+  const now = Date.now();
+
+  if (
+    stockCache
+    && stockCache.stockUrl === stockUrl
+    && stockCache.expiresAt > now
+    && stockCache.snapshot
+  ) {
+    return stockCache.snapshot;
+  }
+
+  const snapshot = await fetchStockSnapshot(stockUrl);
+  stockCache = {
+    stockUrl,
+    snapshot,
+    expiresAt: now + STOCK_CACHE_TTL_MS
+  };
+  return snapshot;
 }
 
 function isRateLimited(ip) {
@@ -434,7 +504,7 @@ function getServerConfig() {
     gramatura: line.gramatura || "",
     precoCentavos: Number.isInteger(line.precoCentavos) ? line.precoCentavos : null,
     pisoPrecoCentavos: Number.isInteger(line.pisoPrecoCentavos) ? line.pisoPrecoCentavos : null,
-    itens: (line.itens || []).filter((item) => item.ativo !== false)
+    itens: (line.itens || [])
   }));
 
   const products = lines.flatMap((line) =>
@@ -444,6 +514,7 @@ function getServerConfig() {
       lineName: line.nome,
       lineGramatura: line.gramatura || "",
       name: item.nome,
+      stockKey: buildStockKey(line.nome, item.nome),
       precoCentavos: Number.isInteger(item.precoCentavos) ? item.precoCentavos : line.precoCentavos,
       pisoPrecoCentavos: Number.isInteger(item.pisoPrecoCentavos) ? item.pisoPrecoCentavos : line.pisoPrecoCentavos
     }))
@@ -544,8 +615,9 @@ function compareClientTotals(clientPedido, serverPedido) {
   return mismatches;
 }
 
-function validateAndNormalizePayload(payload, config) {
+function validateAndNormalizePayload(payload, config, stockSnapshot) {
   assert(payload && typeof payload === "object", "payload_invalid");
+  assert(stockSnapshot && stockSnapshot.stockByKey instanceof Map, "stock_unavailable");
 
   const contatoWhatsapp = sanitizeText(payload?.metadata?.contatoWhatsapp, 20);
   assert(PHONE_RE.test(contatoWhatsapp), "whatsapp_invalid");
@@ -564,6 +636,28 @@ function validateAndNormalizePayload(payload, config) {
 
     const product = config.productById.get(item.id);
     assert(product, "item_not_found", { id: item.id });
+    const stockItem = stockSnapshot?.stockByKey?.get(product.stockKey);
+    const estoqueDisponivel = stockItem?.estoque;
+    const ativoDisponivel = stockItem?.ativo !== false;
+    const estoqueValido = Number.isInteger(estoqueDisponivel) && estoqueDisponivel >= 0;
+    assert(estoqueValido, "item_stock_exceeded", {
+      id: item.id,
+      quantidade: item.quantidade,
+      estoque: 0,
+      ativo: false
+    });
+    assert(ativoDisponivel, "item_stock_exceeded", {
+      id: item.id,
+      quantidade: item.quantidade,
+      estoque: estoqueDisponivel,
+      ativo: false
+    });
+    assert(item.quantidade <= estoqueDisponivel, "item_stock_exceeded", {
+      id: item.id,
+      quantidade: item.quantidade,
+      estoque: estoqueDisponivel,
+      ativo: true
+    });
 
     return {
       ...product,
@@ -707,9 +801,20 @@ export default {
       return json(origin, 400, { ok: false, error: "invalid_json" });
     }
 
+    let stockSnapshot;
+    try {
+      stockSnapshot = await getStockSnapshot(origin, env);
+    } catch (err) {
+      return json(origin, 422, {
+        ok: false,
+        error: "stock_unavailable",
+        details: sanitizeText(err?.message || "stock_fetch_failed", 120)
+      });
+    }
+
     let normalizedPayload;
     try {
-      normalizedPayload = validateAndNormalizePayload(payload, config);
+      normalizedPayload = validateAndNormalizePayload(payload, config, stockSnapshot);
     } catch (err) {
       if (err instanceof ValidationError) {
         return json(origin, 422, {
