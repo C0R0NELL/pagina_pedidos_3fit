@@ -29,6 +29,27 @@ const ALLOWED_ORIGINS = [
   "https://www.3fit.sollucion.com"
 ];
 
+const FEATURES = {
+  "webhookUrl": "https://api-webhook-privado-pagina-pedidos-3fit.yurih-gomes10.workers.dev",
+  "pedidoMinimo": 7,
+  "descontoProgressivo": [
+    {
+      "minUnidades": 14,
+      "maxUnidades": 20,
+      "percentual": 10
+    },
+    {
+      "minUnidades": 21,
+      "maxUnidades": null,
+      "percentual": 30
+    }
+  ],
+  "freteGratis": {
+    "valorMinimoCentavos": 30000,
+    "valorFreteCentavos": 2000
+  }
+};
+
 const CATALOG = {
   "version": "2026-02-20",
   "moeda": "BRL",
@@ -274,27 +295,6 @@ const CATALOG = {
       ]
     }
   ]
-};
-
-const FEATURES = {
-  "webhookUrl": "https://api-webhook-privado-pagina-pedidos-3fit.yurih-gomes10.workers.dev",
-  "pedidoMinimo": 7,
-  "descontoProgressivo": [
-    {
-      "minUnidades": 14,
-      "maxUnidades": 20,
-      "percentual": 10
-    },
-    {
-      "minUnidades": 21,
-      "maxUnidades": null,
-      "percentual": 30
-    }
-  ],
-  "freteGratis": {
-    "valorMinimoCentavos": 30000,
-    "valorFreteCentavos": 2000
-  }
 };
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
