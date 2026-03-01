@@ -16,5 +16,19 @@
   "freteGratis": {
     "valorMinimoCentavos": 30000,
     "valorFreteCentavos": 2000
+  },
+  "reposicaoPersonalizada": {
+    "habilitado": true,
+    "textoAntesLink": "Não encontrou o prato ou quantidade que precisava?\n\nSolicite uma",
+    "textoLink": "encomenda personalizada.",
+    "textoDepoisLink": "\n\n\nPrazo de 10 a 20 dias devido à produção + transporte.\nAssim que disponível, avisamos no WhatsApp 💪",
+    "tituloModal": "Solicitação de encomenda personalizada",
+    "descricaoModal": "Selecione os itens e quantidades desejadas para solicitarmos na próxima encomenda",
+    "minUnidades": 21,
+    "ctaEnviar": "Enviar",
+    "ctaCancelar": "Fechar",
+    "mensagemSucesso": "Solicitação enviada. Em breve retornaremos. 😊",
+    "mensagemSemItens": "Selecione pelo menos um item para enviar a solicitação.",
+    "mensagemMinimo": "Encomenda mínima são 21 unidades 💪"
   }
 }

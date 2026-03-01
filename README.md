@@ -6,7 +6,7 @@ Página criada para disponibilizar um formulário de pedidos para a revenda lice
 
 - `catalog.js`: cardápio base (linhas, pratos, ids, nomes, preços, estrutura comercial).
 - `stock.json`: disponibilidade dinâmica (estoque e `ativo` por prato).
-- `features.json`: regras comerciais dinâmicas (desconto, frete, thresholds, URL pública do proxy).
+- `features.json`: regras comerciais dinâmicas (desconto, frete, thresholds, URL pública do proxy e configuração da reposição personalizada).
 - `cloudflare-worker.js`: validação server-side e anti-tampering (recalcula totais e valida estoque).
 
 Nota: o arquivo de catálogo é `catalog.js` (não `catalog.json`).
@@ -56,6 +56,14 @@ Política operacional:
 - commitar no GitHub somente quando houver diff real em `items` (ignorar `version`/`updatedAt`);
 - não alterar outros fluxos em produção.
 - fluxo atual não cria `stock.json`; ele edita o arquivo existente (se faltar no repo, a execução falha).
+
+## Reposição Personalizada (Nova Feature)
+
+- Configuração data-driven em `features.json.reposicaoPersonalizada`.
+- Exibição no frontend: aviso com link clicável abaixo da montagem do pedido.
+- Ao clicar, abre modal compacto com todos os itens do `catalog.js` e quantidade livre.
+- Envio usa o mesmo endpoint público de `features.json.webhookUrl`.
+- Diferenciação no backend por `payload.tipo`: `"pedido"` ou `"encomenda"`.
 
 ## Notas Críticas para Futuras Mudanças
 

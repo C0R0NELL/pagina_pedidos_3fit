@@ -390,6 +390,19 @@ function resolveStockUrl(origin, env) {
   const normalizedOrigin = sanitizeText(origin || "", 200).replace(/\/+$/, "");
   if (!normalizedOrigin) throw new Error("stock_origin_missing");
 
+  const isLocalOrigin = /^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(normalizedOrigin);
+  if (isLocalOrigin) {
+    const publicOrigin = ALLOWED_ORIGINS.find((candidate) => {
+      const normalizedCandidate = sanitizeText(candidate || "", 200).replace(/\/+$/, "");
+      if (!normalizedCandidate) return false;
+      if (!/^https:\/\//i.test(normalizedCandidate)) return false;
+      return !/localhost|127\.0\.0\.1/i.test(normalizedCandidate);
+    });
+
+    if (!publicOrigin) throw new Error("stock_public_origin_missing");
+    return publicOrigin.replace(/\/+$/, "") + "/stock.json";
+  }
+
   return normalizedOrigin + "/stock.json";
 }
 
@@ -624,6 +637,13 @@ function compareClientTotals(clientPedido, serverPedido) {
   return mismatches;
 }
 
+function resolveRequestType(payload) {
+  const explicitType = sanitizeText(payload?.tipo, 20).toLowerCase();
+  if (explicitType === "pedido" || explicitType === "encomenda") return explicitType;
+  if (payload?.solicitacaoReposicao) return "encomenda";
+  return "pedido";
+}
+
 function validateAndNormalizePayload(payload, config, stockSnapshot) {
   assert(payload && typeof payload === "object", "payload_invalid");
   assert(stockSnapshot && stockSnapshot.stockByKey instanceof Map, "stock_unavailable");
@@ -721,6 +741,7 @@ function validateAndNormalizePayload(payload, config, stockSnapshot) {
   });
 
   return {
+    tipo: "pedido",
     metadata: {
       origem: sanitizeText(payload?.metadata?.origem || "landing-page-revenda-3fit", 80),
       geradoEm: new Date().toISOString(),
@@ -752,6 +773,64 @@ function validateAndNormalizePayload(payload, config, stockSnapshot) {
       freteGratisElegivel: serverPedido.freteGratisElegivel,
       freteGratisFaltamCentavos: serverPedido.freteGratisFaltamCentavos,
       precoPendente: false,
+      itens
+    }
+  };
+}
+
+function validateAndNormalizeRestockPayload(payload, config) {
+  assert(payload && typeof payload === "object", "payload_invalid");
+
+  const incomingItems = payload?.solicitacaoReposicao?.itens;
+  assert(Array.isArray(incomingItems) && incomingItems.length > 0, "items_missing");
+  assert(incomingItems.length <= MAX_ITEMS, "items_too_many");
+
+  const selectedItems = incomingItems.map((item) => {
+    assert(item && typeof item === "object", "item_invalid");
+    assert(typeof item.id === "string" && item.id.length > 0, "item_id_invalid");
+    assert(Number.isInteger(item.quantidade) && item.quantidade > 0 && item.quantidade <= MAX_QTY_PER_ITEM, "item_qty_invalid", {
+      id: item.id,
+      quantidade: item.quantidade
+    });
+
+    const product = config.productById.get(item.id);
+    assert(product, "item_not_found", { id: item.id });
+
+    return {
+      ...product,
+      quantidade: item.quantidade,
+      clientLineGramatura: sanitizeText(item.linhaGramatura || "", 40),
+      clientGramatura: sanitizeText(item.gramatura || "", 40)
+    };
+  });
+
+  const totalUnidades = selectedItems.reduce((acc, item) => acc + item.quantidade, 0);
+  const contatoWhatsapp = sanitizeText(payload?.metadata?.contatoWhatsapp, 20);
+  assert(PHONE_RE.test(contatoWhatsapp), "whatsapp_invalid");
+
+  const itens = selectedItems.map((item) => ({
+    id: item.id,
+    linhaId: item.lineId,
+    linha: item.lineName,
+    linhaGramatura: item.lineGramatura || item.clientLineGramatura,
+    produto: item.name,
+    gramatura: item.clientGramatura || item.gramatura || "",
+    quantidade: item.quantidade
+  }));
+
+  return {
+    tipo: "encomenda",
+    metadata: {
+      origem: sanitizeText(payload?.metadata?.origem || "landing-page-revenda-3fit-reposicao", 80),
+      geradoEm: new Date().toISOString(),
+      revendedor: sanitizeText(payload?.metadata?.revendedor || "Revendedor autorizado 3Fit", 120),
+      canalAtendimento: sanitizeText(payload?.metadata?.canalAtendimento || "reposicao-personalizada", 80),
+      contatoWhatsapp,
+      catalogVersion: sanitizeText(payload?.metadata?.catalogVersion || config.catalogVersion, 40),
+      moeda: config.currency
+    },
+    solicitacaoReposicao: {
+      totalUnidades,
       itens
     }
   };
@@ -801,20 +880,26 @@ export default {
       return json(origin, 400, { ok: false, error: "invalid_json" });
     }
 
-    let stockSnapshot;
-    try {
-      stockSnapshot = await getStockSnapshot(origin, env);
-    } catch (err) {
-      return json(origin, 422, {
-        ok: false,
-        error: "stock_unavailable",
-        details: sanitizeText(err?.message || "stock_fetch_failed", 120)
-      });
-    }
-
     let normalizedPayload;
     try {
-      normalizedPayload = validateAndNormalizePayload(payload, config, stockSnapshot);
+      const requestType = resolveRequestType(payload);
+
+      if (requestType === "encomenda") {
+        normalizedPayload = validateAndNormalizeRestockPayload(payload, config);
+      } else {
+        let stockSnapshot;
+        try {
+          stockSnapshot = await getStockSnapshot(origin, env);
+        } catch (err) {
+          return json(origin, 422, {
+            ok: false,
+            error: "stock_unavailable",
+            details: sanitizeText(err?.message || "stock_fetch_failed", 120)
+          });
+        }
+
+        normalizedPayload = validateAndNormalizePayload(payload, config, stockSnapshot);
+      }
     } catch (err) {
       if (err instanceof ValidationError) {
         return json(origin, 422, {

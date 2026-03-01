@@ -4,6 +4,7 @@
 - Keep the ordering experience clear, fast, and mobile-first.
 - Keep business rules data-driven (`features.json`), not hardcoded in UI text.
 - Keep commercial thresholds/gates data-driven (`features.json`), never hardcoded in UI logic.
+- Keep a single public webhook endpoint and route by payload `tipo` (`pedido`/`encomenda`).
 - Preserve visual consistency through CSS tokens in `:root`.
 - Treat integration/security as first-class: public frontend, protected backend proxy.
 
@@ -12,7 +13,7 @@
   - `catalog.js`
 - Dynamic stock availability (`estoque` + per-item `ativo`):
   - `stock.json`
-- Commercial rules (discount tiers, shipping thresholds, public proxy URL):
+- Commercial rules and frontend request endpoint (discount tiers, shipping thresholds, public proxy URL, restock config):
   - `features.json`
 - UX/UI behavior, copy, modal/dock logic, payload shape:
   - `index.html`

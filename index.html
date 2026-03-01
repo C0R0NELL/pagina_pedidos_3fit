@@ -134,6 +134,14 @@
       color: var(--text-soft);
     }
 
+    .brand__subtitle {
+      display: block;
+    }
+
+    .brand__subtitle-line2 {
+      white-space: nowrap;
+    }
+
     .pill {
       border: 1px solid var(--line);
       border-radius: 999px;
@@ -157,6 +165,17 @@
       justify-content: center;
       color: var(--text-strong);
       font-size: 1.2rem;
+    }
+
+    .cart-btn__icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .cart__count {
@@ -296,6 +315,15 @@
     .hero__promo-card span {
       color: var(--accent-text);
       font-weight: 700;
+    }
+
+    .hero__promo-note {
+      grid-column: 1 / -1;
+      margin-top: -2px;
+      color: var(--text-soft);
+      font-size: 0.73rem;
+      line-height: 1.3;
+      font-weight: 600;
     }
 
     .btn {
@@ -505,6 +533,10 @@
       margin-bottom: 10px;
     }
 
+    .album-head.is-hidden {
+      display: none;
+    }
+
     .album-head h3 {
       margin: 0;
       font-size: 0.98rem;
@@ -650,6 +682,35 @@
       font-size: 0.75rem;
       line-height: 1.35;
       color: var(--text-soft);
+    }
+
+    .restock-note {
+      margin: 10px 0 0;
+      max-width: 820px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 9px 11px;
+      font-size: 0.71rem;
+      line-height: 1.32;
+      color: var(--text-soft-strong);
+      white-space: pre-line;
+    }
+
+    .restock-note--hidden {
+      display: none;
+    }
+
+    .restock-note__link {
+      border: 0;
+      background: transparent;
+      color: #2b78ff;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
     }
 
     .summary__line {
@@ -847,12 +908,14 @@
     .whatsapp-field .field {
       border-color: rgba(37, 211, 102, 0.45);
       background: #fff;
+      padding: 9px 11px;
+      line-height: 1.2;
     }
 
     .form__hint {
-      margin: -2px 2px 0;
-      font-size: 0.78rem;
-      line-height: 1.3;
+      margin: 2px 2px 0;
+      font-size: 0.74rem;
+      line-height: 1.24;
       color: var(--danger);
       display: none;
     }
@@ -1176,6 +1239,143 @@
       margin-top: 10px;
     }
 
+    .restock-modal__card {
+      width: min(560px, calc(100vw - 24px));
+      max-width: 100%;
+      overflow: auto;
+    }
+
+    .restock-modal__sticky-head {
+      position: sticky;
+      top: -14px;
+      z-index: 6;
+      background: #fff;
+      margin: 0 -14px 0;
+      padding: 14px 14px 3px;
+    }
+
+    .restock-modal__desc {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      line-height: 1.35;
+      color: var(--text-soft);
+    }
+
+    .restock-modal__counter {
+      margin: 0 0 6px;
+      padding: 8px 10px;
+      border: 1px solid var(--line-accent);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      background: #fff9f3;
+      font-size: 0.79rem;
+      line-height: 1.32;
+      font-weight: 800;
+      color: var(--text-strong-soft);
+    }
+
+    .restock-modal__counter.is-valid {
+      border-color: var(--line-accent);
+      border-left-color: var(--accent);
+      background: #fff5e8;
+      color: var(--accent-text);
+    }
+
+    .restock-modal__list {
+      display: grid;
+      gap: 8px;
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
+      margin-bottom: 6px;
+      box-sizing: border-box;
+    }
+
+    #restockModal .whatsapp-field {
+      margin-top: 2px;
+    }
+
+    #restockModal .modal__actions {
+      margin-top: 8px;
+    }
+
+    .restock-line {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px;
+    }
+
+    .restock-line__title {
+      margin: 0 0 7px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--accent-text);
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .restock-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 6px 6px 0;
+      border-top: 1px dashed var(--line);
+    }
+
+    .restock-item:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .restock-item__name {
+      margin: 0;
+      font-size: 0.8rem;
+      line-height: 1.28;
+      color: var(--text-strong-soft);
+    }
+
+    .restock-item__qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 3px;
+      width: fit-content;
+    }
+
+    .restock-item__qty button {
+      border: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      font-size: .95rem;
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--surface-chip);
+      color: var(--accent-text);
+    }
+
+    .restock-item__qty input {
+      border: 0;
+      width: 42px;
+      text-align: center;
+      font-weight: 700;
+      font: inherit;
+      color: var(--text);
+      background: transparent;
+      appearance: textfield;
+    }
+
+    .restock-item__qty input::-webkit-outer-spin-button,
+    .restock-item__qty input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
       .mobile-dock {
         display: none;
       }
@@ -1185,6 +1385,7 @@
       .sidebar { position: static; }
       .hero__content { grid-template-columns: 1fr; }
       .hero__cover { min-height: 230px; }
+      .restock-note { max-width: none; }
 
       .mobile-dock {
         display: grid;
@@ -1295,6 +1496,119 @@
     @media (max-width: 640px) {
       .hero { padding-top: 20px; }
       .topbar { padding: 10px 0; }
+      .topbar__wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 10px;
+      }
+
+      .topbar__actions {
+        margin-left: 0;
+        justify-self: end;
+        align-self: start;
+        margin-top: 6px;
+      }
+
+      .brand {
+        min-width: 0;
+        gap: 10px;
+      }
+
+      .brand img {
+        width: 48px;
+        height: 48px;
+        border-radius: 9px;
+      }
+
+      .brand strong {
+        font-size: 0.95rem;
+      }
+
+      .brand span {
+        font-size: 0.78rem;
+      }
+
+      .brand__subtitle-line2 {
+        display: block;
+        white-space: normal;
+      }
+
+      .cart-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        border-color: var(--line-subtle);
+        box-shadow: 0 4px 10px rgba(28, 22, 16, 0.1);
+      }
+
+      .cart-btn__icon {
+        width: 18px;
+        height: 18px;
+      }
+
+      .cart__count {
+        top: -5px;
+        right: -5px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        font-size: 0.62rem;
+      }
+
+      .restock-note {
+        padding: 8px 9px;
+        font-size: 0.71rem;
+        line-height: 1.35;
+      }
+
+      .whatsapp-field .field {
+        padding: 8px 10px;
+        font-size: 0.96rem;
+      }
+
+      .restock-modal__counter {
+        padding: 7px 8px;
+        font-size: 0.75rem;
+        line-height: 1.28;
+      }
+
+      #restockModal {
+        align-items: center;
+        padding-top: calc(8px + env(safe-area-inset-top, 0px));
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .restock-modal__card {
+        max-height: calc(100dvh - 16px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+      }
+
+      .restock-modal__list {
+        max-height: none;
+      }
+
+      .restock-item {
+        gap: 5px;
+      }
+
+      .restock-item__qty {
+        gap: 3px;
+        padding: 1px;
+        border-radius: 8px;
+      }
+
+      .restock-item__qty button {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+      }
+
+      .restock-item__qty input {
+        width: 24px;
+        font-size: 0.82rem;
+      }
+
       .hero__promo-card {
         grid-template-columns: 1fr;
         align-items: start;
@@ -1303,6 +1617,13 @@
 
       .hero__promo-card span {
         white-space: normal;
+      }
+
+      .album-head h3 {
+        font-size: 0.84rem;
+        line-height: 1.2;
+        font-weight: 700;
+        text-wrap: balance;
       }
 
       .actions .btn {
@@ -1402,18 +1723,21 @@
         grid-area: qty;
         margin-top: 0;
         align-self: center;
-        gap: 6px;
-        padding: 3px;
+        gap: 3px;
+        padding: 1px;
+        border-radius: 8px;
       }
 
       .qty button {
-        width: 28px;
-        height: 28px;
-        font-size: 0.95rem;
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        font-size: 0.78rem;
       }
 
       .qty input {
-        width: 28px;
+        width: 24px;
+        font-size: 0.82rem;
       }
 
       .hero h1 { max-width: none; }
@@ -1427,13 +1751,16 @@
         <img src="images/logo.png" alt="Logo 3Fit" />
         <div>
           <strong>3Fit - Taboão da Serra</strong>
-          <span>Melhores marmitas congeladas do Brasil</span>
+          <span class="brand__subtitle">Melhores marmitas congeladas <span class="brand__subtitle-line2">do Brasil</span></span>
         </div>
       </a>
       <div class="topbar__actions">
-        <span class="pill">Disponibilidade confirmada após envio</span>
         <button type="button" class="cart-btn" id="headerCartBtn" aria-label="Conferir pedido">
-          <span aria-hidden="true">🛒</span>
+          <svg class="cart-btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="9" cy="20" r="1.6"></circle>
+            <circle cx="18" cy="20" r="1.6"></circle>
+            <path d="M2.5 4.5h2.4l2.3 10.2h10.5l2.2-7.1H6.1"></path>
+          </svg>
           <span class="cart__count" id="headerCartCount">0</span>
         </button>
       </div>
@@ -1455,6 +1782,7 @@
           <div class="hero__promo-card">
             <strong>Frete grátis</strong>
             <span>Calculando oferta...</span>
+            <small class="hero__promo-note">Entrega de 1 a 2 dias úteis</small>
           </div>
         </div>
       </div>
@@ -1468,11 +1796,12 @@
     <div class="products-col">
       <section class="panel products" aria-label="Lista de produtos">
         <div id="albumGrid" class="albums" aria-label="Linhas por categoria"></div>
-        <div class="album-head">
+        <div class="album-head" id="albumHead">
           <h3 id="albumTitle">Selecione uma linha para ver os pratos</h3>
         </div>
         <div id="productGrid" class="product-grid"></div>
       </section>
+      <p class="restock-note restock-note--hidden" id="restockNotice"></p>
     </div>
 
     <aside class="panel sidebar">
@@ -1503,12 +1832,37 @@
           </div>
           <input class="field" id="whatsappPedido" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(DDD) + número" />
         </div>
-        <p class="form__hint" id="whatsappHint">O número de WhatsApp precisa ser preenchido para validarmos o pedido.</p>
+        <p class="form__hint" id="whatsappHint">O WhatsApp precisa ser preenchido.</p>
         <textarea class="field" id="obsPedido" placeholder="Observações do pedido (opcional)"></textarea>
       </div>
       <div class="modal__actions">
         <button type="button" class="btn btn--ghost" id="cancelReviewBtn">Continuar escolhendo</button>
         <button type="button" class="btn btn--primary" id="sendOrderBtn">Enviar pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="restockModal" role="dialog" aria-modal="true" aria-labelledby="restockTitle">
+    <div class="modal__card restock-modal__card">
+      <div class="restock-modal__sticky-head">
+        <div class="modal__head">
+          <h3 id="restockTitle">Solicitação de encomenda personalizada</h3>
+        </div>
+        <p class="restock-modal__desc" id="restockDescription"></p>
+        <p class="restock-modal__counter" id="restockCounter"></p>
+      </div>
+      <div class="restock-modal__list" id="restockList"></div>
+      <div class="whatsapp-field">
+        <div class="whatsapp-field__head">
+          <p class="whatsapp-field__label"><span class="whatsapp-field__dot" aria-hidden="true"></span> WhatsApp</p>
+          <p class="whatsapp-field__required">Obrigatório</p>
+        </div>
+        <input class="field" id="whatsappRestock" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(DDD) + número" />
+      </div>
+      <p class="form__hint" id="whatsappRestockHint">O WhatsApp precisa ser preenchido.</p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="cancelRestockBtn">Fechar</button>
+        <button type="button" class="btn btn--primary" id="sendRestockBtn">Enviar</button>
       </div>
     </div>
   </div>
@@ -1548,13 +1902,28 @@
     const MAX_OBS_LENGTH = 400;
     const UI_TIMINGS_MS = Object.freeze({
       centerNotice: 1500,
+      stockMaxReached: 1000,
       clearOrderFeedback: 1200
     });
     const TECH_ERROR_MESSAGE = '<strong>Houve uma falha técnica.</strong><br>Por favor, tente novamente em instantes.<br>Se o problema persistir, solicite <strong>"Atendimento humano"</strong> no WhatsApp.';
     const CALC_DIVERGENCE_ERROR_MESSAGE = 'Encontramos divergências no cálculo do formulário.<br>Caso o erro persista, solicite <strong>Atendimento humano</strong> no WhatsApp.';
     const STOCK_UNAVAILABLE_ERROR_MESSAGE = '<strong>Estoque indisponível no momento.</strong><br>Por favor, tente novamente em instantes.';
     const STOCK_DIVERGENCE_ERROR_MESSAGE = 'Alguns itens ficaram sem estoque durante a revisão do pedido.<br>Atualize as quantidades e tente novamente.';
-    const STOCK_MAX_REACHED_MESSAGE = "Disponibilidade máxima atingida 😕";
+    const STOCK_MAX_REACHED_MESSAGE = "Disponibilidade máxima atingida para este item 😕";
+    const DEFAULT_RESTOCK_CONFIG = Object.freeze({
+      habilitado: false,
+      textoAntesLink: "Não encontrou o prato ou quantidade que precisava?\n\nSolicite uma",
+      textoLink: "encomenda personalizada.",
+      textoDepoisLink: "\n\n\nPrazo de 10 a 20 dias devido à produção + transporte.\nAssim que disponível, avisamos no WhatsApp 💪",
+      tituloModal: "Solicitação de encomenda personalizada",
+      descricaoModal: "Selecione os itens e quantidades desejadas para solicitarmos na próxima encomenda",
+      minUnidades: 21,
+      ctaEnviar: "Enviar",
+      ctaCancelar: "Fechar",
+      mensagemSucesso: "Solicitação enviada. Em breve retornaremos. 😊",
+      mensagemSemItens: "Selecione pelo menos um item para enviar a solicitação.",
+      mensagemMinimo: "Encomenda mínima são 21 unidades 💪"
+    });
     const catalog = window.CATALOG || { version: "sem-versao", moeda: "BRL", linhas: [] };
     const lines = (catalog.linhas || []).map((line) => ({
       id: line.id,
@@ -1666,8 +2035,52 @@
       return { descontoProgressivo, freteGratis, pedidoMinimo };
     };
 
+    const normalizeRestockConfig = (raw) => {
+      const source = raw && typeof raw === "object" ? raw : {};
+      const pickText = (value, fallback, maxLength = 340, preserveLineBreaks = false) => {
+        if (!preserveLineBreaks) {
+          const text = String(value ?? "").replace(/\s+/g, " ").trim();
+          if (!text) return fallback;
+          return text.slice(0, maxLength);
+        }
+
+        const normalized = String(value ?? "")
+          .replace(/\r\n/g, "\n")
+          .split("\n")
+          .map((line) => line.replace(/\s+/g, " ").trim())
+          .join("\n")
+          .replace(/\n{3,}/g, "\n\n");
+
+        const hasMeaningfulText = normalized.replace(/\n/g, "").trim().length > 0;
+        if (!hasMeaningfulText) return fallback;
+        return normalized.slice(0, maxLength);
+      };
+
+      const habilitado = source.habilitado !== false;
+      const parsedMinUnidades = Number(source.minUnidades);
+      const minUnidades = Number.isInteger(parsedMinUnidades) && parsedMinUnidades > 0
+        ? parsedMinUnidades
+        : DEFAULT_RESTOCK_CONFIG.minUnidades;
+
+      return {
+        habilitado,
+        textoAntesLink: pickText(source.textoAntesLink, DEFAULT_RESTOCK_CONFIG.textoAntesLink, 420),
+        textoLink: pickText(source.textoLink, DEFAULT_RESTOCK_CONFIG.textoLink, 120),
+        textoDepoisLink: pickText(source.textoDepoisLink, DEFAULT_RESTOCK_CONFIG.textoDepoisLink, 520, true),
+        tituloModal: pickText(source.tituloModal, DEFAULT_RESTOCK_CONFIG.tituloModal, 120),
+        descricaoModal: pickText(source.descricaoModal, DEFAULT_RESTOCK_CONFIG.descricaoModal, 240),
+        minUnidades,
+        ctaEnviar: pickText(source.ctaEnviar, DEFAULT_RESTOCK_CONFIG.ctaEnviar, 60),
+        ctaCancelar: pickText(source.ctaCancelar, DEFAULT_RESTOCK_CONFIG.ctaCancelar, 60),
+        mensagemSucesso: pickText(source.mensagemSucesso, DEFAULT_RESTOCK_CONFIG.mensagemSucesso, 200),
+        mensagemSemItens: pickText(source.mensagemSemItens, DEFAULT_RESTOCK_CONFIG.mensagemSemItens, 180),
+        mensagemMinimo: pickText(source.mensagemMinimo, DEFAULT_RESTOCK_CONFIG.mensagemMinimo, 220),
+      };
+    };
+
     let webhookUrl = "";
     let pricingRules = null;
+    let restockConfig = { ...DEFAULT_RESTOCK_CONFIG };
     let latestDockSnapshot = null;
     let stockLoaded = false;
 
@@ -1730,6 +2143,7 @@
 
     const productGrid = document.getElementById("productGrid");
     const albumGrid = document.getElementById("albumGrid");
+    const albumHead = document.getElementById("albumHead");
     const albumTitle = document.getElementById("albumTitle");
     const summary = document.getElementById("summary");
     const whatsappPedido = document.getElementById("whatsappPedido");
@@ -1740,6 +2154,7 @@
     const clearOrderBtn = document.getElementById("clearOrderBtn");
     const businessNotice = document.getElementById("businessNotice");
     const summaryDisclaimer = document.querySelector(".summary__disclaimer");
+    const restockNotice = document.getElementById("restockNotice");
     const heroPromo = document.getElementById("heroPromo");
     const reviewModal = document.getElementById("reviewModal");
     const reviewSummary = document.getElementById("reviewSummary");
@@ -1761,6 +2176,15 @@
     const alertCard = document.getElementById("alertCard");
     const alertMessage = document.getElementById("alertMessage");
     const alertOkBtn = document.getElementById("alertOkBtn");
+    const restockModal = document.getElementById("restockModal");
+    const restockTitle = document.getElementById("restockTitle");
+    const restockDescription = document.getElementById("restockDescription");
+    const whatsappRestock = document.getElementById("whatsappRestock");
+    const whatsappRestockHint = document.getElementById("whatsappRestockHint");
+    const restockCounter = document.getElementById("restockCounter");
+    const restockList = document.getElementById("restockList");
+    const cancelRestockBtn = document.getElementById("cancelRestockBtn");
+    const sendRestockBtn = document.getElementById("sendRestockBtn");
     const centerNotice = document.getElementById("centerNotice");
     const brandReloadBtn = document.getElementById("brandReloadBtn");
 
@@ -1780,8 +2204,11 @@
     let activeCategory = null;
     let clearOrderFeedbackTimer = null;
     let centerNoticeTimer = null;
+    let showWhatsappHintPedido = false;
+    let showWhatsappHintRestock = false;
+    const restockSelection = new Map();
+    let isMobileRestockNoticeLayout = window.matchMedia("(max-width: 640px)").matches;
 
-    const getUnitsNoun = (value) => (Number(value) === 1 ? "unidade" : "unidades");
     const getMissingUnitsForReview = (totalUnidades) => {
       const minimoUnidades = Number.isInteger(pricingRules?.pedidoMinimo)
         ? pricingRules.pedidoMinimo
@@ -1983,6 +2410,7 @@
         <div class="hero__promo-card">
           <strong>Frete grátis</strong>
           <span>Acima de ${formatCurrency(pricingRules.freteGratis.valorMinimoCentavos)}</span>
+          <small class="hero__promo-note">Entrega de 1 a 2 dias úteis</small>
         </div>
       `;
     };
@@ -1995,11 +2423,248 @@
       const data = await response.json();
       const nextWebhookUrl = String(data?.webhookUrl || "").trim();
       const nextPricingRules = normalizePricingRules(data);
+      const nextRestockConfig = normalizeRestockConfig(data?.reposicaoPersonalizada);
       if (!nextWebhookUrl) throw new Error("features_webhook_url_invalido");
       if (!nextPricingRules) throw new Error("features_pricing_rules_invalidas");
 
       webhookUrl = nextWebhookUrl;
       pricingRules = nextPricingRules;
+      restockConfig = nextRestockConfig;
+    };
+
+    const getRestockSelectionItems = () =>
+      products
+        .map((product) => {
+          const rawQty = restockSelection.get(product.id) || 0;
+          const parsedQty = Number.parseInt(String(rawQty), 10);
+          const qty = Number.isFinite(parsedQty) ? Math.min(Math.max(0, parsedQty), 999) : 0;
+          if (qty <= 0) return null;
+          return {
+            id: product.id,
+            linhaId: product.lineId,
+            linha: product.lineName,
+            linhaGramatura: lineById[product.lineId]?.gramatura || "",
+            produto: product.name,
+            gramatura: product.gramatura || "",
+            quantidade: qty
+          };
+        })
+        .filter((item) => item !== null);
+
+    const getRestockMinimumUnits = () => {
+      const parsed = Number(restockConfig?.minUnidades);
+      return Number.isInteger(parsed) && parsed > 0
+        ? parsed
+        : DEFAULT_RESTOCK_CONFIG.minUnidades;
+    };
+
+    const getRestockSelectedUnits = () =>
+      getRestockSelectionItems().reduce((acc, item) => acc + item.quantidade, 0);
+
+    const getRestockMinimumMessage = (minUnits, selectedUnits) => {
+      const missing = Math.max(0, minUnits - selectedUnits);
+      const template = String(
+        restockConfig?.mensagemMinimo
+        || DEFAULT_RESTOCK_CONFIG.mensagemMinimo
+      );
+
+      return template
+        .replace(/\{min\}/g, String(minUnits))
+        .replace(/\{total\}/g, String(selectedUnits))
+        .replace(/\{faltam\}/g, String(missing));
+    };
+
+    const renderRestockCounter = () => {
+      if (!restockCounter) return;
+      const total = getRestockSelectedUnits();
+      const min = getRestockMinimumUnits();
+      const missing = Math.max(0, min - total);
+
+      if (total >= min) {
+        restockCounter.textContent = `${total} unidades selecionadas`;
+        restockCounter.classList.add("is-valid");
+        return;
+      }
+
+      restockCounter.textContent = `Faltam ${missing} unidades para atingir a encomenda mínima`;
+      restockCounter.classList.remove("is-valid");
+    };
+
+    const updateRestockSendButtonState = () => {
+      renderRestockCounter();
+      if (!sendRestockBtn) return;
+      const selectedUnits = getRestockSelectedUnits();
+      const hasItems = selectedUnits > 0;
+      updateRestockWhatsappValidationUi();
+      sendRestockBtn.disabled = !(restockConfig?.habilitado && webhookUrl && hasItems);
+    };
+
+    const setRestockQty = (productId, qty) => {
+      if (!productById[productId]) return;
+      const parsedQty = Number.parseInt(String(qty), 10);
+      const nextQty = Number.isFinite(parsedQty) ? Math.min(Math.max(0, parsedQty), 999) : 0;
+
+      if (nextQty <= 0) {
+        restockSelection.delete(productId);
+      } else {
+        restockSelection.set(productId, nextQty);
+      }
+
+      renderRestockList();
+      updateRestockSendButtonState();
+    };
+
+    const renderRestockNotice = () => {
+      if (!restockNotice) return;
+
+      if (!restockConfig?.habilitado || !webhookUrl) {
+        restockNotice.textContent = "";
+        restockNotice.classList.add("restock-note--hidden");
+        return;
+      }
+
+      restockNotice.classList.remove("restock-note--hidden");
+      restockNotice.innerHTML = "";
+
+      const beforeText = String(restockConfig.textoAntesLink || "");
+      const beforeTextNode = document.createTextNode(beforeText);
+      const linkButton = document.createElement("button");
+      linkButton.type = "button";
+      linkButton.className = "restock-note__link";
+      linkButton.dataset.action = "open-restock-modal";
+      linkButton.textContent = restockConfig.textoLink;
+      const afterText = String(restockConfig.textoDepoisLink || "").replace(/\r\n/g, "\n");
+      const isMobileNotice = window.matchMedia("(max-width: 640px)").matches;
+
+      if (isMobileNotice) {
+        const compactBefore = beforeText.replace(/\s+/g, " ").trim();
+        const questionMatch = compactBefore.match(/^(.*?\?)(.*)$/);
+        const firstLine = questionMatch ? questionMatch[1].trim() : compactBefore;
+        const secondLinePrefix = questionMatch ? questionMatch[2].trim() : "";
+        const prefixWithSpace = secondLinePrefix
+          ? `${secondLinePrefix}${/\s$/.test(secondLinePrefix) ? "" : " "}`
+          : "";
+
+        if (firstLine) {
+          restockNotice.append(document.createTextNode(firstLine));
+          restockNotice.append(document.createElement("br"));
+        }
+
+        if (prefixWithSpace) {
+          restockNotice.append(document.createTextNode(prefixWithSpace));
+        }
+        restockNotice.append(linkButton);
+
+        const compactAfter = afterText
+          .replace(/\n+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        if (compactAfter) {
+          restockNotice.append(document.createElement("br"));
+          restockNotice.append(document.createElement("br"));
+
+          const sentenceMatch = compactAfter.match(/^([^.!?]+[.!?])\s*(.*)$/);
+          const firstSentence = sentenceMatch ? sentenceMatch[1].trim() : compactAfter;
+          const secondSentence = sentenceMatch ? sentenceMatch[2].trim() : "";
+
+          restockNotice.append(document.createTextNode(firstSentence));
+          if (secondSentence) {
+            restockNotice.append(document.createElement("br"));
+            restockNotice.append(document.createTextNode(secondSentence));
+          }
+        }
+        return;
+      }
+
+      restockNotice.append(beforeTextNode);
+      if (beforeText && !/\s$/.test(beforeText)) {
+        restockNotice.append(document.createTextNode(" "));
+      }
+      restockNotice.append(linkButton);
+      if (afterText) {
+        restockNotice.append(document.createTextNode(afterText));
+      }
+    };
+
+    const renderRestockList = () => {
+      if (!restockList) return;
+
+      const lineSections = lines
+        .map((line) => {
+          const lineProducts = products.filter((product) => product.lineId === line.id);
+          if (!lineProducts.length) return "";
+
+          const itemsHtml = lineProducts
+            .map((product) => {
+              const qty = Number.parseInt(String(restockSelection.get(product.id) || 0), 10) || 0;
+              return `
+                <div class="restock-item">
+                  <p class="restock-item__name">${product.name}${product.gramatura ? ` (${product.gramatura})` : ""}</p>
+                  <div class="restock-item__qty">
+                    <button type="button" data-restock-action="minus" data-id="${product.id}" aria-label="Diminuir quantidade">-</button>
+                    <input type="number" min="0" max="999" value="${Math.max(0, qty)}" data-restock-action="input" data-id="${product.id}" aria-label="Quantidade de encomenda" />
+                    <button type="button" data-restock-action="plus" data-id="${product.id}" aria-label="Aumentar quantidade">+</button>
+                  </div>
+                </div>
+              `;
+            })
+            .join("");
+
+          return `
+            <section class="restock-line">
+              <h4 class="restock-line__title">${line.nome}${line.gramatura ? ` (${line.gramatura})` : ""}</h4>
+              ${itemsHtml}
+            </section>
+          `;
+        })
+        .join("");
+
+      restockList.innerHTML = lineSections;
+    };
+
+    const openRestockModal = () => {
+      if (!restockConfig?.habilitado || !webhookUrl || !restockModal) return;
+      if (restockTitle) restockTitle.textContent = restockConfig.tituloModal;
+      if (restockDescription) restockDescription.textContent = restockConfig.descricaoModal;
+      if (cancelRestockBtn) cancelRestockBtn.textContent = restockConfig.ctaCancelar;
+      if (sendRestockBtn) sendRestockBtn.textContent = restockConfig.ctaEnviar;
+      if (whatsappRestock) {
+        const hasRestockNumber = normalizeBrazilPhoneDigits(whatsappRestock.value).length > 0;
+        const hasPedidoNumber = normalizeBrazilPhoneDigits(whatsappPedido?.value || "").length > 0;
+        if (!hasRestockNumber && hasPedidoNumber) {
+          whatsappRestock.value = whatsappPedido.value;
+        }
+        whatsappRestock.value = formatBrazilWhatsapp(whatsappRestock.value);
+      }
+      showWhatsappHintRestock = false;
+      renderRestockList();
+      updateRestockSendButtonState();
+      setModalVisible(restockModal, true);
+    };
+
+    const buildRestockPayload = () => {
+      const items = getRestockSelectionItems();
+      const totalUnidades = items.reduce((acc, item) => acc + item.quantidade, 0);
+      const whatsappDigits = normalizeBrazilPhoneDigits(whatsappRestock?.value || "");
+      const contatoWhatsapp = `55${whatsappDigits}`;
+
+      return {
+        tipo: "encomenda",
+        metadata: {
+          origem: "landing-page-revenda-3fit-reposicao",
+          geradoEm: new Date().toISOString(),
+          revendedor: "Revendedor autorizado 3Fit",
+          canalAtendimento: "reposicao-personalizada",
+          contatoWhatsapp,
+          catalogVersion: catalog.version,
+          moeda: catalog.moeda || "BRL"
+        },
+        solicitacaoReposicao: {
+          totalUnidades,
+          itens: items
+        }
+      };
     };
 
     const renderAlbums = () => {
@@ -2029,10 +2694,9 @@
     };
 
     const renderProducts = () => {
-      const currentLineName = lineById[activeCategory]?.nome || activeCategory;
-      const currentLineGramatura = lineById[activeCategory]?.gramatura || "";
+      if (albumHead) albumHead.classList.toggle("is-hidden", Boolean(activeCategory));
       albumTitle.textContent = activeCategory
-        ? `Pratos da linha ${currentLineName}${currentLineGramatura ? ` (${currentLineGramatura})` : ""}`
+        ? ""
         : "Selecione uma linha para ver os pratos";
 
       const filtered = getFilteredProducts();
@@ -2381,7 +3045,9 @@
     };
 
     const syncModalBodyState = () => {
-      const hasVisibleModal = reviewModal.classList.contains("show") || alertModal.classList.contains("show");
+      const hasVisibleModal = reviewModal.classList.contains("show")
+        || alertModal.classList.contains("show")
+        || (restockModal && restockModal.classList.contains("show"));
       document.body.classList.toggle("has-open-modal", hasVisibleModal);
     };
 
@@ -2464,16 +3130,58 @@
     };
 
     const getPrefilledWhatsappFromUrl = () => {
-      const params = new URLSearchParams(window.location.search);
-      const rawValue = params.get("wa") || "";
+      const rawSearch = String(window.location.search || "").replace(/^\?/, "").trim();
+      if (!rawSearch) return "";
+
+      const params = new URLSearchParams(rawSearch);
+      const candidates = [
+        params.get("wa"),
+        params.get("whatsapp"),
+        params.get("phone"),
+        params.get("cel"),
+        params.get("celular"),
+        params.get("numero"),
+        params.get("")
+      ];
+
+      const safeDecode = (value) => {
+        try {
+          return decodeURIComponent(String(value || ""));
+        } catch {
+          return String(value || "");
+        }
+      };
+
+      let rawValue = candidates.find((value) => String(value || "").trim()) || "";
+      if (!rawValue) {
+        if (!rawSearch.includes("=") && !rawSearch.includes("&")) {
+          rawValue = safeDecode(rawSearch);
+        } else if (rawSearch.startsWith("=")) {
+          rawValue = safeDecode(rawSearch.slice(1));
+        }
+      }
       return formatBrazilWhatsapp(rawValue);
     };
 
-    const updateWhatsappValidationUi = () => {
+    const updateWhatsappValidationUi = ({ forceShow = false } = {}) => {
       const isValid = isValidBrazilWhatsapp(whatsappPedido.value);
-      sendOrderBtn.disabled = !isValid || !stockLoaded;
-      whatsappHint.classList.toggle("show", !isValid);
-      whatsappPedido.classList.toggle("is-invalid", !isValid);
+      if (forceShow) showWhatsappHintPedido = true;
+      if (isValid) showWhatsappHintPedido = false;
+      const showError = !isValid && showWhatsappHintPedido;
+      sendOrderBtn.disabled = !stockLoaded;
+      whatsappHint.classList.toggle("show", showError);
+      whatsappPedido.classList.toggle("is-invalid", showError);
+      return isValid;
+    };
+
+    const updateRestockWhatsappValidationUi = ({ forceShow = false } = {}) => {
+      if (!whatsappRestock || !whatsappRestockHint) return true;
+      const isValid = isValidBrazilWhatsapp(whatsappRestock.value);
+      if (forceShow) showWhatsappHintRestock = true;
+      if (isValid) showWhatsappHintRestock = false;
+      const showError = !isValid && showWhatsappHintRestock;
+      whatsappRestockHint.classList.toggle("show", showError);
+      whatsappRestock.classList.toggle("is-invalid", showError);
       return isValid;
     };
 
@@ -2526,6 +3234,7 @@
         }));
 
       return {
+        tipo: "pedido",
         metadata: {
           origem: "landing-page-revenda-3fit",
           geradoEm: new Date().toISOString(),
@@ -2579,7 +3288,7 @@
       if (button.dataset.action === "plus") {
         const stockLimit = getProductStockLimit(id);
         if (current >= stockLimit) {
-          showCenterNotice(STOCK_MAX_REACHED_MESSAGE);
+          showCenterNotice(STOCK_MAX_REACHED_MESSAGE, UI_TIMINGS_MS.stockMaxReached);
           return;
         }
         setQty(id, current + 1);
@@ -2607,8 +3316,12 @@
     clearOrderBtn.addEventListener("click", () => {
       selected.clear();
       whatsappPedido.value = "";
+      if (whatsappRestock) whatsappRestock.value = "";
       obsPedido.value = "";
+      showWhatsappHintPedido = false;
+      showWhatsappHintRestock = false;
       updateWhatsappValidationUi();
+      updateRestockWhatsappValidationUi();
       renderProducts();
       renderSummary();
       setModalVisible(reviewModal, false);
@@ -2638,6 +3351,7 @@
       }
       renderReviewSummary();
       setModalVisible(reviewModal, true);
+      showWhatsappHintPedido = false;
       updateWhatsappValidationUi();
     };
 
@@ -2657,6 +3371,50 @@
       if (event.target === reviewModal) setModalVisible(reviewModal, false);
     });
 
+    if (restockNotice) {
+      restockNotice.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-action='open-restock-modal']");
+        if (!trigger) return;
+        event.preventDefault();
+        openRestockModal();
+      });
+    }
+
+    if (restockList) {
+      restockList.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-restock-action]");
+        if (!trigger) return;
+
+        const productId = trigger.dataset.id;
+        const currentQty = Number.parseInt(String(restockSelection.get(productId) || 0), 10) || 0;
+        if (trigger.dataset.restockAction === "plus") {
+          setRestockQty(productId, currentQty + 1);
+        }
+        if (trigger.dataset.restockAction === "minus") {
+          setRestockQty(productId, currentQty - 1);
+        }
+      });
+
+      restockList.addEventListener("input", (event) => {
+        const input = event.target.closest("input[data-restock-action='input']");
+        if (!input) return;
+        setRestockQty(input.dataset.id, input.value);
+      });
+    }
+
+    if (cancelRestockBtn) {
+      cancelRestockBtn.addEventListener("click", () => {
+        if (!restockModal) return;
+        setModalVisible(restockModal, false);
+      });
+    }
+
+    if (restockModal) {
+      restockModal.addEventListener("click", (event) => {
+        if (event.target === restockModal) setModalVisible(restockModal, false);
+      });
+    }
+
     whatsappPedido.addEventListener("input", () => {
       whatsappPedido.value = formatBrazilWhatsapp(whatsappPedido.value);
       updateWhatsappValidationUi();
@@ -2666,6 +3424,18 @@
       whatsappPedido.value = formatBrazilWhatsapp(whatsappPedido.value);
       updateWhatsappValidationUi();
     });
+
+    if (whatsappRestock) {
+      whatsappRestock.addEventListener("input", () => {
+        whatsappRestock.value = formatBrazilWhatsapp(whatsappRestock.value);
+        updateRestockSendButtonState();
+      });
+
+      whatsappRestock.addEventListener("blur", () => {
+        whatsappRestock.value = formatBrazilWhatsapp(whatsappRestock.value);
+        updateRestockSendButtonState();
+      });
+    }
 
     alertOkBtn.addEventListener("click", () => {
       setModalVisible(alertModal, false);
@@ -2685,10 +3455,16 @@
       });
     };
     window.addEventListener("scroll", syncDockMetaWithViewport, { passive: true });
+    window.addEventListener("resize", () => {
+      const nextIsMobile = window.matchMedia("(max-width: 640px)").matches;
+      if (nextIsMobile === isMobileRestockNoticeLayout) return;
+      isMobileRestockNoticeLayout = nextIsMobile;
+      renderRestockNotice();
+    }, { passive: true });
     window.addEventListener("resize", syncDockMetaWithViewport);
 
     sendOrderBtn.addEventListener("click", async () => {
-      if (!updateWhatsappValidationUi()) {
+      if (!updateWhatsappValidationUi({ forceShow: true })) {
         return;
       }
 
@@ -2730,7 +3506,7 @@
           return;
         }
 
-        showFeedback("Pedido enviado com sucesso. Em breve entraremos em contato.", "ok");
+        showFeedback("Pedido enviado com sucesso. Em breve retornaremos 😊", "ok");
         obsPedido.value = "";
         selected.clear();
         setModalVisible(reviewModal, false);
@@ -2744,6 +3520,65 @@
         sendOrderBtn.textContent = originalSendLabel;
       }
     });
+
+    if (sendRestockBtn) {
+      sendRestockBtn.addEventListener("click", async () => {
+        if (!updateRestockWhatsappValidationUi({ forceShow: true })) {
+          return;
+        }
+
+        const selectedItems = getRestockSelectionItems();
+        const minUnits = getRestockMinimumUnits();
+        const selectedUnits = selectedItems.reduce((acc, item) => acc + item.quantidade, 0);
+        if (!selectedItems.length) {
+          showCenterNotice(restockConfig.mensagemSemItens || DEFAULT_RESTOCK_CONFIG.mensagemSemItens);
+          return;
+        }
+
+        if (selectedUnits < minUnits) {
+          showCenterNotice(getRestockMinimumMessage(minUnits, selectedUnits));
+          return;
+        }
+
+        if (!restockConfig?.habilitado || !webhookUrl) {
+          showFeedback(TECH_ERROR_MESSAGE, "error");
+          return;
+        }
+
+        const originalLabel = restockConfig.ctaEnviar || DEFAULT_RESTOCK_CONFIG.ctaEnviar;
+        sendRestockBtn.disabled = true;
+        sendRestockBtn.textContent = "Enviando...";
+
+        try {
+          const payload = buildRestockPayload();
+          const response = await fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            const workerError = await readWorkerErrorPayload(response);
+            if (response.status === 422 && workerError?.error === "whatsapp_invalid") {
+              updateRestockWhatsappValidationUi({ forceShow: true });
+              return;
+            }
+            showFeedback(TECH_ERROR_MESSAGE, "error");
+            return;
+          }
+
+          showFeedback(restockConfig.mensagemSucesso || DEFAULT_RESTOCK_CONFIG.mensagemSucesso, "ok");
+          restockSelection.clear();
+          if (restockModal) setModalVisible(restockModal, false);
+        } catch (error) {
+          console.error("Falha no envio da solicitação de encomenda", error);
+          showFeedback(TECH_ERROR_MESSAGE, "error");
+        } finally {
+          sendRestockBtn.textContent = originalLabel;
+          updateRestockSendButtonState();
+        }
+      });
+    }
 
     const init = async () => {
       try {
@@ -2770,13 +3605,17 @@
         sendOrderBtn.disabled = true;
       }
       updateSummaryDisclaimer();
+      renderRestockNotice();
       updateHeroPromo();
       updateBusinessNotice();
-      whatsappPedido.value = getPrefilledWhatsappFromUrl();
+      const prefilledWhatsapp = getPrefilledWhatsappFromUrl();
+      whatsappPedido.value = prefilledWhatsapp;
+      if (whatsappRestock) whatsappRestock.value = prefilledWhatsapp;
       renderAlbums();
       renderProducts();
       renderSummary();
       updateWhatsappValidationUi();
+      updateRestockWhatsappValidationUi();
     };
 
     init();
