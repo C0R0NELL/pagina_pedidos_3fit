@@ -5,7 +5,7 @@
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
       "estoque": 9,
-      "ativo": true
+      "ativo": false
     },
     {
       "key": "CUTTING - Macarrão a Bolonhesa",
