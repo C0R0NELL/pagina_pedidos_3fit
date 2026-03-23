@@ -1,6 +1,6 @@
 {
-  "version": "2026-03-01T03:49:30.518Z",
-  "updatedAt": "2026-03-01T03:49:30.518Z",
+  "version": "2026-03-23T23:45:27.152Z",
+  "updatedAt": "2026-03-23T23:45:27.152Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -24,22 +24,22 @@
     },
     {
       "key": "BULKING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 11,
+      "estoque": 10,
       "ativo": true
     },
     {
       "key": "BULKING - Macarrão a Bolonhesa",
-      "estoque": 4,
+      "estoque": 3,
       "ativo": true
     },
     {
       "key": "BULKING - Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-      "estoque": 6,
+      "estoque": 5,
       "ativo": true
     },
     {
       "key": "BULKING - Macarrão c/ Frango ao Molho Branco",
-      "estoque": 4,
+      "estoque": 3,
       "ativo": true
     },
     {
@@ -154,12 +154,12 @@
     },
     {
       "key": "BASA - Escondidinho de carne c/ Batata inglesa",
-      "estoque": 7,
+      "estoque": 6,
       "ativo": true
     },
     {
       "key": "BASA - Espaguete à Bolonhesa",
-      "estoque": 4,
+      "estoque": 3,
       "ativo": true
     },
     {
@@ -169,7 +169,7 @@
     },
     {
       "key": "BASA - Panqueca de Frango ao Molho Branco",
-      "estoque": 4,
+      "estoque": 3,
       "ativo": true
     }
   ]
