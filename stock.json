@@ -1,6 +1,6 @@
 {
-  "version": "2026-03-23T23:45:27.152Z",
-  "updatedAt": "2026-03-23T23:45:27.152Z",
+  "version": "2026-03-31T00:45:44.095Z",
+  "updatedAt": "2026-03-31T00:45:44.095Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -84,7 +84,7 @@
     },
     {
       "key": "F. SARDINHA - Iscas de frango c/ mix de legumes",
-      "estoque": 4,
+      "estoque": 3,
       "ativo": true
     },
     {
