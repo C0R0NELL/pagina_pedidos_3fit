@@ -1,6 +1,6 @@
 {
-  "version": "2026-03-31T00:45:44.095Z",
-  "updatedAt": "2026-03-31T00:45:44.095Z",
+  "version": "2026-04-08T20:15:30.343Z",
+  "updatedAt": "2026-04-08T20:15:30.343Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -24,7 +24,7 @@
     },
     {
       "key": "BULKING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 10,
+      "estoque": 7,
       "ativo": true
     },
     {
@@ -84,7 +84,7 @@
     },
     {
       "key": "F. SARDINHA - Iscas de frango c/ mix de legumes",
-      "estoque": 3,
+      "estoque": 0,
       "ativo": true
     },
     {
