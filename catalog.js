@@ -19,7 +19,7 @@
 
 // QUALQUER ALTERAÇÃO AQUI (catalog.js) OU EM features.json, TEM QUE SER REPETIDA MANUALMENTE NO WORKER NO SITE CLOUDFLARE (e não somente em cloudflare-worker.js) ISSO É PARA GARANTIR A INTEGRIDADE DOS DADOS NO ENVIO DO PEDIDO
 window.CATALOG = { 
-  version: "2026-02-20",
+  version: "2026-04-09",
   moeda: "BRL",
   linhas: [
     {
@@ -76,7 +76,6 @@ window.CATALOG = {
       itens: [
         { id: "sardinha-001", nome: "Picadinho de frango c/ batata, cenoura e arroz branco", gramatura: "300g" },
         { id: "sardinha-002", nome: "Iscas de frango refogada aceboladas e batata inglesa no vapor", gramatura: "300g" },
-        { id: "sardinha-003", nome: "Iscas de frango c/ mix de legumes", gramatura: "350g" },
         { id: "sardinha-004", nome: "Escondidinho de carne moída c/ batata doce", gramatura: "300g" },
         { id: "sardinha-005", nome: "Carne moída c/ arroz branco e cenoura refogada", gramatura: "300g" }
       ]

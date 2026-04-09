@@ -51,7 +51,7 @@ const FEATURES = {
 };
 
 const CATALOG = {
-  "version": "2026-02-20",
+  "version": "2026-04-09",
   "moeda": "BRL",
   "linhas": [
     {
@@ -171,11 +171,6 @@ const CATALOG = {
           "id": "sardinha-002",
           "nome": "Iscas de frango refogada aceboladas e batata inglesa no vapor",
           "gramatura": "300g",
-        },
-        {
-          "id": "sardinha-003",
-          "nome": "Iscas de frango c/ mix de legumes",
-          "gramatura": "350g",
         },
         {
           "id": "sardinha-004",
