@@ -1,10 +1,10 @@
 {
-  "version": "2026-04-23T01:45:38.788Z",
-  "updatedAt": "2026-04-23T01:45:38.788Z",
+  "version": "2026-04-23T04:45:39.123Z",
+  "updatedAt": "2026-04-23T04:45:39.123Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 7,
+      "estoque": 5,
       "ativo": true
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "key": "BULKING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 7,
+      "estoque": 6,
       "ativo": true
     },
     {
@@ -34,7 +34,7 @@
     },
     {
       "key": "BULKING - Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-      "estoque": 5,
+      "estoque": 3,
       "ativo": true
     },
     {
@@ -79,7 +79,7 @@
     },
     {
       "key": "F. SARDINHA - Iscas de frango refogada aceboladas e batata inglesa no vapor",
-      "estoque": 7,
+      "estoque": 4,
       "ativo": true
     },
     {
