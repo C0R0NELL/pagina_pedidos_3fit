@@ -1,6 +1,6 @@
 {
-  "version": "2026-04-23T04:45:39.123Z",
-  "updatedAt": "2026-04-23T04:45:39.123Z",
+  "version": "2026-04-30T00:00:52.023Z",
+  "updatedAt": "2026-04-30T00:00:52.023Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -14,7 +14,7 @@
     },
     {
       "key": "CUTTING - Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-      "estoque": 2,
+      "estoque": 0,
       "ativo": true
     },
     {
@@ -29,12 +29,12 @@
     },
     {
       "key": "BULKING - Macarrão a Bolonhesa",
-      "estoque": 3,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "BULKING - Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-      "estoque": 3,
+      "estoque": 2,
       "ativo": true
     },
     {
@@ -74,7 +74,7 @@
     },
     {
       "key": "F. SARDINHA - Picadinho de frango c/ batata, cenoura e arroz branco",
-      "estoque": 5,
+      "estoque": 4,
       "ativo": true
     },
     {
@@ -164,7 +164,7 @@
     },
     {
       "key": "BASA - Panqueca de Frango ao Molho Branco",
-      "estoque": 3,
+      "estoque": 1,
       "ativo": true
     }
   ]
