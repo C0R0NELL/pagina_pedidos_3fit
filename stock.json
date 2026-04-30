@@ -1,6 +1,6 @@
 {
-  "version": "2026-04-30T00:00:52.023Z",
-  "updatedAt": "2026-04-30T00:00:52.023Z",
+  "version": "2026-04-30T00:15:52.211Z",
+  "updatedAt": "2026-04-30T00:15:52.211Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -9,7 +9,7 @@
     },
     {
       "key": "CUTTING - Macarrão a Bolonhesa",
-      "estoque": 3,
+      "estoque": 1,
       "ativo": true
     },
     {
@@ -99,12 +99,12 @@
     },
     {
       "key": "REEDUCAÇÃO - Macarrão Integral à Bolonhesa",
-      "estoque": 2,
+      "estoque": 0,
       "ativo": true
     },
     {
       "key": "REEDUCAÇÃO - Almôndegas de Frango ao Molho de Tomate com arroz integral e cenoura ralada",
-      "estoque": 2,
+      "estoque": 1,
       "ativo": true
     },
     {
