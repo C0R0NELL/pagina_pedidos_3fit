@@ -1,10 +1,10 @@
 {
-  "version": "2026-04-30T00:15:52.211Z",
-  "updatedAt": "2026-04-30T00:15:52.211Z",
+  "version": "2026-05-09T17:30:56.982Z",
+  "updatedAt": "2026-05-09T17:30:56.982Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 5,
+      "estoque": 3,
       "ativo": true
     },
     {
@@ -24,22 +24,22 @@
     },
     {
       "key": "BULKING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 6,
+      "estoque": 5,
       "ativo": true
     },
     {
       "key": "BULKING - Macarrão a Bolonhesa",
-      "estoque": 2,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "BULKING - Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-      "estoque": 2,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "BULKING - Macarrão c/ Frango ao Molho Branco",
-      "estoque": 3,
+      "estoque": 2,
       "ativo": true
     },
     {
@@ -74,12 +74,12 @@
     },
     {
       "key": "F. SARDINHA - Picadinho de frango c/ batata, cenoura e arroz branco",
-      "estoque": 4,
+      "estoque": 3,
       "ativo": true
     },
     {
       "key": "F. SARDINHA - Iscas de frango refogada aceboladas e batata inglesa no vapor",
-      "estoque": 4,
+      "estoque": 2,
       "ativo": true
     },
     {
@@ -89,7 +89,7 @@
     },
     {
       "key": "F. SARDINHA - Carne moída c/ arroz branco e cenoura refogada",
-      "estoque": 3,
+      "estoque": 2,
       "ativo": true
     },
     {
@@ -104,7 +104,7 @@
     },
     {
       "key": "REEDUCAÇÃO - Almôndegas de Frango ao Molho de Tomate com arroz integral e cenoura ralada",
-      "estoque": 1,
+      "estoque": 0,
       "ativo": true
     },
     {
@@ -129,7 +129,7 @@
     },
     {
       "key": "LOW CARB - Espaguete de Cenoura à Bolonhesa",
-      "estoque": 4,
+      "estoque": 2,
       "ativo": true
     },
     {
@@ -139,7 +139,7 @@
     },
     {
       "key": "LOW CARB - Iscas de Frango Refogado com Pimentões Coloridos e Cenoura no Vapor",
-      "estoque": 4,
+      "estoque": 2,
       "ativo": true
     },
     {
