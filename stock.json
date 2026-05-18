@@ -1,6 +1,6 @@
 {
-  "version": "2026-05-09T17:30:56.982Z",
-  "updatedAt": "2026-05-09T17:30:56.982Z",
+  "version": "2026-05-18T21:45:57.539Z",
+  "updatedAt": "2026-05-18T21:45:57.539Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -74,12 +74,12 @@
     },
     {
       "key": "F. SARDINHA - Picadinho de frango c/ batata, cenoura e arroz branco",
-      "estoque": 3,
+      "estoque": 0,
       "ativo": true
     },
     {
       "key": "F. SARDINHA - Iscas de frango refogada aceboladas e batata inglesa no vapor",
-      "estoque": 2,
+      "estoque": 0,
       "ativo": true
     },
     {
@@ -89,7 +89,7 @@
     },
     {
       "key": "F. SARDINHA - Carne moída c/ arroz branco e cenoura refogada",
-      "estoque": 2,
+      "estoque": 0,
       "ativo": true
     },
     {
