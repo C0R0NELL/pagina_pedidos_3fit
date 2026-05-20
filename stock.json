@@ -1,6 +1,6 @@
 {
-  "version": "2026-05-20T19:30:56.921Z",
-  "updatedAt": "2026-05-20T19:30:56.921Z",
+  "version": "2026-05-20T19:45:57.847Z",
+  "updatedAt": "2026-05-20T19:45:57.847Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
@@ -44,52 +44,52 @@
     },
     {
       "key": "DIA A DIA - Espaguete a bolonhesa",
-      "estoque": 0,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "DIA A DIA - Pernil suíno desfiado ao molho de laranja e mel, arroz branco e purê de abóbora",
-      "estoque": 0,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "DIA A DIA - Panqueca de frango ao molho branco de queijo parmesão",
-      "estoque": 0,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "DIA A DIA - Strogonoff de frango com arroz branco e batata rústica assada",
-      "estoque": 0,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "DIA A DIA - Carne moída com cenoura e batata, arroz branco e feijão carioca",
-      "estoque": 0,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "DIA A DIA - Picadinho de carne com legumes, arroz branco, feijão carioca e farofa de cenoura",
-      "estoque": 0,
+      "estoque": 2,
       "ativo": true
     },
     {
       "key": "F. SARDINHA - Picadinho de frango c/ batata, cenoura e arroz branco",
-      "estoque": 0,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "F. SARDINHA - Iscas de frango refogada aceboladas e batata inglesa no vapor",
-      "estoque": 0,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "F. SARDINHA - Escondidinho de carne moída c/ batata doce",
-      "estoque": 0,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "F. SARDINHA - Carne moída c/ arroz branco e cenoura refogada",
-      "estoque": 0,
+      "estoque": 1,
       "ativo": true
     },
     {
@@ -144,27 +144,27 @@
     },
     {
       "key": "BASA - Carne desfiada c/ abóbora",
-      "estoque": 6,
+      "estoque": 7,
       "ativo": true
     },
     {
       "key": "BASA - Escondidinho de carne c/ Batata inglesa",
-      "estoque": 6,
+      "estoque": 7,
       "ativo": true
     },
     {
       "key": "BASA - Espaguete à Bolonhesa",
-      "estoque": 3,
-      "ativo": true
-    },
-    {
-      "key": "BASA - Almôndegas de Frango ao molho de Tomate c/ Arroz & Cenoura",
       "estoque": 4,
       "ativo": true
     },
     {
+      "key": "BASA - Almôndegas de Frango ao molho de Tomate c/ Arroz & Cenoura",
+      "estoque": 5,
+      "ativo": true
+    },
+    {
       "key": "BASA - Panqueca de Frango ao Molho Branco",
-      "estoque": 1,
+      "estoque": 2,
       "ativo": true
     }
   ]
