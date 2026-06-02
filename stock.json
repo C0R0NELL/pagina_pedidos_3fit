@@ -1,15 +1,15 @@
 {
-  "version": "2026-05-20T19:45:57.847Z",
-  "updatedAt": "2026-05-20T19:45:57.847Z",
+  "version": "2026-06-02T22:00:41.654Z",
+  "updatedAt": "2026-06-02T22:00:41.654Z",
   "items": [
     {
       "key": "CUTTING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 4,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "CUTTING - Macarrão a Bolonhesa",
-      "estoque": 2,
+      "estoque": 1,
       "ativo": true
     },
     {
@@ -24,22 +24,22 @@
     },
     {
       "key": "BULKING - Carne Moída c/ Cuscuz de Milho e Cenoura Refogada",
-      "estoque": 6,
+      "estoque": 5,
       "ativo": true
     },
     {
       "key": "BULKING - Macarrão a Bolonhesa",
-      "estoque": 2,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "BULKING - Carne Desfiada c/ Aipim (Mandioca) Cozida em cubos",
-      "estoque": 2,
+      "estoque": 1,
       "ativo": true
     },
     {
       "key": "BULKING - Macarrão c/ Frango ao Molho Branco",
-      "estoque": 3,
+      "estoque": 2,
       "ativo": true
     },
     {
